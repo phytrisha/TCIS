@@ -31,6 +31,8 @@
     	var centerX;
     	var centerY;
 
+        var initAngle = true;
+
         function syntaxHighlight(json) {
             if (typeof json != 'string') {
                 json = JSON.stringify(json, undefined, 2);
@@ -97,6 +99,27 @@
 
                 if (tangible) {
                     
+                    var p1 = {
+                        x: x[0],
+                        y: y[0]
+                    }
+                    var p2 = {
+                        x: x[1],
+                        y: y[1]
+                    }
+
+                    //console.log(p1);
+                    //console.log(p2);
+
+                    var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+                    if (initAngle) {
+                        angleStart = angleDeg;
+                        initAngle = false;
+                    }
+                    var currentRotationAngle = Math.round(angleDeg - angleStart);
+                    console.log(currentRotationAngle);
+
+
                     centerX = (x[0]+x[1]+x[2]+x[3])/4;
                     centerY = (y[0]+y[1]+y[2]+y[3])/4;
 
@@ -107,17 +130,17 @@
                     }
 
                     if (centerY>700) {
-                        console.log("area 1");
+                        //console.log("area 1");
                         $(".body-area").addClass("area1");
                         $(".body-area").removeClass("area2");
                         $(".body-area").removeClass("area3");
                     } else if (centerY<700 && centerY>500) {
-                        console.log("area 2");
+                        //console.log("area 2");
                         $(".body-area").addClass("area2");
                         $(".body-area").removeClass("area1");
                         $(".body-area").removeClass("area3");
                     } else if (centerY<500) {
-                        console.log("area 3");
+                        //console.log("area 3");
                         $(".body-area").addClass("area3");
                         $(".body-area").removeClass("area1");
                         $(".body-area").removeClass("area2");
@@ -132,6 +155,7 @@
                 $(".body-area").removeClass("area2");
                 $(".body-area").removeClass("area3");*/
                 tangible=false;
+                initAngle = true;
             }
 
             if (last_original_event != e.originalType) {
