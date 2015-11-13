@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
+    <title>jQueryTouch test page</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="js/jquery-2.1.4.js"></script>
+    <script type="text/javascript" src="jquery.touch.js"></script>
+</head>
+<body>
+	
+    <div class="body-area" id="test-area">
+        <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #000000;">
+		</canvas>
+        <div class="leftPanel"></div>
+        <div class="rightPanel"></div>
+    </div>
+    <div id="last-event">
+        <p id="last-event-name">
+        </p>
+        <pre id="last-event-detail"></pre>
+    </div>
+    <div id="original-event">
+    </div>
+
+    <script>
+    	var minLimit = 25000;
+    	var tangible = false;
+
+    	var centerX;
+    	var centerY;
+
+    	var c = document.getElementById("myCanvas");
+		var ctx = c.getContext("2d");
+		
+
+
+        function syntaxHighlight(json) {
+            if (typeof json != 'string') {
+                json = JSON.stringify(json, undefined, 2);
+            }
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                var cls = 'number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'key';
+                    } else {
+                        cls = 'string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        $("#test-area").touchInit();
+
+        var timeout_id = null;
+        var last_original_event = null;
+        var handler = function (e) {
+            $("#last-event-name").text(e.type);
+            var showData =
+                    {
+                        clientX: e.clientX,
+                        clientY: e.clientY,
+                        pageX: e.pageX,
+                        pageY: e.pageY,
+                        screenX: e.screenX,
+                        screenY: e.screenY,
+                        touches: e.touches
+                    };
+            $("#last-event-detail").html(syntaxHighlight(JSON.stringify(showData, undefined, 2)));
+/*
+            if (showData.touches.length > 1) {
+                if (Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)<25000 && Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)>10000) {
+                    $(".body-area").addClass("highlightArea");
+                } else {
+                    $(".body-area").removeClass("highlightArea");
+                }
+            }*/
+            /*
+            if (showData.touches.length > 2) {
+                if (Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)<minLimit && Math.pow(showData.touches[0].screenX-showData.touches[2].screenX,2)<minLimit) {
+                    $(".body-area").addClass("highlightArea");
+                    tangible=true;
+                } else {
+                    $(".body-area").removeClass("highlightArea");
+                    tangible=false;
+                }
+            }
+/*
+            if (tangible) {
+	            if (showData.screenX < 300) {
+	                $(".leftPanel").addClass("panelVisible");
+	            } else if (showData.screenX>500) {
+	                $(".rightPanel").addClass("panelVisible");
+	            } else {
+	                $(".leftPanel").removeClass("panelVisible");
+	                $(".rightPanel").removeClass("panelVisible");
+	            }
+            } else {
+            	$(".leftPanel").removeClass("panelVisible");
+	            $(".rightPanel").removeClass("panelVisible");
+            }
+*/
+
+
+            if (showData.touches.length > 2) {
+            	centerX = (showData.touches[0].screenX + showData.touches[1].screenX + showData.touches[2].screenX) / 3;
+            	centerY = (showData.touches[0].screenY + showData.touches[1].screenY + showData.touches[2].screenY) / 3;
+            	console.log(centerX);
+            	console.log(centerY);
+            	tangible=true;
+            }
+/*
+            if (tangible) {
+            	if (centerX>500) {
+            		$(".rightPanel").addClass("panelVisible");
+            	} else {
+            		$(".rightPanel").removeClass("panelVisible");
+            	}
+
+            }*/
+
+            ctx.fillStyle = "#FF0000";
+			ctx.fillRect(0,0,150,75);
+			console.log("drawing enabled");
+
+
+            if (last_original_event != e.originalType) {
+                last_original_event = e.originalType;
+                $("#original-event").html(e.originalType + "<br/>" + $("#original-event").html());
+                if (timeout_id !== null) window.clearTimeout(timeout_id);
+                timeout_id = window.setTimeout(
+	                function () {
+	                    $("#original-event").html("");
+	                },
+	                5000);
+            }
+        };
+
+        
+
+        $("#test-area").on("touch_start", handler);
+        $("#test-area").on("touch_move", handler);
+        $("#test-area").on("touch_end", handler);
+    </script>
+</body>
+</html>
