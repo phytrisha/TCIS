@@ -1,0 +1,86 @@
+body {
+    -ms-content-zoom-boundary-max: 100%;
+    -ms-content-zoom-boundary-min: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.body-area {
+    background-color: red;
+}
+
+#test-area {
+    color: white;
+    height: 1024px;
+    text-align: center;
+}
+
+#last-event {
+    background-color: white;
+    position: absolute;
+    top: 0;
+}
+
+#original-event {
+    background-color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 300px;
+    overflow: hidden;
+}
+
+.string {
+    color: green;
+}
+
+.number {
+    color: darkorange;
+}
+
+.boolean {
+    color: blue;
+}
+
+.null {
+    color: magenta;
+}
+
+.key {
+    color: red;
+}
+.highlightArea {
+    background-color: green;
+}
+
+.area1 {
+    background-color: blue;
+}
+.area2 {
+    background-color: yellow;
+}
+.area3 {
+    background-color: cyan;
+}
+
+
+
+.leftPanel {
+    width: 45%;
+    height: 0%;
+    float: left;
+    background-color: yellow;
+    -webkit-transition: all 1s;
+}
+
+.rightPanel {
+    width: 45%;
+    height: 0%;
+    float: right;
+    background-color: blue;
+    -webkit-transition: all 1s;
+}
+
+.panelVisible {
+    height: 100%;
+}
