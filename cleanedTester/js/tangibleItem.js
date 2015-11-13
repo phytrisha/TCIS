@@ -14,6 +14,12 @@ var temperatureLeftZoneVariable = 20;
 var temperatureRightZoneOutput = 20;
 var temperatureRightZoneVariable = 20;
 
+var leftColdMeter;
+var leftHotMeter;
+
+var rightColdMeter;
+var rightHotMeter;
+
 var currentRotationAngle;
 var lastRotationAngle;
 
@@ -23,6 +29,8 @@ var navigationArea=false;
 
 var klimaLeftZone = false;
 var klimaRightZone = false;
+
+var putItDown = true;
 
 
 // crazy json shit, don't touch this
@@ -185,15 +193,29 @@ var handler = function (e) {
         tangible=false;
         initAngle = true;
     }
-
+    document.getElementById("currentAreaTitle").style.opacity=1.0;
     if (klimaArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
         document.getElementById("currentAreaTitle").innerHTML="<h1>Klima</h1>";
         $(".showTemperature").addClass("showTemperatureVisible");
         if (klimaLeftZone) {
             $("#leftTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='leftTemperatureZone'><h1>"+temperatureLeftZoneVariable+"°C</h1></div>");
+            if (temperatureLeftZoneOutput<20) {
+                leftColdMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-20)/4,2));
+                document.getElementById("leftTemperatureCold").style.opacity=leftColdMeter.toString();
+            } else if (temperatureLeftZoneOutput>20) {
+                leftHotMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-20)/4,2));
+                document.getElementById("leftTemperatureHot").style.opacity=leftHotMeter.toString();
+            }
         } else if (klimaRightZone) {
             $("#rightTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='rightTemperatureZone'><h1>"+temperatureRightZoneVariable+"°C</h1></div>");
+            if (temperatureRightZoneOutput<20) {
+                rightColdMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-20)/4,2));
+                document.getElementById("rightTemperatureCold").style.opacity=rightColdMeter.toString();
+            } else if (temperatureRightZoneOutput>20) {
+                rightHotMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-20)/4,2));
+                document.getElementById("rightTemperatureHot").style.opacity=rightHotMeter.toString();
+            }
         }
     } else if (multimediaArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
@@ -227,7 +249,19 @@ setInterval(function(){
     lastRotationAngle=currentRotationAngle;
 },250);
 
-
+setInterval(function() {
+    if (klimaArea==false && multimediaArea==false && navigationArea==false) {
+        if (putItDown) {
+            $(".currentAreaIndicator").addClass("standardFaded");
+            $(".currentAreaIndicator").removeClass("standardVisible");
+            putItDown=false;
+        } else {
+            $(".currentAreaIndicator").addClass("standardVisible");
+            $(".currentAreaIndicator").removeClass("standardFaded");
+            putItDown=true;
+        }
+    }
+},1500);
 
 
 

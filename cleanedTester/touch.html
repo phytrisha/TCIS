@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=0" />
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>jQueryTouch test page</title>
     <link rel="stylesheet" href="style.css">
     <script type="text/javascript" src="js/jquery-2.1.4.js"></script>
@@ -13,9 +13,13 @@
 <body>
 	
     <div class="body-area" id="test-area">
-		<div class="currentAreaIndicator" id="currentAreaTitle"><h1>Please place the tangible item on the screen.</h1></div>
-		<div class="showTemperature" id="leftTemperatureZone"><h1>20</h1></div>
-		<div class="showTemperature" id="rightTemperatureZone"><h1>20</h1></div>
+		<div class="leftTemperatureViz" id="leftTemperatureCold"></div>
+		<div class="leftTemperatureViz" id="leftTemperatureHot"></div>
+		<div class="rightTemperatureViz" id="rightTemperatureCold"></div>
+		<div class="rightTemperatureViz" id="rightTemperatureHot"></div>
+		<div class="showTemperature" id="leftTemperatureZone"><h1>20.0°C</h1></div>
+		<div class="showTemperature" id="rightTemperatureZone"><h1>20.0°C</h1></div>
+		<div class="currentAreaIndicator standardVisible" id="currentAreaTitle"><h1>Please place the tangible item on the screen.</h1></div>
     </div>
 
     <script type="text/javascript" src="js/tangibleItem.js"></script>
