@@ -11,8 +11,6 @@
 <body>
 	
     <div class="body-area" id="test-area">
-        <canvas id="myCanvas" width="1024" height="768" style="border:1px solid #000000;">
-		</canvas>
         <div class="leftPanel"></div>
         <div class="rightPanel"></div>
     </div>
@@ -30,11 +28,6 @@
 
     	var centerX;
     	var centerY;
-
-    	var c = document.getElementById("myCanvas");
-		var ctx = c.getContext("2d");
-		
-
 
         function syntaxHighlight(json) {
             if (typeof json != 'string') {
@@ -83,7 +76,7 @@
                     $(".body-area").removeClass("highlightArea");
                 }
             }*/
-            /*
+
             if (showData.touches.length > 2) {
                 if (Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)<minLimit && Math.pow(showData.touches[0].screenX-showData.touches[2].screenX,2)<minLimit) {
                     $(".body-area").addClass("highlightArea");
@@ -117,19 +110,14 @@
             	console.log(centerY);
             	tangible=true;
             }
-/*
+
             if (tangible) {
             	if (centerX>500) {
             		$(".rightPanel").addClass("panelVisible");
             	} else {
             		$(".rightPanel").removeClass("panelVisible");
             	}
-
-            }*/
-
-            ctx.fillStyle = "#FF0000";
-			ctx.fillRect(0,0,150,75);
-			console.log("drawing enabled");
+            }
 
 
             if (last_original_event != e.originalType) {
