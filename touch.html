@@ -29,10 +29,12 @@
 
     	var centerX;
     	var centerY;
-
+/*
         var firstTouchDistance;
         var secondTouchDistance;
         var thirdTouchDistance;
+*/
+
 
         function syntaxHighlight(json) {
             if (typeof json != 'string') {
@@ -72,8 +74,13 @@
                         screenY: e.screenY,
                         touches: e.touches
                     };
+
             var x = [];
             var y = [];
+
+            var xDist = [];
+            var yDist = [];
+
             $("#last-event-detail").html(syntaxHighlight(JSON.stringify(showData, undefined, 2)));
 
             for (var i = showData.touches.length - 1; i >= 0; i--) {
@@ -83,17 +90,35 @@
 
             if (showData.touches.length > 3) {
 
-                firstTouchDistance = Math.sqrt(Math.pow(x[0]-x[1],2));
+                for (var i = 0; i < showData.touches.length; i++) {
+                    /*for (var j = 0; j < showData.touches.length; j++) {
+                        xDist[i] = Math.sqrt(Math.pow(x[0]-x[j],2));
+                        yDist[i] = Math.sqrt(Math.pow(y[0]-y[j],2));
+                    }; */ 
+                    xDist[i] = Math.sqrt(Math.pow(x[0]-x[i],2));
+                    yDist[i] = Math.sqrt(Math.pow(y[0]-y[i],2));
+                };
+
+                console.log("x distances: " + xDist);
+                //console.log("y distances: " + yDist);
+
+                /*firstTouchDistance = Math.sqrt(Math.pow(x[0]-x[1],2));
                 secondTouchDistance = Math.sqrt(Math.pow(x[0]-x[2],2));
                 thirdTouchDistance = Math.sqrt(Math.pow(x[0]-x[3],2));
 
-                if (firstTouchDistance<minLimit && secondTouchDistance<minLimit && thirdTouchDistance<minLimit) {
+                console.log(firstTouchDistance);
+                console.log(secondTouchDistance);
+                console.log(thirdTouchDistance);*/
+
+                if (xDist[1]<minLimit && xDist[2]<minLimit && xDist[3]<minLimit && yDist[1]<minLimit && yDist[2]<minLimit && yDist[3]<minLimit) {
                     $(".body-area").addClass("highlightArea");
                     tangible=true;
                 } else {
                     $(".body-area").removeClass("highlightArea");
                     tangible=false;
                 }
+
+
 
                 if (tangible) {
                     if (centerX>500) {
