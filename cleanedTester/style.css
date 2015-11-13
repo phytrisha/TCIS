@@ -6,7 +6,27 @@ body {
 }
 
 .body-area {
-    background-color: red;
+    background-color: black;
+    -webkit-transition: all 1s;
+    z-index: 999;
+}
+
+h1 {
+    font-family: Helvetica Neue;
+    font-size: 30px;
+    font-weight: 200;
+}
+
+.currentAreaIndicator {
+    padding-top: 100px;
+}
+
+.showTemperature {
+    opacity: 0.0;
+}
+
+.showTemperatureVisible {
+    opacity: 1.0;
 }
 
 #test-area {
@@ -54,13 +74,13 @@ body {
 }
 
 .area1 {
-    background-color: blue;
+    background-color: #0d242b;
 }
 .area2 {
-    background-color: yellow;
+    background-color: #331414;
 }
 .area3 {
-    background-color: cyan;
+    background-color: #261433;
 }
 
 
