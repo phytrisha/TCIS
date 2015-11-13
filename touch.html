@@ -21,11 +21,11 @@
     </div>
     <div id="original-event">
     </div>
-    <div style="width:20px;height:20px;background-color:#00ff00;top:0px;left:0px;position:fixed;margin-left:-10px;margin-top:-10px;border-radius:50%;" id="centerIndicator"></div>
+    <!--<div style="width:300px;height:300px;background-color:#00ff00;top:0px;left:0px;position:fixed;margin-left:-150px;margin-top:-150px;border-radius:50%;" id="centerIndicator"></div>-->
 
     <script>
         var minLim = 0;
-    	var maxLim = 200;
+    	var maxLim = 300;
     	var tangible = false;
 
     	var centerX;
@@ -91,26 +91,47 @@
                 };
 
                 if (xDist[1]<maxLim && xDist[2]<maxLim && xDist[3]<maxLim && yDist[1]<maxLim && yDist[2]<maxLim && yDist[3]<maxLim && xDist[1]>minLim && xDist[2]>minLim && xDist[3]>minLim && yDist[1]>minLim && yDist[2]>minLim && yDist[3]>minLim) {
-                    $(".body-area").addClass("highlightArea");
+                    //$(".body-area").addClass("highlightArea");
                     tangible=true;
-                } else {
-                    $(".body-area").removeClass("highlightArea");
-                    tangible=false;
-                }
+                } 
 
                 if (tangible) {
+                    
+                    centerX = (x[0]+x[1]+x[2]+x[3])/4;
+                    centerY = (y[0]+y[1]+y[2]+y[3])/4;
+
                     if (centerX>500) {
                         $(".rightPanel").addClass("panelVisible");
                     } else {
                         $(".rightPanel").removeClass("panelVisible");
                     }
-                    centerX = (x[0]+x[1]+x[2]+x[3])/4;
-                    centerY = (y[0]+y[1]+y[2]+y[3])/4;
 
-                    document.getElementById("centerIndicator").style.top = centerY.toString() + "px";
-                    document.getElementById("centerIndicator").style.left = centerX.toString() + "px";
+                    if (centerY>700) {
+                        console.log("area 1");
+                        $(".body-area").addClass("area1");
+                        $(".body-area").removeClass("area2");
+                        $(".body-area").removeClass("area3");
+                    } else if (centerY<700 && centerY>500) {
+                        console.log("area 2");
+                        $(".body-area").addClass("area2");
+                        $(".body-area").removeClass("area1");
+                        $(".body-area").removeClass("area3");
+                    } else if (centerY<500) {
+                        console.log("area 3");
+                        $(".body-area").addClass("area3");
+                        $(".body-area").removeClass("area1");
+                        $(".body-area").removeClass("area2");
+                    }
+
+                    //document.getElementById("centerIndicator").style.top = centerY.toString() + "px";
+                    //document.getElementById("centerIndicator").style.left = centerX.toString() + "px";
                 }
-                
+
+            } else {
+                /*$(".body-area").removeClass("area1");
+                $(".body-area").removeClass("area2");
+                $(".body-area").removeClass("area3");*/
+                tangible=false;
             }
 
             if (last_original_event != e.originalType) {

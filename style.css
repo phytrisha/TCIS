@@ -11,7 +11,7 @@ body {
 
 #test-area {
     color: white;
-    height: 100%;
+    height: 1024px;
     text-align: center;
 }
 
@@ -52,6 +52,18 @@ body {
 .highlightArea {
     background-color: green;
 }
+
+.area1 {
+    background-color: blue;
+}
+.area2 {
+    background-color: yellow;
+}
+.area3 {
+    background-color: cyan;
+}
+
+
 
 .leftPanel {
     width: 45%;
