@@ -21,13 +21,18 @@
     </div>
     <div id="original-event">
     </div>
+    <div style="width:20px;height:20px;background-color:#00ff00;top:0px;left:0px;position:fixed;margin-left:-10px;margin-top:-10px;border-radius:50%;" id="centerIndicator"></div>
 
     <script>
-    	var minLimit = 25000;
+    	var minLimit = 200;
     	var tangible = false;
 
     	var centerX;
     	var centerY;
+
+        var firstTouchDistance;
+        var secondTouchDistance;
+        var thirdTouchDistance;
 
         function syntaxHighlight(json) {
             if (typeof json != 'string') {
@@ -67,58 +72,43 @@
                         screenY: e.screenY,
                         touches: e.touches
                     };
+            var x = [];
+            var y = [];
             $("#last-event-detail").html(syntaxHighlight(JSON.stringify(showData, undefined, 2)));
-/*
-            if (showData.touches.length > 1) {
-                if (Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)<25000 && Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)>10000) {
-                    $(".body-area").addClass("highlightArea");
-                } else {
-                    $(".body-area").removeClass("highlightArea");
-                }
-            }*/
 
-            if (showData.touches.length > 2) {
-                if (Math.pow(showData.touches[0].screenX-showData.touches[1].screenX,2)<minLimit && Math.pow(showData.touches[0].screenX-showData.touches[2].screenX,2)<minLimit) {
+            for (var i = showData.touches.length - 1; i >= 0; i--) {
+                x[i] = showData.touches[i].screenX;
+                y[i] = showData.touches[i].screenY;
+            };
+
+            if (showData.touches.length > 3) {
+
+                firstTouchDistance = Math.sqrt(Math.pow(x[0]-x[1],2));
+                secondTouchDistance = Math.sqrt(Math.pow(x[0]-x[2],2));
+                thirdTouchDistance = Math.sqrt(Math.pow(x[0]-x[3],2));
+
+                if (firstTouchDistance<minLimit && secondTouchDistance<minLimit && thirdTouchDistance<minLimit) {
                     $(".body-area").addClass("highlightArea");
                     tangible=true;
                 } else {
                     $(".body-area").removeClass("highlightArea");
                     tangible=false;
                 }
-            }
-/*
-            if (tangible) {
-	            if (showData.screenX < 300) {
-	                $(".leftPanel").addClass("panelVisible");
-	            } else if (showData.screenX>500) {
-	                $(".rightPanel").addClass("panelVisible");
-	            } else {
-	                $(".leftPanel").removeClass("panelVisible");
-	                $(".rightPanel").removeClass("panelVisible");
-	            }
-            } else {
-            	$(".leftPanel").removeClass("panelVisible");
-	            $(".rightPanel").removeClass("panelVisible");
-            }
-*/
 
+                if (tangible) {
+                    if (centerX>500) {
+                        $(".rightPanel").addClass("panelVisible");
+                    } else {
+                        $(".rightPanel").removeClass("panelVisible");
+                    }
+                    centerX = (x[0]+x[1]+x[2]+x[3])/4;
+                    centerY = (y[0]+y[1]+y[2]+y[3])/4;
 
-            if (showData.touches.length > 2) {
-            	centerX = (showData.touches[0].screenX + showData.touches[1].screenX + showData.touches[2].screenX) / 3;
-            	centerY = (showData.touches[0].screenY + showData.touches[1].screenY + showData.touches[2].screenY) / 3;
-            	console.log(centerX);
-            	console.log(centerY);
-            	tangible=true;
+                    document.getElementById("centerIndicator").style.top = centerY.toString() + "px";
+                    document.getElementById("centerIndicator").style.left = centerX.toString() + "px";
+                }
+                
             }
-
-            if (tangible) {
-            	if (centerX>500) {
-            		$(".rightPanel").addClass("panelVisible");
-            	} else {
-            		$(".rightPanel").removeClass("panelVisible");
-            	}
-            }
-
 
             if (last_original_event != e.originalType) {
                 last_original_event = e.originalType;
