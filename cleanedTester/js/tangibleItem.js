@@ -8,11 +8,21 @@ var centerY;
 
 var initAngle = true;
 
-var temperatureOutput = 20;
-var temperatureVariable;
+var temperatureLeftZoneOutput = 20;
+var temperatureLeftZoneVariable = 20;
+
+var temperatureRightZoneOutput = 20;
+var temperatureRightZoneVariable = 20;
 
 var currentRotationAngle;
 var lastRotationAngle;
+
+var klimaArea=false;
+var multimediaArea=false;
+var navigationArea=false;
+
+var klimaLeftZone = false;
+var klimaRightZone = false;
 
 
 // crazy json shit, don't touch this
@@ -111,25 +121,38 @@ var handler = function (e) {
 
             // calculate & round resulting rotation angle
             currentRotationAngle = Math.round(angleDeg - angleStart);
-            if (currentRotationAngle>lastRotationAngle) {
-                temperatureOutput+=0.01;
-            } else if (currentRotationAngle<lastRotationAngle) {
-                temperatureOutput-=0.01;
+
+            if (klimaArea) {
+                if (klimaLeftZone) {
+                    if (currentRotationAngle>lastRotationAngle) {
+                        temperatureLeftZoneOutput+=0.01;
+                    } else if (currentRotationAngle<lastRotationAngle) {
+                        temperatureLeftZoneOutput-=0.01;
+                    }
+                    temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 10) / 10).toFixed(1);
+                } else if (klimaRightZone) {
+                    if (currentRotationAngle>lastRotationAngle) {
+                        temperatureRightZoneOutput+=0.01;
+                    } else if (currentRotationAngle<lastRotationAngle) {
+                        temperatureRightZoneOutput-=0.01;
+                    }
+                    temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*10) / 10).toFixed(1);
+                }
             }
 
-            temperatureVariable = Math.round(temperatureOutput*10) / 10;
-
-
-            //lastRotationAngle = currentRotationAngle;
             // determine center x and y position of tangible item
             centerX = (x[0]+x[1]+x[2]+x[3])/4;
             centerY = (y[0]+y[1]+y[2]+y[3])/4;
 
             // trigger panels based on x coordinates of tangible item
-            if (centerX>500) {
-                $(".rightPanel").addClass("panelVisible");
-            } else {
-                $(".rightPanel").removeClass("panelVisible");
+            if (centerX<384) {
+                //$(".rightPanel").addClass("panelVisible");
+                klimaLeftZone=true;
+                klimaRightZone=false;
+            } else if (centerX>384) {
+                //$(".rightPanel").removeClass("panelVisible");
+                klimaLeftZone=false;
+                klimaRightZone=true;
             }
 
             // trigger areas based on y coordinates of tangible item
@@ -137,24 +160,23 @@ var handler = function (e) {
                 $(".body-area").addClass("area1");
                 $(".body-area").removeClass("area2");
                 $(".body-area").removeClass("area3");
-                document.getElementById("currentAreaTitle").innerHTML="";
-                document.getElementById("currentAreaTitle").innerHTML="<h1>Multimedia</h1>";
-                $(".showTemperature").removeClass("showTemperatureVisible");
+                klimaArea=false;
+                multimediaArea=true;
+                navigationArea=false;
             } else if (centerY<700 && centerY>500) {
                 $(".body-area").addClass("area2");
                 $(".body-area").removeClass("area1");
                 $(".body-area").removeClass("area3");
-                document.getElementById("currentAreaTitle").innerHTML="";
-                document.getElementById("currentAreaTitle").innerHTML="<h1>Klima</h1>";
-                $(".showTemperature").addClass("showTemperatureVisible");
-                $(".showTemperature").replaceWith("<div class='showTemperature showTemperatureVisible'><h1>"+temperatureVariable+"°C</h1></div>");
+                klimaArea=true;
+                multimediaArea=false;
+                navigationArea=false;
             } else if (centerY<500) {
                 $(".body-area").addClass("area3");
                 $(".body-area").removeClass("area1");
                 $(".body-area").removeClass("area2");
-                document.getElementById("currentAreaTitle").innerHTML="";
-                document.getElementById("currentAreaTitle").innerHTML="<h1>Navigation</h1>";
-                $(".showTemperature").removeClass("showTemperatureVisible");
+                klimaArea=false;
+                multimediaArea=false;
+                navigationArea=true;
             }
         }
 
@@ -162,6 +184,25 @@ var handler = function (e) {
     	// reset tangible item recognition if not enough points are available
         tangible=false;
         initAngle = true;
+    }
+
+    if (klimaArea) {
+        document.getElementById("currentAreaTitle").innerHTML="";
+        document.getElementById("currentAreaTitle").innerHTML="<h1>Klima</h1>";
+        $(".showTemperature").addClass("showTemperatureVisible");
+        if (klimaLeftZone) {
+            $("#leftTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='leftTemperatureZone'><h1>"+temperatureLeftZoneVariable+"°C</h1></div>");
+        } else if (klimaRightZone) {
+            $("#rightTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='rightTemperatureZone'><h1>"+temperatureRightZoneVariable+"°C</h1></div>");
+        }
+    } else if (multimediaArea) {
+        document.getElementById("currentAreaTitle").innerHTML="";
+        document.getElementById("currentAreaTitle").innerHTML="<h1>Multimedia</h1>";
+        $(".showTemperature").removeClass("showTemperatureVisible");
+    } else if (navigationArea) {
+        document.getElementById("currentAreaTitle").innerHTML="";
+        document.getElementById("currentAreaTitle").innerHTML="<h1>Navigation</h1>";
+        $(".showTemperature").removeClass("showTemperatureVisible");
     }
 
     // event reseting, don't touch this

@@ -17,12 +17,25 @@ h1 {
     font-weight: 200;
 }
 
+
 .currentAreaIndicator {
     padding-top: 100px;
 }
 
 .showTemperature {
     opacity: 0.0;
+    position: absolute;
+}
+
+.showTemperature > h1 {
+    text-align: center;
+}
+
+#leftTemperatureZone {
+    left: 100px;
+}
+#rightTemperatureZone {
+    left: 500px;
 }
 
 .showTemperatureVisible {
