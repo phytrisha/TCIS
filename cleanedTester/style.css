@@ -22,6 +22,8 @@ h1 {
     padding-top: 100px;
     z-index: 100;
     -webkit-transition: all 1.5s;
+    width: 768px;
+    position: absolute;
 }
 
 .showTemperature {
@@ -166,9 +168,93 @@ h1 {
     opacity: 0.3;
 }
 
+.albumOverview {
+    width: 768px;
+    height: 2048px;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+}
+.albumOverviewContainer {
+    width: 768px;
+    height: 1024px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#albumScroll {
+    
+}
+
+#album1 {
+    background-image: url(img/albums/01.png);
+}
+#album2 {
+    background-image: url(img/albums/02.png);
+}
+#album3 {
+    background-image: url(img/albums/03.png);
+}
+#album4 {
+    background-image: url(img/albums/04.png);
+}
+#album5 {
+    background-image: url(img/albums/05.png);
+}
+#album6 {
+    background-image: url(img/albums/06.png);
+}
+#album7 {
+    background-image: url(img/albums/07.png);
+}
+#album8 {
+    background-image: url(img/albums/08.png);
+}
+#album9 {
+    background-image: url(img/albums/09.png);
+}
+#album10 {
+    background-image: url(img/albums/10.png);
+}
+#album11 {
+    background-image: url(img/albums/11.png);
+}
+#album12 {
+    background-image: url(img/albums/12.png);
+}
 
 
+.albumOverviewActive {
+    top: -256px;
+}
 
+.singleAlbum {
+    width: 183px;
+    height: 183px;
+    position:relative;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    float: left;
+    background-size: 100%;
+}
+
+.everyOther {
+    margin-top: -91px;
+}
+
+.lastInRow {
+    margin-right: 0px;
+}
+
+.albumFadeOutOverlay {
+    width: 768px;
+    height: 900px;
+    background-image: url(img/albumFade.png);
+    position: absolute;
+    top: 124px;
+    z-index: 200;
+}
 
 
 

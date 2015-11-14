@@ -8,12 +8,6 @@ var centerY;
 
 var initAngle = true;
 
-var temperatureLeftZoneOutput = 20;
-var temperatureLeftZoneVariable = 20;
-
-var temperatureRightZoneOutput = 20;
-var temperatureRightZoneVariable = 20;
-
 var leftColdMeter;
 var leftHotMeter;
 
@@ -31,6 +25,32 @@ var klimaLeftZone = false;
 var klimaRightZone = false;
 
 var putItDown = true;
+
+var standardTemp=20;
+
+var temperatureLeftZoneOutput = 20;
+var temperatureLeftZoneVariable = 20;
+
+var temperatureRightZoneOutput = 20;
+var temperatureRightZoneVariable = 20;
+
+var multimediaScrollYPos;
+var multimediaScrollYReferencePos;
+
+// to do!!
+var multmediaScrollYSpeed;
+
+var updateScroll=false;
+
+var currentScrollYPos;
+var referenceScrollYPos;
+
+var captureStartScroll=true;
+
+var lastScrollYPos;
+var lastScrollYSpeed;
+
+var addToSpeed;
 
 
 // crazy json shit, don't touch this
@@ -54,6 +74,50 @@ function syntaxHighlight(json) {
         }
         return '<span class="' + cls + '">' + match + '</span>';
     });
+}
+
+function zeroSpeed (current) {
+    if (current) {
+        console.log(lastScrollYSpeed);
+        lastScrollYSpeed*=0.9;
+        multimediaScrollYPos+=(lastScrollYSpeed);
+    } else {
+        console.log(lastScrollYSpeed);
+        lastScrollYSpeed*=0.9;
+        multimediaScrollYPos+=(lastScrollYSpeed);
+    }
+}
+
+function scrollHandler () {
+    if (updateScroll) {
+        //$(".albumOverview").css("top", multimediaScrollYPos);
+        console.log("updating scroll");
+    } else {
+        //console.log("not updating scroll " + lastScrollYSpeed);
+        /*if (lastScrollYSpeed<0) {
+            //addToSpeed=true;
+            zeroSpeed(true);
+        } else if (lastScrollYSpeed>0) {
+            zeroSpeed(false);
+        } else {
+*/
+        lastScrollYSpeed*=0.95;
+        multimediaScrollYPos+=(lastScrollYSpeed);
+        //console.log(addToSpeed);
+        //console.log(lastScrollYSpeed);
+    }
+    $(".albumOverview").css("top", multimediaScrollYPos);
+    /*else {
+        if (lastScrollYSpeed<0) {
+            //multmediaScrollYSpeed = lastScrollYSpeed;
+            multmediaScrollYSpeed = lastScrollYSpeed + 1;
+        } else if (lastScrollYSpeed>0) {
+            multmediaScrollYSpeed = lastScrollYSpeed - 1;
+        }
+        console.log("not updating");
+        //console.log(lastScrollYSpeed);
+        //console.log(multmediaScrollYSpeed);
+    }*/
 }
 
 // initialize area for jquery.touch
@@ -92,6 +156,32 @@ var handler = function (e) {
         x[i] = showData.touches[i].screenX;
         y[i] = showData.touches[i].screenY;
     };
+
+    if (showData.touches.length==1) {
+        if (captureStartScroll) {
+            referenceScrollYPos="";
+            multimediaScrollYReferencePos="";
+            multimediaScrollYReferencePos=$(".albumOverview").css('top');
+            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
+            referenceScrollYPos=showData.touches[0].screenY;
+            captureStartScroll=false;
+        }
+        currentScrollYPos=showData.touches[0].screenY;
+        resultingScroll=currentScrollYPos-referenceScrollYPos;
+        multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+        updateScroll=true;
+    } else {
+        //lastScrollYSpeed=lastScrollYPos;
+        lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
+        if (lastScrollYSpeed<-50) {
+            lastScrollYSpeed=-50;
+        } else if (lastScrollYSpeed>50) {
+            lastScrollYSpeed=50;
+        }
+        updateScroll=false;
+    }
+
+    //updateScroll=true;
 
     if (showData.touches.length > 3) {
 
@@ -200,31 +290,42 @@ var handler = function (e) {
         $(".showTemperature").addClass("showTemperatureVisible");
         if (klimaLeftZone) {
             $("#leftTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='leftTemperatureZone'><h1>"+temperatureLeftZoneVariable+"°C</h1></div>");
-            if (temperatureLeftZoneOutput<20) {
-                leftColdMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-20)/4,2));
+            if (temperatureLeftZoneOutput<standardTemp) {
+                leftColdMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/4,2));
                 document.getElementById("leftTemperatureCold").style.opacity=leftColdMeter.toString();
-            } else if (temperatureLeftZoneOutput>20) {
-                leftHotMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-20)/4,2));
+            } else if (temperatureLeftZoneOutput>standardTemp) {
+                leftHotMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/4,2));
                 document.getElementById("leftTemperatureHot").style.opacity=leftHotMeter.toString();
             }
         } else if (klimaRightZone) {
             $("#rightTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='rightTemperatureZone'><h1>"+temperatureRightZoneVariable+"°C</h1></div>");
-            if (temperatureRightZoneOutput<20) {
-                rightColdMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-20)/4,2));
+            if (temperatureRightZoneOutput<standardTemp) {
+                rightColdMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/4,2));
                 document.getElementById("rightTemperatureCold").style.opacity=rightColdMeter.toString();
-            } else if (temperatureRightZoneOutput>20) {
-                rightHotMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-20)/4,2));
+            } else if (temperatureRightZoneOutput>standardTemp) {
+                rightHotMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/4,2));
                 document.getElementById("rightTemperatureHot").style.opacity=rightHotMeter.toString();
             }
         }
+        $(".albumOverview").removeClass("albumOverviewActive");
     } else if (multimediaArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
-        document.getElementById("currentAreaTitle").innerHTML="<h1>Multimedia</h1>";
+        document.getElementById("currentAreaTitle").innerHTML="<h1></h1>";
         $(".showTemperature").removeClass("showTemperatureVisible");
+        document.getElementById("rightTemperatureCold").style.opacity=0.0;
+        document.getElementById("rightTemperatureHot").style.opacity=0.0;
+        document.getElementById("leftTemperatureCold").style.opacity=0.0;
+        document.getElementById("leftTemperatureHot").style.opacity=0.0;
+        $(".albumOverview").addClass("albumOverviewActive");
     } else if (navigationArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
         document.getElementById("currentAreaTitle").innerHTML="<h1>Navigation</h1>";
         $(".showTemperature").removeClass("showTemperatureVisible");
+        document.getElementById("rightTemperatureCold").style.opacity=0.0;
+        document.getElementById("rightTemperatureHot").style.opacity=0.0;
+        document.getElementById("leftTemperatureCold").style.opacity=0.0;
+        document.getElementById("leftTemperatureHot").style.opacity=0.0;
+        $(".albumOverview").removeClass("albumOverviewActive");
     }
 
     // event reseting, don't touch this
@@ -236,7 +337,7 @@ var handler = function (e) {
             function () {
                 $("#original-event").html("");
             },
-            5000);
+        5000);
     }
 };
 
@@ -244,6 +345,9 @@ var handler = function (e) {
 $("#test-area").on("touch_start", handler);
 $("#test-area").on("touch_move", handler);
 $("#test-area").on("touch_end", handler);
+$("#test-area").on("touch_end", function() {
+    captureStartScroll=true;
+})
 
 setInterval(function(){
     lastRotationAngle=currentRotationAngle;
@@ -262,6 +366,22 @@ setInterval(function() {
         }
     }
 },1500);
+
+setInterval(function() {
+    //if (updateScroll) {
+        scrollHandler();
+        //console.log("updating scroll");       
+    //}
+},10);
+
+setInterval(function() {
+    //console.log("current scroll y pos: " + currentScrollYPos);
+    //console.log("last scroll y pos:" + lastScrollYPos);
+    //lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
+    //console.log("last scroll y speed: " + lastScrollYSpeed);
+    lastScrollYPos=currentScrollYPos;
+    //console.log(currentScrollYPos);
+},100);
 
 
 
