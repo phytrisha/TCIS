@@ -170,11 +170,12 @@ h1 {
 
 .albumOverview {
     width: 768px;
-    height: 2048px;
     position: relative;
-    top: 0px;
+    top: -3000px;
     left: 0px;
     z-index: 10;
+    opacity: 1.0;
+    -webkit-transition: opacity 1s;
 }
 .albumOverviewContainer {
     width: 768px;

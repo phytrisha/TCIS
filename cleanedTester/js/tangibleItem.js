@@ -157,7 +157,7 @@ var handler = function (e) {
         y[i] = showData.touches[i].screenY;
     };
 
-    if (showData.touches.length==1) {
+    if (showData.touches.length<2 && showData.touches.length>0) {
         if (captureStartScroll) {
             referenceScrollYPos="";
             multimediaScrollYReferencePos="";
@@ -170,7 +170,7 @@ var handler = function (e) {
         resultingScroll=currentScrollYPos-referenceScrollYPos;
         multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
         updateScroll=true;
-    } else {
+    } else if (showData.touches.length<3) {
         //lastScrollYSpeed=lastScrollYPos;
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
         if (lastScrollYSpeed<-50) {
@@ -308,6 +308,8 @@ var handler = function (e) {
             }
         }
         $(".albumOverview").removeClass("albumOverviewActive");
+        document.getElementById("albumScroll").style.opacity=0.0;
+        document.getElementById("albumFade").style.opacity=0.0;
     } else if (multimediaArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
         document.getElementById("currentAreaTitle").innerHTML="<h1></h1>";
@@ -316,6 +318,9 @@ var handler = function (e) {
         document.getElementById("rightTemperatureHot").style.opacity=0.0;
         document.getElementById("leftTemperatureCold").style.opacity=0.0;
         document.getElementById("leftTemperatureHot").style.opacity=0.0;
+        document.getElementById("albumScroll").style.opacity=1.0;
+        document.getElementById("albumFade").style.opacity=1.0;
+        document.getElementById("albumScroll").style.top="-500px";
         $(".albumOverview").addClass("albumOverviewActive");
     } else if (navigationArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
@@ -326,6 +331,8 @@ var handler = function (e) {
         document.getElementById("leftTemperatureCold").style.opacity=0.0;
         document.getElementById("leftTemperatureHot").style.opacity=0.0;
         $(".albumOverview").removeClass("albumOverviewActive");
+        document.getElementById("albumScroll").style.opacity=0.0;
+        document.getElementById("albumFade").style.opacity=0.0;
     }
 
     // event reseting, don't touch this
@@ -369,7 +376,11 @@ setInterval(function() {
 
 setInterval(function() {
     //if (updateScroll) {
-        scrollHandler();
+        if (multimediaArea) {
+            scrollHandler();
+        }
+        console.log(multimediaArea);
+
         //console.log("updating scroll");       
     //}
 },10);
