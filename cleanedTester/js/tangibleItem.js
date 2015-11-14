@@ -274,6 +274,7 @@ var handler = function (e) {
             }
         }
         $(".albumOverview").removeClass("albumOverviewActive");
+        $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
         document.getElementById("albumScroll").style.opacity=0.0;
         document.getElementById("albumFade").style.opacity=0.0;
     } else if (multimediaArea) {
@@ -288,6 +289,7 @@ var handler = function (e) {
         document.getElementById("albumFade").style.opacity=1.0;
         //document.getElementById("albumScroll").style.top="-500px";
         $(".albumOverview").addClass("albumOverviewActive");
+        $(".albumOverviewContainer").addClass("albumOverviewContainerVisible");
     } else if (navigationArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
         document.getElementById("currentAreaTitle").innerHTML="<h1>Navigation</h1>";
@@ -299,6 +301,7 @@ var handler = function (e) {
         $(".albumOverview").removeClass("albumOverviewActive");
         document.getElementById("albumScroll").style.opacity=0.0;
         document.getElementById("albumFade").style.opacity=0.0;
+        $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
     }
 
     // event reseting, don't touch this

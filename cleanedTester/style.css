@@ -171,7 +171,7 @@ h1 {
 .albumOverview {
     width: 768px;
     position: relative;
-    top: -3000px;
+    top: 0px;
     left: 0px;
     z-index: 10;
     opacity: 1.0;
@@ -181,8 +181,13 @@ h1 {
     width: 768px;
     height: 1024px;
     position: absolute;
-    top: 0px;
+    top: 1024px;
     left: 0px;
+    overflow: none;
+    -webkit-transition: all 0.5s;
+}
+.albumOverviewContainerVisible {
+    top: 0px;
 }
 #albumScroll {
     
