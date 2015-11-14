@@ -175,7 +175,7 @@ h1 {
     left: 0px;
     z-index: 10;
     opacity: 1.0;
-    -webkit-transition: opacity 1s;
+    -webkit-transition: opacity 0.5s;
 }
 .albumOverviewContainer {
     width: 768px;
@@ -255,6 +255,8 @@ h1 {
     position: absolute;
     top: 124px;
     z-index: 200;
+    opacity: 0.0;
+    -webkit-transition: opacity 0.25s;
 }
 
 

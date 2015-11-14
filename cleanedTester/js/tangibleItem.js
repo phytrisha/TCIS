@@ -135,9 +135,13 @@ var handler = function (e) {
         multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
         updateScroll=true;
     } else if (showData.touches.length<3) {
-        //lastScrollYSpeed=lastScrollYPos;
+        // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-        if (lastScrollYSpeed<-50) {
+        if (lastScrollYSpeed<-120) {
+            lastScrollYSpeed=0;
+        } else if (lastScrollYSpeed>120) {
+            lastScrollYSpeed=0;
+        } else if (lastScrollYSpeed<-50) {
             lastScrollYSpeed=-50;
         } else if (lastScrollYSpeed>50) {
             lastScrollYSpeed=50;
@@ -282,7 +286,7 @@ var handler = function (e) {
         document.getElementById("leftTemperatureHot").style.opacity=0.0;
         document.getElementById("albumScroll").style.opacity=1.0;
         document.getElementById("albumFade").style.opacity=1.0;
-        document.getElementById("albumScroll").style.top="-500px";
+        //document.getElementById("albumScroll").style.top="-500px";
         $(".albumOverview").addClass("albumOverviewActive");
     } else if (navigationArea) {
         document.getElementById("currentAreaTitle").innerHTML="";
