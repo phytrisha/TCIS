@@ -76,48 +76,12 @@ function syntaxHighlight(json) {
     });
 }
 
-function zeroSpeed (current) {
-    if (current) {
-        console.log(lastScrollYSpeed);
-        lastScrollYSpeed*=0.9;
-        multimediaScrollYPos+=(lastScrollYSpeed);
-    } else {
-        console.log(lastScrollYSpeed);
-        lastScrollYSpeed*=0.9;
-        multimediaScrollYPos+=(lastScrollYSpeed);
-    }
-}
-
 function scrollHandler () {
-    if (updateScroll) {
-        //$(".albumOverview").css("top", multimediaScrollYPos);
-        console.log("updating scroll");
-    } else {
-        //console.log("not updating scroll " + lastScrollYSpeed);
-        /*if (lastScrollYSpeed<0) {
-            //addToSpeed=true;
-            zeroSpeed(true);
-        } else if (lastScrollYSpeed>0) {
-            zeroSpeed(false);
-        } else {
-*/
+    if (updateScroll!=true) {
         lastScrollYSpeed*=0.95;
         multimediaScrollYPos+=(lastScrollYSpeed);
-        //console.log(addToSpeed);
-        //console.log(lastScrollYSpeed);
     }
     $(".albumOverview").css("top", multimediaScrollYPos);
-    /*else {
-        if (lastScrollYSpeed<0) {
-            //multmediaScrollYSpeed = lastScrollYSpeed;
-            multmediaScrollYSpeed = lastScrollYSpeed + 1;
-        } else if (lastScrollYSpeed>0) {
-            multmediaScrollYSpeed = lastScrollYSpeed - 1;
-        }
-        console.log("not updating");
-        //console.log(lastScrollYSpeed);
-        //console.log(multmediaScrollYSpeed);
-    }*/
 }
 
 // initialize area for jquery.touch
@@ -180,8 +144,6 @@ var handler = function (e) {
         }
         updateScroll=false;
     }
-
-    //updateScroll=true;
 
     if (showData.touches.length > 3) {
 
@@ -375,23 +337,14 @@ setInterval(function() {
 },1500);
 
 setInterval(function() {
-    //if (updateScroll) {
-        if (multimediaArea) {
-            scrollHandler();
-        }
-        console.log(multimediaArea);
-
-        //console.log("updating scroll");       
-    //}
+    if (multimediaArea) {
+        scrollHandler();
+    }
+    console.log(multimediaArea);
 },10);
 
 setInterval(function() {
-    //console.log("current scroll y pos: " + currentScrollYPos);
-    //console.log("last scroll y pos:" + lastScrollYPos);
-    //lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-    //console.log("last scroll y speed: " + lastScrollYSpeed);
     lastScrollYPos=currentScrollYPos;
-    //console.log(currentScrollYPos);
 },100);
 
 
