@@ -138,9 +138,9 @@ var handler = function (e) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
         if (lastScrollYSpeed<-120) {
-            lastScrollYSpeed=0;
+            //lastScrollYSpeed=0;
         } else if (lastScrollYSpeed>120) {
-            lastScrollYSpeed=0;
+            //lastScrollYSpeed=0;
         } else if (lastScrollYSpeed<-50) {
             lastScrollYSpeed=-50;
         } else if (lastScrollYSpeed>50) {
