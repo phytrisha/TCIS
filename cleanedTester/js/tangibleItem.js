@@ -81,6 +81,11 @@ function scrollHandler () {
         lastScrollYSpeed*=0.95;
         multimediaScrollYPos+=(lastScrollYSpeed);
     }
+    if (multimediaScrollYPos>100) {
+    	multimediaScrollYPos=100;
+    } else if (multimediaScrollYPos<-1750) {
+    	multimediaScrollYPos=-1750;
+    }
     $(".albumOverview").css("top", multimediaScrollYPos);
 }
 
@@ -137,10 +142,10 @@ var handler = function (e) {
     } else if (showData.touches.length<3) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-        if (lastScrollYSpeed<-120) {
-            //lastScrollYSpeed=0;
-        } else if (lastScrollYSpeed>120) {
-            //lastScrollYSpeed=0;
+        if (lastScrollYSpeed<-180) {
+            lastScrollYSpeed=0;
+        } else if (lastScrollYSpeed>180) {
+            lastScrollYSpeed=0;
         } else if (lastScrollYSpeed<-50) {
             lastScrollYSpeed=-50;
         } else if (lastScrollYSpeed>50) {
@@ -352,7 +357,7 @@ setInterval(function() {
 
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
-},100);
+},25);
 
 
 
