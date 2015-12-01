@@ -52,6 +52,15 @@ var lastScrollYSpeed;
 
 var addToSpeed;
 
+var scrollingEvent = false;
+var touchEvent = false;
+
+var checkFirstPoint=false;
+var checkSecondPoint=false;
+var firstPointY;
+var secondPointY;
+
+
 
 // crazy json shit, don't touch this
 function syntaxHighlight(json) {
@@ -77,7 +86,7 @@ function syntaxHighlight(json) {
 }
 
 function scrollHandler () {
-    if (updateScroll!=true) {
+   if (updateScroll!=true) {
         lastScrollYSpeed*=0.95;
         multimediaScrollYPos+=(lastScrollYSpeed);
     }
@@ -126,7 +135,15 @@ var handler = function (e) {
         y[i] = showData.touches[i].screenY;
     };
 
-    if (showData.touches.length<2 && showData.touches.length>0) {
+    if (showData.touches.length==1) {
+        if (checkFirstPoint) {
+            firstPointY=y[0];
+            checkFirstPoint=false;
+        }
+        if (checkSecondPoint) {
+            secondPointY=y[0];
+            checkSecondPoint=false;
+        }
         if (captureStartScroll) {
             referenceScrollYPos="";
             multimediaScrollYReferencePos="";
@@ -135,26 +152,33 @@ var handler = function (e) {
             referenceScrollYPos=showData.touches[0].screenY;
             captureStartScroll=false;
         }
-        currentScrollYPos=showData.touches[0].screenY;
-        resultingScroll=currentScrollYPos-referenceScrollYPos;
-        multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
-        updateScroll=true;
-    } else if (showData.touches.length<3) {
+        if (scrollingEvent) {
+            currentScrollYPos=showData.touches[0].screenY;
+            resultingScroll=currentScrollYPos-referenceScrollYPos;
+            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+            updateScroll=true;
+        }
+        if (touchEvent) {
+            setTimeout(function() {
+                var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
+                console.log("clicked on album: " + clickedAlbum);
+            }, 25);
+        }
+
+    } else if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-        if (lastScrollYSpeed<-180) {
+        /*if (lastScrollYSpeed<-180) {
             lastScrollYSpeed=0;
         } else if (lastScrollYSpeed>180) {
             lastScrollYSpeed=0;
-        } else if (lastScrollYSpeed<-50) {
+        } else */if (lastScrollYSpeed<-50) {
             lastScrollYSpeed=-50;
         } else if (lastScrollYSpeed>50) {
             lastScrollYSpeed=50;
         }
         updateScroll=false;
-    }
-
-    if (showData.touches.length > 3) {
+    } else if (showData.touches.length > 3) {
 
     	// calculate distances of points, referencing first point
         for (var i = 0; i < showData.touches.length; i++) {
@@ -318,17 +342,39 @@ var handler = function (e) {
             function () {
                 $("#original-event").html("");
             },
-        5000);
+        500);
     }
 };
 
-// execute functions, don't touch this
+// execute functions
 $("#test-area").on("touch_start", handler);
+$("#test-area").on("touch_start", function() {
+    handler();
+    firstPointY="";
+    secondPointY="";
+    checkFirstPoint=true;
+    setTimeout(function() {
+        checkSecondPoint=true;
+        if (firstPointY!=secondPointY) {
+            scrollingEvent=true;
+            touchEvent=false;
+            console.log("Scroll Event!");
+        } else {
+            touchEvent=true;
+            scrollingEvent=false;
+            console.log("Touch Event!");
+        }
+    }, 50);
+});
 $("#test-area").on("touch_move", handler);
-$("#test-area").on("touch_end", handler);
+
 $("#test-area").on("touch_end", function() {
     captureStartScroll=true;
+    scrollingEvent=false;
+    touchEvent=false;
 })
+$("#test-area").on("touch_end", handler);
+
 
 setInterval(function(){
     lastRotationAngle=currentRotationAngle;
@@ -352,15 +398,25 @@ setInterval(function() {
     if (multimediaArea) {
         scrollHandler();
     }
-    console.log(multimediaArea);
 },10);
 
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
 },25);
 
-
-
+function checkElementForTouch (elem, parent, count, x, y) {
+    var offset = parseFloat($(parent).css("top"));
+    for (var i = 1; i < count+1; i++) {
+        var pos = $(elem + i.toString()).position();
+        var posYMin = pos.top + offset;
+        var posXMin = pos.left;
+        var posYMax = pos.top + parseFloat($(elem + i.toString()).css("height")) + offset;
+        var posXMax = pos.left + parseFloat($(elem + i.toString()).css("width"));
+        if (x>posXMin && y>posYMin && x<posXMax && y<posYMax) {
+            return i;
+        }
+    }
+}
 
 
 
