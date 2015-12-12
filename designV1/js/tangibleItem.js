@@ -62,6 +62,11 @@ var rotationStep = 0.02;
 var leftBorder = [2];
 var rightBorder = [2];
 
+var readyForTouch = false;
+
+var menuLeftOpen = false;
+var menuRightOpen = false;
+
 
 
 // crazy json shit, don't touch this
@@ -153,26 +158,7 @@ var handler = function (e) {
         y[i] = showData.touches[i].screenY;
     };
 
-    if (showData.touches.length==1) {
-        if (captureStartScroll) {
-            referenceScrollYPos="";
-            multimediaScrollYReferencePos="";
-            multimediaScrollYReferencePos=$(".albumOverview").css('top');
-            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
-            referenceScrollYPos=showData.touches[0].screenY;
-            captureStartScroll=false;
-        }
-        if (scrollingEvent) {
-            currentScrollYPos=showData.touches[0].screenY;
-            resultingScroll=currentScrollYPos-referenceScrollYPos;
-            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
-            updateScroll=true;
-        }
-        if (touchEvent) {
-            var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-        }
-
-    } /*
+    /*
     
     --- this part is only relevant, if tangible item and scrolling
     --- interaction should be available at the same time
@@ -194,7 +180,7 @@ var handler = function (e) {
             updateScroll=true;
             console.log("scrolling!");
         }
-    }*/ else if (showData.touches.length==0) {
+    }else */ if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
         if (lastScrollYSpeed<-50) {
@@ -217,6 +203,8 @@ var handler = function (e) {
         } 
 
         if (tangible) {
+
+            readyForTouch = false;
 
             // determine two points for rotation calculation
             var p1 = {
@@ -344,11 +332,14 @@ var handler = function (e) {
                 navigationArea=true;
             }
         }
-
     } else {
     	// reset tangible item recognition if not enough points are available
         tangible=false;
         initAngle = true;
+        window.setTimeout(
+            function() {
+                readyForTouch = true;
+        }, 250);
     }
 
     $("#currentAreaTitle").css("opacity", 1.0);
@@ -433,6 +424,44 @@ var handler = function (e) {
         $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
         $(".temperatureView").removeClass("visible");
     }
+
+    if (showData.touches.length==1) {
+        if (captureStartScroll) {
+            referenceScrollYPos="";
+            multimediaScrollYReferencePos="";
+            multimediaScrollYReferencePos=$(".albumOverview").css('top');
+            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
+            referenceScrollYPos=showData.touches[0].screenY;
+            captureStartScroll=false;
+        }
+        if (scrollingEvent) {
+            currentScrollYPos=showData.touches[0].screenY;
+            resultingScroll=currentScrollYPos-referenceScrollYPos;
+            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+            updateScroll=true;
+        }
+        if (touchEvent && readyForTouch) {
+            var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
+            if (klimaLeftZone) {
+                if (menuLeftOpen) {
+                    console.log("close menu left!");
+                    menuLeftOpen = false;
+                } else {
+                    console.log("open menu left!");
+                    menuLeftOpen = true;
+                }
+            } else if (klimaRightZone) {
+                if (menuRightOpen) {
+                    console.log("close menu right!");
+                    menuRightOpen = false;
+                } else {
+                    console.log("open menu right!");
+                    menuRightOpen = true;
+                }
+            }
+        }
+
+    } 
 
     // event reseting, don't touch this
     if (last_original_event != e.originalType) {
