@@ -7,6 +7,14 @@ var centerX;
 var centerY;
 
 var initAngle = true;
+var initPos = true;
+
+var gestureSuccess = false;
+
+var posStart = [2];
+var menuActivePoint;
+var menuStep = 25;
+var rotationMultiplier;
 
 var leftColdMeter;
 var leftHotMeter;
@@ -119,7 +127,26 @@ function checkElementForTouch (elem, parent, count, x, y) {
     }
 }
 
-
+function tangibleGestureHandler (currentY, startY, distance) {
+    if (gestureSuccess != true) {
+        if (currentY > startY + distance) {
+            gestureSuccess = true;
+            console.log(gestureSuccess);
+            return gestureSuccess;
+        }
+    }
+}
+/*
+function temperatureMenuHandler (angle) {
+    if (angle >= 20) {
+        menuActivePoint++;
+        angle = 0;
+    } else if (angle <= -20) {
+        menuActivePoint--;
+        angle = 0;
+    }
+}
+*/
 
 // initialize area for jquery.touch
 $("#test-area").touchInit();
@@ -157,6 +184,8 @@ var handler = function (e) {
         x[i] = showData.touches[i].screenX;
         y[i] = showData.touches[i].screenY;
     };
+
+    
 
     /*
     
@@ -225,24 +254,78 @@ var handler = function (e) {
                 initAngle = false;
             }
 
+            // determine center x and y position of tangible item
+            centerX = (x[0]+x[1]+x[2]+x[3])/4;
+            centerY = (y[0]+y[1]+y[2]+y[3])/4;
+
+            if (initPos) {
+                posStart = [centerX, centerY];
+                //console.log(posStart);
+                initPos = false;
+            }
+
+ 
             // calculate & round resulting rotation angle
             currentRotationAngle = Math.round(angleDeg - angleStart);
 
             if (klimaArea) {
                 if (klimaLeftZone) {
-                    if (currentRotationAngle>lastRotationAngle) {
-                        temperatureLeftZoneOutput+=rotationStep;
-                    } else if (currentRotationAngle<lastRotationAngle) {
-                        temperatureLeftZoneOutput-=rotationStep;
-                    }
-                    temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                    if (menuLeftOpen!=true) {
+                        if (currentRotationAngle>lastRotationAngle) {
+                            temperatureLeftZoneOutput+=rotationStep;
+                        } else if (currentRotationAngle<lastRotationAngle) {
+                            temperatureLeftZoneOutput-=rotationStep;
+                        }
+                        temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                    } else if (menuLeftOpen) {
+                        //console.log(currentRotationAngle)
+                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
+                            rotationMultiplier+=1;
+                            menuActivePoint+=1;
+                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
+                            rotationMultiplier-=1;
+                            menuActivePoint-=1;
+                        }
+                        //console.log(menuActivePoint);
+                        //console.log(-menuStep + menuStep * (rotationMultiplier-1));
+                        //console.log("climate change not available due to open menu");
+                        if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+                            menuLeftOpen = false;
+                            $(".temperatureMenu").css("opacity", 0.0);
+                        }
+                        if (menuActivePoint>1) {
+                            menuActivePoint=1;
+                        } else if (menuActivePoint<-1) {
+                            menuActivePoint=-1;
+                        }
+                        if (menuActivePoint==0) {
+                            $(".temperatureMenu").css("left", "-128px");
+                            $("#point1").css("opacity", 0.5);
+                            $("#point2").css("opacity", 1);
+                            $("#point3").css("opacity", 0.5);
+                        } else if (menuActivePoint==1) {
+                            $(".temperatureMenu").css("left", "64px");
+                            $("#point1").css("opacity", 1);
+                            $("#point2").css("opacity", 0.5);
+                            $("#point3").css("opacity", 0);
+                        } else if (menuActivePoint==-1) {
+                            $(".temperatureMenu").css("left", "-320px");
+                            $("#point1").css("opacity", 0.5);
+                            $("#point2").css("opacity", 0.5);
+                            $("#point3").css("opacity", 1);
+                        }
+                    } 
                 } else if (klimaRightZone) {
-                    if (currentRotationAngle>lastRotationAngle) {
-                        temperatureRightZoneOutput+=rotationStep;
-                    } else if (currentRotationAngle<lastRotationAngle) {
-                        temperatureRightZoneOutput-=rotationStep;
+                    if (menuRightOpen!=true) {
+                       if (currentRotationAngle>lastRotationAngle) {
+                            temperatureRightZoneOutput+=rotationStep;
+                        } else if (currentRotationAngle<lastRotationAngle) {
+                            temperatureRightZoneOutput-=rotationStep;
+                        }
+                        temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
+                    } else {
+                        //console.log("climate change not available due to open menu");
                     }
-                    temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1);
                 }
                 if (temperatureLeftZoneOutput > tempMax) {
                     temperatureLeftZoneOutput = tempMax;
@@ -256,9 +339,8 @@ var handler = function (e) {
                 }
             }
 
-            // determine center x and y position of tangible item
-            centerX = (x[0]+x[1]+x[2]+x[3])/4;
-            centerY = (y[0]+y[1]+y[2]+y[3])/4;
+
+            //tangibleGestureHandler(centerY, posStart[1], 50);
 
             // trigger panels based on x coordinates of tangible item
             if (centerX<256) {
@@ -336,6 +418,7 @@ var handler = function (e) {
     	// reset tangible item recognition if not enough points are available
         tangible=false;
         initAngle = true;
+        initPos = true;
         window.setTimeout(
             function() {
                 readyForTouch = true;
@@ -382,16 +465,19 @@ var handler = function (e) {
                 $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
             }
         //}
-        if (klimaLeftZone) {
-            $("#leftTemperatureZone").css("opacity", 1.0);
-            $("#rightTemperatureZone").css("opacity", 0.5);
-        } else if (klimaRightZone) {
-            $("#leftTemperatureZone").css("opacity", 0.5);
-            $("#rightTemperatureZone").css("opacity", 1.0);
-        } else {
-            $("#leftTemperatureZone").css("opacity", 0.5);
-            $("#rightTemperatureZone").css("opacity", 0.5);
+        if (menuLeftOpen!=true) {
+            if (klimaLeftZone) {
+                $("#leftTemperatureZone").css("opacity", 1.0);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            } else if (klimaRightZone) {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 1.0);
+            } else {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            }
         }
+        
         $(".temperatureView").addClass("visible");
         $(".albumOverview").removeClass("albumOverviewActive");
         $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
@@ -440,28 +526,42 @@ var handler = function (e) {
             multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
             updateScroll=true;
         }
-        if (touchEvent && readyForTouch) {
+        if (touchEvent) {
             var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-            if (klimaLeftZone) {
-                if (menuLeftOpen) {
-                    console.log("close menu left!");
-                    menuLeftOpen = false;
-                } else {
+            console.log(clickedAlbum);
+            /*if (klimaLeftZone) {
+                if (menuLeftOpen != true) {
                     console.log("open menu left!");
                     menuLeftOpen = true;
+                    menuActivePoint = 0;
+                    $(".temperatureMenu").css("opacity", 1.0);
                 }
             } else if (klimaRightZone) {
-                if (menuRightOpen) {
-                    console.log("close menu right!");
-                    menuRightOpen = false;
-                } else {
+                if (menuRightOpen != true) {
                     console.log("open menu right!");
                     menuRightOpen = true;
                 }
-            }
+            }*/
         }
 
     } 
+
+    if (showData.touches.length==5) {
+        if (klimaLeftZone) {
+            if (menuLeftOpen != true) {
+                console.log("open menu left!");
+                menuLeftOpen = true;
+                menuActivePoint = 0;
+                $(".temperatureMenu").css("opacity", 1.0);
+                $("#leftTemperatureZone").css("opacity", 0.0);
+            }
+        } else if (klimaRightZone) {
+            if (menuRightOpen != true) {
+                console.log("open menu right!");
+                menuRightOpen = true;
+            }
+        }
+    }
 
     // event reseting, don't touch this
     if (last_original_event != e.originalType) {
@@ -479,6 +579,8 @@ var handler = function (e) {
 // execute functions
 $("#test-area").on("touch_start", function(event) {
     handler(event);
+    gestureSuccess = false;
+    rotationMultiplier = 1;
 });
 
 $("#test-area").on("touch_move", function(event){
@@ -525,7 +627,6 @@ setInterval(function() {
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
 },25);
-
 
 
 
