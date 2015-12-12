@@ -13,8 +13,14 @@ body {
 
 h1 {
     font-family: Helvetica Neue;
-    font-size: 30px;
-    font-weight: 200;
+    font-size: 34px;
+    font-weight: 300;
+}
+
+h2 {
+    font-family: Helvetica Neue;
+    font-size: 22px;
+    font-weight: 300;
 }
 
 
@@ -27,29 +33,90 @@ h1 {
 }
 
 .showTemperature {
-    opacity: 0.0;
     position: absolute;
     top: 200px;
+    -webkit-transition: opacity 0.5s;
 }
 
 .showTemperature > h1 {
     text-align: center;
+    font-size: 60px;
+    font-weight: 200;
 }
 
 #leftTemperatureZone {
-    left: 130px;
+    left: 102px;
 }
 #rightTemperatureZone {
-    left: 550px;
+    left: 556px;
 }
 
-.showTemperatureVisible {
+.temperatureUnit {
+    position: absolute;
+    top: 700px;
+    width: 120px;
+    text-align: center;
+    opacity: 0.3;
+}
+
+.temperatureUnit.left {
+    left: 102px;
+}
+.temperatureUnit.right {
+    left: 556px;
+}
+
+.temperatureIndicator {
+    width: 130px;
+    height: 130px;
+    margin-left: -65px;
+    margin-top: -65px;
+    border-radius: 50%;
+    border-style: solid;
+    border-color: rgb(255,255,255);
+    border-width: 2px;
+    -webkit-transition: opacity 0.25s, width 0.5s, height 0.5s, margin-left 0.5s, margin-top 0.5s;
+    opacity: 0.3;
+    position: absolute;
+}
+
+.temperatureIndicator > .center {
+    margin-top: 50px;
+    -webkit-transition: opacity 0.25s, margin-top 0.5s;
+}
+
+.temperatureIndicatorActive > .center {
+    margin-top: 115px;
+}
+
+.temperatureIndicatorActive {
+    width: 260px;
+    height: 260px;
+    margin-left: -130px;
+    margin-top: -130px;
     opacity: 1.0;
 }
 
+#centerTempIndicator {
+    top: 512px;
+    left: 384px;
+}
+
+#leftTempIndicator {
+    top: 512px;
+    left: 160px;
+}
+
+#rightTempIndicator {
+    top: 512px;
+    left: 609px;
+}
+
+
+
 .leftTemperatureViz {
     height: 1024px;
-    width: 600px;
+    width: 768px;
     position: absolute;
     top: 0px;
     background-size: 100%;
@@ -57,31 +124,89 @@ h1 {
 
 .rightTemperatureViz {
     height: 1024px;
-    width: 600px;
+    width: 768px;
     position: absolute;
     top: 0px;
-    left: 168px;
     background-size: 100%;
 }
 
+
+
 #leftTemperatureCold {
-    background-image: url(img/coldOverlayLeft.png);
+    background-image: url(img/cold-left.png);
     opacity: 0;
 }
 
 #leftTemperatureHot {
-    background-image: url(img/hotOverlayLeft.png);
+    background-image: url(img/hot-left.png);
     opacity: 0;
 }
 
 #rightTemperatureCold {
-    background-image: url(img/coldOverlayRight.png);
+    background-image: url(img/cold-right.png);
     opacity: 0;
 }
 
 #rightTemperatureHot {
-    background-image: url(img/hotOverlayRight.png);
+    background-image: url(img/hot-right.png);
     opacity: 0;
+}
+
+.connectingLine {
+    height: 2px;
+    top: 512px;
+    position: absolute;
+    background-color: #fff;
+    opacity: 0.3;
+    -webkit-transition: width 0.5s, height 0.5s, left 0.5s, top 0.5s;
+}
+
+.leftConnectingLine {
+    left: 229px;
+    width: 90px;
+}
+
+.leftCLeftNodeActive {
+    left: 292px;
+    width: 27px;
+}
+.leftCCenterNodeActive {
+    left: 229px;
+    width: 27px;
+}
+
+.rightConnectingLine {
+    left: 453px;
+    width: 91px;
+}
+.rightCRightNodeActive {
+    left: 453px;
+    width: 27px;
+}
+.rightCCenterNodeActive {
+    left: 517px;
+    width: 27px;
+}
+
+.upConnectingLine {
+    left: 383px;
+    height: 90px;
+    width: 2px;
+    top: 357px;
+    background: -webkit-linear-gradient(rgba(255,255,255,0), rgba(255,255,255,1));
+}
+.upConnectingLineActive {
+    top: 292px;
+}
+.downConnectingLine {
+    left: 383px;
+    height: 90px;
+    width: 2px;
+    top: 581px;
+    background: -webkit-linear-gradient(rgba(255,255,255,1), rgba(255,255,255,0));
+}
+.downConnectingLineActive {
+    top: 645px;
 }
 
 #test-area {
@@ -128,14 +253,16 @@ h1 {
     background-color: green;
 }
 
+
+/* background colors for specific areas, if needed */
 .area1 {
-    background-color: #0d242b;
+    background-color: #000;
 }
 .area2 {
-    background-color: #14151a;
+    background-color: #000;
 }
 .area3 {
-    background-color: #261433;
+    background-color: #000;
 }
 
 
@@ -280,7 +407,14 @@ h1 {
 }
 
 
+.temperatureView {
+    opacity: 0.0;
+    -webkit-transition: opacity 0.5s;
+}
 
+.visible {
+    opacity: 1.0;
+}
 
 
 

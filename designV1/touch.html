@@ -13,10 +13,7 @@
 <body>
 	
     <div class="body-area" id="test-area">
-		<div class="leftTemperatureViz" id="leftTemperatureCold"></div>
-		<div class="leftTemperatureViz" id="leftTemperatureHot"></div>
-		<div class="rightTemperatureViz" id="rightTemperatureCold"></div>
-		<div class="rightTemperatureViz" id="rightTemperatureHot"></div>
+
 		<div class="albumOverviewContainer">
 			<div class="albumOverview" id="albumScroll">
 				<div class="singleAlbum" id="album1"></div>
@@ -69,10 +66,39 @@
 				<div class="singleAlbum everyOther lastInRow" id="album48"></div>
 			</div>
 		</div>
-		
 		<div class="albumFadeOutOverlay" id="albumFade"></div>
-		<div class="showTemperature" id="leftTemperatureZone"><h1>20.0°C</h1></div>
-		<div class="showTemperature" id="rightTemperatureZone"><h1>20.0°C</h1></div>
+
+		<div class="temperatureView">
+			<div class="leftTemperatureViz" id="leftTemperatureCold"></div>
+			<div class="leftTemperatureViz" id="leftTemperatureHot"></div>
+			<div class="rightTemperatureViz" id="rightTemperatureCold"></div>
+			<div class="rightTemperatureViz" id="rightTemperatureHot"></div>
+
+			<div class="temperatureIndicator" id="centerTempIndicator">
+				<h2 class="center">Klima</h2>
+			</div>
+			<div class="temperatureIndicator" id="leftTempIndicator">
+				<h2 class="center">Links</h2>
+			</div>
+			<div class="temperatureIndicator" id="rightTempIndicator">
+				<h2 class="center">Rechts</h2>
+			</div>
+
+			<div class="connectingLine rightConnectingLine"></div>
+			<div class="connectingLine leftConnectingLine"></div>
+
+			<div class="connectingLine upConnectingLine"></div>
+			<div class="connectingLine downConnectingLine"></div>
+
+			<div class="showTemperature" id="leftTemperatureZone"><h1>21.5</h1></div>
+			<div class="showTemperature" id="rightTemperatureZone"><h1>21.5</h1></div>
+
+			<div class="temperatureUnit left"><h2>°C</h2></div>
+			<div class="temperatureUnit right"><h2>°C</h2></div>
+		</div>
+
+		
+
 		<div class="currentAreaIndicator standardVisible" id="currentAreaTitle"><h1>Please place the tangible item on the screen.</h1></div>
     </div>
 
