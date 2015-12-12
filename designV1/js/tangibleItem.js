@@ -291,7 +291,7 @@ var handler = function (e) {
                         //console.log("climate change not available due to open menu");
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
                             menuLeftOpen = false;
-                            $(".temperatureMenu").css("opacity", 0.0);
+                            $(".temperatureMenuLeft").css("opacity", 0.0);
                         }
                         if (menuActivePoint>1) {
                             menuActivePoint=1;
@@ -299,20 +299,20 @@ var handler = function (e) {
                             menuActivePoint=-1;
                         }
                         if (menuActivePoint==0) {
-                            $(".temperatureMenu").css("left", "-128px");
-                            $("#point1").css("opacity", 0.5);
-                            $("#point2").css("opacity", 1);
-                            $("#point3").css("opacity", 0.5);
+                            $(".temperatureMenuLeft").css("left", "-128px");
+                            $("#lPoint1").css("opacity", 0.5);
+                            $("#lPoint2").css("opacity", 1);
+                            $("#lPoint3").css("opacity", 0.5);
                         } else if (menuActivePoint==1) {
-                            $(".temperatureMenu").css("left", "64px");
-                            $("#point1").css("opacity", 1);
-                            $("#point2").css("opacity", 0.5);
-                            $("#point3").css("opacity", 0);
+                            $(".temperatureMenuLeft").css("left", "64px");
+                            $("#lPoint1").css("opacity", 1);
+                            $("#lPoint2").css("opacity", 0.5);
+                            $("#lPoint3").css("opacity", 0);
                         } else if (menuActivePoint==-1) {
-                            $(".temperatureMenu").css("left", "-320px");
-                            $("#point1").css("opacity", 0.5);
-                            $("#point2").css("opacity", 0.5);
-                            $("#point3").css("opacity", 1);
+                            $(".temperatureMenuLeft").css("left", "-320px");
+                            $("#lPoint1").css("opacity", 0.5);
+                            $("#lPoint2").css("opacity", 0.5);
+                            $("#lPoint3").css("opacity", 1);
                         }
                     } 
                 } else if (klimaRightZone) {
@@ -323,8 +323,39 @@ var handler = function (e) {
                             temperatureRightZoneOutput-=rotationStep;
                         }
                         temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
-                    } else {
-                        //console.log("climate change not available due to open menu");
+                    } else if (menuRightOpen) {
+                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
+                            rotationMultiplier+=1;
+                            menuActivePoint+=1;
+                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
+                            rotationMultiplier-=1;
+                            menuActivePoint-=1;
+                        }
+                        if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+                            menuRightOpen = false;
+                            $(".temperatureMenuRight").css("opacity", 0.0);
+                        }
+                        if (menuActivePoint>1) {
+                            menuActivePoint=1;
+                        } else if (menuActivePoint<-1) {
+                            menuActivePoint=-1;
+                        }
+                        if (menuActivePoint==0) {
+                            $(".temperatureMenuRight").css("left", "300px");
+                            $("#rPoint1").css("opacity", 0.5);
+                            $("#rPoint2").css("opacity", 1);
+                            $("#rPoint3").css("opacity", 0.5);
+                        } else if (menuActivePoint==1) {
+                            $(".temperatureMenuRight").css("left", "492px");
+                            $("#rPoint1").css("opacity", 1);
+                            $("#rPoint2").css("opacity", 0.5);
+                            $("#rPoint3").css("opacity", 0);
+                        } else if (menuActivePoint==-1) {
+                            $(".temperatureMenuRight").css("left", "108px");
+                            $("#rPoint1").css("opacity", 0.5);
+                            $("#rPoint2").css("opacity", 0.5);
+                            $("#rPoint3").css("opacity", 1);
+                        }
                     }
                 }
                 if (temperatureLeftZoneOutput > tempMax) {
@@ -358,6 +389,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
+
+                $(".temperatureMenuRight").css("opacity", 0.0);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+
             } else if (centerX>512) {
                 klimaLeftZone=false;
                 klimaRightZone=true;
@@ -373,6 +408,9 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
+
+                $(".temperatureMenuLeft").css("opacity", 0.0);
+                $("#leftTemperatureZone").css("opacity", 0.5);
             } else {
                 klimaLeftZone=false;
                 klimaRightZone=false;
@@ -388,6 +426,12 @@ var handler = function (e) {
 
                 $(".downConnectingLine").addClass("downConnectingLineActive");
                 $(".upConnectingLine").addClass("upConnectingLineActive");
+
+                $(".temperatureMenuLeft").css("opacity", 0.0);
+                $(".temperatureMenuRight").css("opacity", 0.0);
+
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 0.5);
             }
 
             // trigger areas based on y coordinates of tangible item
@@ -465,7 +509,7 @@ var handler = function (e) {
                 $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
             }
         //}
-        if (menuLeftOpen!=true) {
+        if (menuLeftOpen!=true && menuRightOpen!=true) {
             if (klimaLeftZone) {
                 $("#leftTemperatureZone").css("opacity", 1.0);
                 $("#rightTemperatureZone").css("opacity", 0.5);
@@ -551,14 +595,19 @@ var handler = function (e) {
             if (menuLeftOpen != true) {
                 console.log("open menu left!");
                 menuLeftOpen = true;
+                menuRightOpen = false;
                 menuActivePoint = 0;
-                $(".temperatureMenu").css("opacity", 1.0);
+                $(".temperatureMenuLeft").css("opacity", 1.0);
                 $("#leftTemperatureZone").css("opacity", 0.0);
             }
         } else if (klimaRightZone) {
             if (menuRightOpen != true) {
                 console.log("open menu right!");
+                menuLeftOpen = false;
                 menuRightOpen = true;
+                menuActivePoint = 0;
+                $(".temperatureMenuRight").css("opacity", 1.0);
+                $("#rightTemperatureZone").css("opacity", 0.0);
             }
         }
     }

@@ -9,6 +9,12 @@ body {
     background-color: black;
     -webkit-transition: all 1s;
     z-index: 999;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 768px;
+    height: 1024px;
 }
 
 h1 {
@@ -133,11 +139,18 @@ h2 {
 .temperatureMenu {
     width: 576px;
     height: 128px;
-    left: -128px;
     top: 200px;
     position: absolute;
     opacity: 0.0;
     -webkit-transition: left 0.5s, opacity 0.5s;
+}
+
+.temperatureMenuLeft {
+    left: -128px;
+}
+
+.temperatureMenuRight {
+    left: 300px;
 }
 
 .temperatureMenuPoint {
