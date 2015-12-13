@@ -105,11 +105,7 @@ function scrollHandler () {
         lastScrollYSpeed*=0.95;
         multimediaScrollYPos+=(lastScrollYSpeed);
     }
-    if (multimediaScrollYPos>100) {
-    	multimediaScrollYPos=100;
-    } else if (multimediaScrollYPos<-1750) {
-    	multimediaScrollYPos=-1750;
-    }
+    multimediaScrollYPos = Math.min(Math.max(parseInt(multimediaScrollYPos), -1750), 100);
     $(".albumOverview").css("top", multimediaScrollYPos);
 }
 
@@ -131,18 +127,39 @@ function tangibleGestureHandler (currentY, startY, distance) {
     if (gestureSuccess != true) {
         if (currentY > startY + distance) {
             gestureSuccess = true;
-            console.log(gestureSuccess);
             return gestureSuccess;
         }
     }
 }
 
+function closeMenu (side) {
+    switch(side) {
+        case "L":
+            menuLeftOpen=false;
+            break;
+        case "R":
+            menuRightOpen=false;
+            break;
+    }
+    $(".temperatureMenu" + side).css("opacity", 0.0);
+}
+
+function fadeMenuPoints (side, active) {
+    for (var i = -1; i < 2; i++) {
+        if (i == active) {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 1.0);
+        } else {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.5);
+        }
+    }
+}
+
 function tangibleMenuHandler (angle, side, center, step) {
-    if (angle == (menuStep * rotationMultiplier)) {
-        rotationMultiplier++;
+    if (angle == (menuStep * menuActivePoint)) {
+        //rotationMultiplier++;
         menuActivePoint++;
-    } else if (angle == (-menuStep + menuStep* (rotationMultiplier-1))) {
-        rotationMultiplier--;
+    } else if (angle == (-menuStep + menuStep* (menuActivePoint-1))) {
+        //rotationMultiplier--;
         menuActivePoint--;
     }
     menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
@@ -164,25 +181,6 @@ function tangibleMenuHandler (angle, side, center, step) {
 // ---------------------------------------------------------------------------
 // SIDE MUST BE IN CAPS!!!
 // ---------------------------------------------------------------------------
-
-function fadeMenuPoints (side, active) {
-    for (var i = -1; i < 2; i++) {
-        if (i == active) {
-            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 1.0);
-        } else {
-            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.5);
-        }
-    }
-}
-
-// ---------------------------------------------------------------------------
-// Don't know how to do this yet
-// ---------------------------------------------------------------------------
-/*if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
-    menuLeftOpen = false;
-    $(".temperatureMenuL").css("opacity", 0.0);
-}
-*/
 
 // initialize area for jquery.touch
 $("#test-area").touchInit();
@@ -248,11 +246,12 @@ var handler = function (e) {
     }else */ if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-        if (lastScrollYSpeed<-50) {
+        /*if (lastScrollYSpeed<-50) {
             lastScrollYSpeed=-50;
         } else if (lastScrollYSpeed>50) {
             lastScrollYSpeed=50;
-        }
+        }*/
+        lastScrollYSpeed = Math.min(Math.max(parseInt(lastScrollYSpeed), -50), 50);
         updateScroll=false;
     } else if (showData.touches.length > 3) {
 
@@ -316,39 +315,9 @@ var handler = function (e) {
                     } else if (menuLeftOpen) {
                         $(".temperatureMenuL").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "L", -128, 192);
-                        /*//console.log(currentRotationAngle)
-                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
-                            rotationMultiplier+=1;
-                            menuActivePoint+=1;
-                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
-                            rotationMultiplier-=1;
-                            menuActivePoint-=1;
-                        }
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
-                            menuLeftOpen = false;
-                            $(".temperatureMenuLeft").css("opacity", 0.0);
+                            closeMenu("L");
                         }
-                        if (menuActivePoint>1) {
-                            menuActivePoint=1;
-                        } else if (menuActivePoint<-1) {
-                            menuActivePoint=-1;
-                        }
-                        if (menuActivePoint==0) {
-                            $(".temperatureMenuLeft").css("left", "-128px");
-                            $("#lPoint1").css("opacity", 0.5);
-                            $("#lPoint2").css("opacity", 1);
-                            $("#lPoint3").css("opacity", 0.5);
-                        } else if (menuActivePoint==1) {
-                            $(".temperatureMenuLeft").css("left", "64px");
-                            $("#lPoint1").css("opacity", 1);
-                            $("#lPoint2").css("opacity", 0.5);
-                            $("#lPoint3").css("opacity", 0);
-                        } else if (menuActivePoint==-1) {
-                            $(".temperatureMenuLeft").css("left", "-320px");
-                            $("#lPoint1").css("opacity", 0.5);
-                            $("#lPoint2").css("opacity", 0.5);
-                            $("#lPoint3").css("opacity", 1);
-                        }*/
                     } 
                 } else if (klimaRightZone) {
                     if (menuRightOpen!=true) {
@@ -361,38 +330,9 @@ var handler = function (e) {
                     } else if (menuRightOpen) {
                         $(".temperatureMenuR").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "R", 320, 192);
-                        /*if (currentRotationAngle == (menuStep * rotationMultiplier)) {
-                            rotationMultiplier+=1;
-                            menuActivePoint+=1;
-                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
-                            rotationMultiplier-=1;
-                            menuActivePoint-=1;
-                        }
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
-                            menuRightOpen = false;
-                            $(".temperatureMenuRight").css("opacity", 0.0);
+                            closeMenu("R");
                         }
-                        if (menuActivePoint>1) {
-                            menuActivePoint=1;
-                        } else if (menuActivePoint<-1) {
-                            menuActivePoint=-1;
-                        }
-                        if (menuActivePoint==0) {
-                            $(".temperatureMenuRight").css("left", "300px");
-                            $("#rPoint1").css("opacity", 0.5);
-                            $("#rPoint2").css("opacity", 1);
-                            $("#rPoint3").css("opacity", 0.5);
-                        } else if (menuActivePoint==1) {
-                            $(".temperatureMenuRight").css("left", "492px");
-                            $("#rPoint1").css("opacity", 1);
-                            $("#rPoint2").css("opacity", 0.5);
-                            $("#rPoint3").css("opacity", 0);
-                        } else if (menuActivePoint==-1) {
-                            $(".temperatureMenuRight").css("left", "108px");
-                            $("#rPoint1").css("opacity", 0.5);
-                            $("#rPoint2").css("opacity", 0.5);
-                            $("#rPoint3").css("opacity", 1);
-                        }*/
                     }
                 }
                 if (temperatureLeftZoneOutput > tempMax) {
@@ -427,7 +367,6 @@ var handler = function (e) {
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
 
-                $(".temperatureMenuRight").css("opacity", 0.0);
                 $("#rightTemperatureZone").css("opacity", 0.5);
 
             } else if (centerX>512) {
@@ -446,7 +385,6 @@ var handler = function (e) {
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
 
-                $(".temperatureMenuLeft").css("opacity", 0.0);
                 $("#leftTemperatureZone").css("opacity", 0.5);
             } else {
                 klimaLeftZone=false;
@@ -463,9 +401,6 @@ var handler = function (e) {
 
                 $(".downConnectingLine").addClass("downConnectingLineActive");
                 $(".upConnectingLine").addClass("upConnectingLineActive");
-
-                $(".temperatureMenuLeft").css("opacity", 0.0);
-                $(".temperatureMenuRight").css("opacity", 0.0);
 
                 $("#leftTemperatureZone").css("opacity", 0.5);
                 $("#rightTemperatureZone").css("opacity", 0.5);
@@ -650,7 +585,7 @@ var handler = function (e) {
     }
 
     // event reseting, don't touch this
-    if (last_original_event != e.originalType) {
+    /*if (last_original_event != e.originalType) {
         last_original_event = e.originalType;
         $("#original-event").html(e.originalType + "<br/>" + $("#original-event").html());
         if (timeout_id !== null) window.clearTimeout(timeout_id);
@@ -659,7 +594,7 @@ var handler = function (e) {
                 $("#original-event").html("");
             },
         5000);
-    }
+    }*/
 };
 
 // execute functions
