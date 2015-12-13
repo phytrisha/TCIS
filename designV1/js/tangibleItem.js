@@ -7,6 +7,14 @@ var centerX;
 var centerY;
 
 var initAngle = true;
+var initPos = true;
+
+var gestureSuccess = false;
+
+var posStart = [2];
+var menuActivePoint;
+var menuStep = 20;
+var rotationMultiplier;
 
 var leftColdMeter;
 var leftHotMeter;
@@ -62,6 +70,11 @@ var rotationStep = 0.02;
 var leftBorder = [2];
 var rightBorder = [2];
 
+var readyForTouch = false;
+
+var menuLeftOpen = false;
+var menuRightOpen = false;
+
 
 
 // crazy json shit, don't touch this
@@ -114,7 +127,26 @@ function checkElementForTouch (elem, parent, count, x, y) {
     }
 }
 
-
+function tangibleGestureHandler (currentY, startY, distance) {
+    if (gestureSuccess != true) {
+        if (currentY > startY + distance) {
+            gestureSuccess = true;
+            console.log(gestureSuccess);
+            return gestureSuccess;
+        }
+    }
+}
+/*
+function temperatureMenuHandler (angle) {
+    if (angle >= 20) {
+        menuActivePoint++;
+        angle = 0;
+    } else if (angle <= -20) {
+        menuActivePoint--;
+        angle = 0;
+    }
+}
+*/
 
 // initialize area for jquery.touch
 $("#test-area").touchInit();
@@ -153,26 +185,9 @@ var handler = function (e) {
         y[i] = showData.touches[i].screenY;
     };
 
-    if (showData.touches.length==1) {
-        if (captureStartScroll) {
-            referenceScrollYPos="";
-            multimediaScrollYReferencePos="";
-            multimediaScrollYReferencePos=$(".albumOverview").css('top');
-            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
-            referenceScrollYPos=showData.touches[0].screenY;
-            captureStartScroll=false;
-        }
-        if (scrollingEvent) {
-            currentScrollYPos=showData.touches[0].screenY;
-            resultingScroll=currentScrollYPos-referenceScrollYPos;
-            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
-            updateScroll=true;
-        }
-        if (touchEvent) {
-            var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-        }
+    
 
-    } /*
+    /*
     
     --- this part is only relevant, if tangible item and scrolling
     --- interaction should be available at the same time
@@ -194,7 +209,7 @@ var handler = function (e) {
             updateScroll=true;
             console.log("scrolling!");
         }
-    }*/ else if (showData.touches.length==0) {
+    }else */ if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
         if (lastScrollYSpeed<-50) {
@@ -218,6 +233,8 @@ var handler = function (e) {
 
         if (tangible) {
 
+            readyForTouch = false;
+
             // determine two points for rotation calculation
             var p1 = {
                 x: x[0],
@@ -237,24 +254,106 @@ var handler = function (e) {
                 initAngle = false;
             }
 
+            // determine center x and y position of tangible item
+            centerX = (x[0]+x[1]+x[2]+x[3])/4;
+            centerY = (y[0]+y[1]+y[2]+y[3])/4;
+
+            if (initPos) {
+                posStart = [centerX, centerY];
+                //console.log(posStart);
+                initPos = false;
+            }
+
+ 
             // calculate & round resulting rotation angle
             currentRotationAngle = Math.round(angleDeg - angleStart);
 
             if (klimaArea) {
                 if (klimaLeftZone) {
-                    if (currentRotationAngle>lastRotationAngle) {
-                        temperatureLeftZoneOutput+=rotationStep;
-                    } else if (currentRotationAngle<lastRotationAngle) {
-                        temperatureLeftZoneOutput-=rotationStep;
-                    }
-                    temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                    if (menuLeftOpen!=true) {
+                        if (currentRotationAngle>lastRotationAngle) {
+                            temperatureLeftZoneOutput+=rotationStep;
+                        } else if (currentRotationAngle<lastRotationAngle) {
+                            temperatureLeftZoneOutput-=rotationStep;
+                        }
+                        temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                    } else if (menuLeftOpen) {
+                        //console.log(currentRotationAngle)
+                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
+                            rotationMultiplier+=1;
+                            menuActivePoint+=1;
+                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
+                            rotationMultiplier-=1;
+                            menuActivePoint-=1;
+                        }
+                        if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+                            menuLeftOpen = false;
+                            $(".temperatureMenuLeft").css("opacity", 0.0);
+                        }
+                        if (menuActivePoint>1) {
+                            menuActivePoint=1;
+                        } else if (menuActivePoint<-1) {
+                            menuActivePoint=-1;
+                        }
+                        if (menuActivePoint==0) {
+                            $(".temperatureMenuLeft").css("left", "-128px");
+                            $("#lPoint1").css("opacity", 0.5);
+                            $("#lPoint2").css("opacity", 1);
+                            $("#lPoint3").css("opacity", 0.5);
+                        } else if (menuActivePoint==1) {
+                            $(".temperatureMenuLeft").css("left", "64px");
+                            $("#lPoint1").css("opacity", 1);
+                            $("#lPoint2").css("opacity", 0.5);
+                            $("#lPoint3").css("opacity", 0);
+                        } else if (menuActivePoint==-1) {
+                            $(".temperatureMenuLeft").css("left", "-320px");
+                            $("#lPoint1").css("opacity", 0.5);
+                            $("#lPoint2").css("opacity", 0.5);
+                            $("#lPoint3").css("opacity", 1);
+                        }
+                    } 
                 } else if (klimaRightZone) {
-                    if (currentRotationAngle>lastRotationAngle) {
-                        temperatureRightZoneOutput+=rotationStep;
-                    } else if (currentRotationAngle<lastRotationAngle) {
-                        temperatureRightZoneOutput-=rotationStep;
+                    if (menuRightOpen!=true) {
+                       if (currentRotationAngle>lastRotationAngle) {
+                            temperatureRightZoneOutput+=rotationStep;
+                        } else if (currentRotationAngle<lastRotationAngle) {
+                            temperatureRightZoneOutput-=rotationStep;
+                        }
+                        temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
+                    } else if (menuRightOpen) {
+                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
+                            rotationMultiplier+=1;
+                            menuActivePoint+=1;
+                        } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
+                            rotationMultiplier-=1;
+                            menuActivePoint-=1;
+                        }
+                        if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+                            menuRightOpen = false;
+                            $(".temperatureMenuRight").css("opacity", 0.0);
+                        }
+                        if (menuActivePoint>1) {
+                            menuActivePoint=1;
+                        } else if (menuActivePoint<-1) {
+                            menuActivePoint=-1;
+                        }
+                        if (menuActivePoint==0) {
+                            $(".temperatureMenuRight").css("left", "300px");
+                            $("#rPoint1").css("opacity", 0.5);
+                            $("#rPoint2").css("opacity", 1);
+                            $("#rPoint3").css("opacity", 0.5);
+                        } else if (menuActivePoint==1) {
+                            $(".temperatureMenuRight").css("left", "492px");
+                            $("#rPoint1").css("opacity", 1);
+                            $("#rPoint2").css("opacity", 0.5);
+                            $("#rPoint3").css("opacity", 0);
+                        } else if (menuActivePoint==-1) {
+                            $(".temperatureMenuRight").css("left", "108px");
+                            $("#rPoint1").css("opacity", 0.5);
+                            $("#rPoint2").css("opacity", 0.5);
+                            $("#rPoint3").css("opacity", 1);
+                        }
                     }
-                    temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1);
                 }
                 if (temperatureLeftZoneOutput > tempMax) {
                     temperatureLeftZoneOutput = tempMax;
@@ -268,9 +367,8 @@ var handler = function (e) {
                 }
             }
 
-            // determine center x and y position of tangible item
-            centerX = (x[0]+x[1]+x[2]+x[3])/4;
-            centerY = (y[0]+y[1]+y[2]+y[3])/4;
+
+            //tangibleGestureHandler(centerY, posStart[1], 50);
 
             // trigger panels based on x coordinates of tangible item
             if (centerX<256) {
@@ -288,6 +386,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
+
+                $(".temperatureMenuRight").css("opacity", 0.0);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+
             } else if (centerX>512) {
                 klimaLeftZone=false;
                 klimaRightZone=true;
@@ -303,6 +405,9 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
+
+                $(".temperatureMenuLeft").css("opacity", 0.0);
+                $("#leftTemperatureZone").css("opacity", 0.5);
             } else {
                 klimaLeftZone=false;
                 klimaRightZone=false;
@@ -318,6 +423,12 @@ var handler = function (e) {
 
                 $(".downConnectingLine").addClass("downConnectingLineActive");
                 $(".upConnectingLine").addClass("upConnectingLineActive");
+
+                $(".temperatureMenuLeft").css("opacity", 0.0);
+                $(".temperatureMenuRight").css("opacity", 0.0);
+
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 0.5);
             }
 
             // trigger areas based on y coordinates of tangible item
@@ -344,11 +455,15 @@ var handler = function (e) {
                 navigationArea=true;
             }
         }
-
     } else {
     	// reset tangible item recognition if not enough points are available
         tangible=false;
         initAngle = true;
+        initPos = true;
+        window.setTimeout(
+            function() {
+                readyForTouch = true;
+        }, 250);
     }
 
     $("#currentAreaTitle").css("opacity", 1.0);
@@ -391,16 +506,19 @@ var handler = function (e) {
                 $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
             }
         //}
-        if (klimaLeftZone) {
-            $("#leftTemperatureZone").css("opacity", 1.0);
-            $("#rightTemperatureZone").css("opacity", 0.5);
-        } else if (klimaRightZone) {
-            $("#leftTemperatureZone").css("opacity", 0.5);
-            $("#rightTemperatureZone").css("opacity", 1.0);
-        } else {
-            $("#leftTemperatureZone").css("opacity", 0.5);
-            $("#rightTemperatureZone").css("opacity", 0.5);
+        if (menuLeftOpen!=true && menuRightOpen!=true) {
+            if (klimaLeftZone) {
+                $("#leftTemperatureZone").css("opacity", 1.0);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            } else if (klimaRightZone) {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 1.0);
+            } else {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            }
         }
+        
         $(".temperatureView").addClass("visible");
         $(".albumOverview").removeClass("albumOverviewActive");
         $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
@@ -434,6 +552,63 @@ var handler = function (e) {
         $(".temperatureView").removeClass("visible");
     }
 
+    if (showData.touches.length==1) {
+        if (captureStartScroll) {
+            referenceScrollYPos="";
+            multimediaScrollYReferencePos="";
+            multimediaScrollYReferencePos=$(".albumOverview").css('top');
+            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
+            referenceScrollYPos=showData.touches[0].screenY;
+            captureStartScroll=false;
+        }
+        if (scrollingEvent) {
+            currentScrollYPos=showData.touches[0].screenY;
+            resultingScroll=currentScrollYPos-referenceScrollYPos;
+            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+            updateScroll=true;
+        }
+        if (touchEvent) {
+            var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
+            console.log(clickedAlbum);
+            /*if (klimaLeftZone) {
+                if (menuLeftOpen != true) {
+                    console.log("open menu left!");
+                    menuLeftOpen = true;
+                    menuActivePoint = 0;
+                    $(".temperatureMenu").css("opacity", 1.0);
+                }
+            } else if (klimaRightZone) {
+                if (menuRightOpen != true) {
+                    console.log("open menu right!");
+                    menuRightOpen = true;
+                }
+            }*/
+        }
+
+    } 
+
+    if (showData.touches.length==5) {
+        if (klimaLeftZone) {
+            if (menuLeftOpen != true) {
+                console.log("open menu left!");
+                menuLeftOpen = true;
+                menuRightOpen = false;
+                menuActivePoint = 0;
+                $(".temperatureMenuLeft").css("opacity", 1.0);
+                $("#leftTemperatureZone").css("opacity", 0.0);
+            }
+        } else if (klimaRightZone) {
+            if (menuRightOpen != true) {
+                console.log("open menu right!");
+                menuLeftOpen = false;
+                menuRightOpen = true;
+                menuActivePoint = 0;
+                $(".temperatureMenuRight").css("opacity", 1.0);
+                $("#rightTemperatureZone").css("opacity", 0.0);
+            }
+        }
+    }
+
     // event reseting, don't touch this
     if (last_original_event != e.originalType) {
         last_original_event = e.originalType;
@@ -450,6 +625,8 @@ var handler = function (e) {
 // execute functions
 $("#test-area").on("touch_start", function(event) {
     handler(event);
+    gestureSuccess = false;
+    rotationMultiplier = 1;
 });
 
 $("#test-area").on("touch_move", function(event){
@@ -496,7 +673,6 @@ setInterval(function() {
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
 },25);
-
 
 
 

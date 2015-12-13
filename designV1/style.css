@@ -9,6 +9,12 @@ body {
     background-color: black;
     -webkit-transition: all 1s;
     z-index: 999;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 768px;
+    height: 1024px;
 }
 
 h1 {
@@ -130,7 +136,52 @@ h2 {
     background-size: 100%;
 }
 
+.temperatureMenu {
+    width: 576px;
+    height: 128px;
+    top: 200px;
+    position: absolute;
+    opacity: 0.0;
+    -webkit-transition: left 0.5s, opacity 0.5s;
+}
 
+.temperatureMenuLeft {
+    left: -128px;
+}
+
+.temperatureMenuRight {
+    left: 300px;
+}
+
+.temperatureMenuPoint {
+    width: 192px;
+    height: 128px;
+    float: left;
+    -webkit-transition: opacity 0.5s;
+}
+
+.menuPoint {
+    margin-top: -4px;
+    font-weight: 500;
+}
+
+.menuIcon {
+    width: 75px;
+    height: 75px;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: 100%;
+}
+
+#menuIcon1 {
+    background-image: url(img/icons/ventilation.png);
+}
+#menuIcon2 {
+    background-image: url(img/icons/seatHeating.png);
+}
+#menuIcon3 {
+    background-image: url(img/icons/seatCooling.png);
+}
 
 #leftTemperatureCold {
     background-image: url(img/cold-left.png);
