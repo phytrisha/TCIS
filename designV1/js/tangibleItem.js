@@ -136,15 +136,51 @@ function tangibleGestureHandler (currentY, startY, distance) {
         }
     }
 }
-/*
-function temperatureMenuHandler (angle) {
-    if (angle >= 20) {
+
+function tangibleMenuHandler (angle, side, center, step) {
+    if (angle == (menuStep * rotationMultiplier)) {
+        rotationMultiplier++;
         menuActivePoint++;
-        angle = 0;
-    } else if (angle <= -20) {
+    } else if (angle == (-menuStep + menuStep* (rotationMultiplier-1))) {
+        rotationMultiplier--;
         menuActivePoint--;
-        angle = 0;
     }
+    menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
+    fadeMenuPoints(side, menuActivePoint);
+    console.log(menuActivePoint);
+    switch(menuActivePoint) {
+        case -1:
+            $(".temperatureMenu" + side).css("left", (center-step) + "px");
+            break;
+        case 0:
+            $(".temperatureMenu" + side).css("left", center + "px");
+            break;
+        case 1:
+            $(".temperatureMenu" + side).css("left", (center+step) + "px");
+            break;
+    }
+}
+
+// ---------------------------------------------------------------------------
+// SIDE MUST BE IN CAPS!!!
+// ---------------------------------------------------------------------------
+
+function fadeMenuPoints (side, active) {
+    for (var i = -1; i < 2; i++) {
+        if (i == active) {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 1.0);
+        } else {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.5);
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Don't know how to do this yet
+// ---------------------------------------------------------------------------
+/*if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+    menuLeftOpen = false;
+    $(".temperatureMenuL").css("opacity", 0.0);
 }
 */
 
@@ -278,7 +314,9 @@ var handler = function (e) {
                         }
                         temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
                     } else if (menuLeftOpen) {
-                        //console.log(currentRotationAngle)
+                        $(".temperatureMenuL").css("opacity", 1.0);
+                        tangibleMenuHandler(currentRotationAngle, "L", -128, 192);
+                        /*//console.log(currentRotationAngle)
                         if (currentRotationAngle == (menuStep * rotationMultiplier)) {
                             rotationMultiplier+=1;
                             menuActivePoint+=1;
@@ -310,7 +348,7 @@ var handler = function (e) {
                             $("#lPoint1").css("opacity", 0.5);
                             $("#lPoint2").css("opacity", 0.5);
                             $("#lPoint3").css("opacity", 1);
-                        }
+                        }*/
                     } 
                 } else if (klimaRightZone) {
                     if (menuRightOpen!=true) {
@@ -321,7 +359,9 @@ var handler = function (e) {
                         }
                         temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
                     } else if (menuRightOpen) {
-                        if (currentRotationAngle == (menuStep * rotationMultiplier)) {
+                        $(".temperatureMenuR").css("opacity", 1.0);
+                        tangibleMenuHandler(currentRotationAngle, "R", 320, 192);
+                        /*if (currentRotationAngle == (menuStep * rotationMultiplier)) {
                             rotationMultiplier+=1;
                             menuActivePoint+=1;
                         } else if (currentRotationAngle == (-menuStep + menuStep * (rotationMultiplier-1))) {
@@ -352,7 +392,7 @@ var handler = function (e) {
                             $("#rPoint1").css("opacity", 0.5);
                             $("#rPoint2").css("opacity", 0.5);
                             $("#rPoint3").css("opacity", 1);
-                        }
+                        }*/
                     }
                 }
                 if (temperatureLeftZoneOutput > tempMax) {

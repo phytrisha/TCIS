@@ -145,12 +145,12 @@ h2 {
     -webkit-transition: left 0.5s, opacity 0.5s;
 }
 
-.temperatureMenuLeft {
+.temperatureMenuL {
     left: -128px;
 }
 
-.temperatureMenuRight {
-    left: 300px;
+.temperatureMenuR {
+    left: 320px;
 }
 
 .temperatureMenuPoint {
