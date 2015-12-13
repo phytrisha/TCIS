@@ -195,26 +195,16 @@ function tangibleMenuHandler (angle, side, center, step) {
 }
 
 // initialize area for jquery.touch
-$("#test-area").touchInit();
-
-var timeout_id = null;
-var last_original_event = null;
+$("#touch-area").touchInit();
 
 // touch handler function
 var handler = function (e) {
 
 	// collect data of touch points
-    $("#last-event-name").text(e.type);
     var showData =
-            {
-                clientX: e.clientX,
-                clientY: e.clientY,
-                pageX: e.pageX,
-                pageY: e.pageY,
-                screenX: e.screenX,
-                screenY: e.screenY,
-                touches: e.touches
-            };
+        {
+            touches: e.touches
+        };
 
     // define tracking points
     var x = [];
@@ -504,19 +494,19 @@ var handler = function (e) {
 };
 
 // execute functions
-$("#test-area").on("touch_start", function(event) {
+$("#touch-area").on("touch_start", function(event) {
     handler(event);
     gestureSuccess = false;
     rotationMultiplier = 1;
 });
 
-$("#test-area").on("touch_move", function(event){
+$("#touch-area").on("touch_move", function(event){
     scrollingEvent=true;
     touchEvent=false;
     handler(event);
 });
 
-$("#test-area").on("touch_end", function(event) {
+$("#touch-area").on("touch_end", function(event) {
     captureStartScroll=true;
     if (scrollingEvent) {
         scrollingEvent=false;
@@ -533,15 +523,7 @@ setInterval(function(){
 
 setInterval(function() {
     if (klimaArea==false && multimediaArea==false && navigationArea==false) {
-        if (putItDown) {
-            $(".currentAreaIndicator").addClass("standardFaded");
-            $(".currentAreaIndicator").removeClass("standardVisible");
-            putItDown=false;
-        } else {
-            $(".currentAreaIndicator").addClass("standardVisible");
-            $(".currentAreaIndicator").removeClass("standardFaded");
-            putItDown=true;
-        }
+        $(".currentAreaIndicator").toggleClass("standardFaded");
     }
 },1500);
 
