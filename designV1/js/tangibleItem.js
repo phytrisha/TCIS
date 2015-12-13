@@ -75,31 +75,6 @@ var readyForTouch = false;
 var menuLeftOpen = false;
 var menuRightOpen = false;
 
-
-
-// crazy json shit, don't touch this
-function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-        json = JSON.stringify(json, undefined, 2);
-    }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
-}
-
 function scrollHandler () {
    if (updateScroll!=true) {
         lastScrollYSpeed*=0.95;
@@ -133,21 +108,65 @@ function tangibleGestureHandler (currentY, startY, distance) {
 }
 
 function closeMenu (side) {
+    $(".temperatureMenu" + side).css("opacity", 0.0);
     switch(side) {
         case "L":
             menuLeftOpen=false;
+            $("#leftTemperatureZone").css("opacity", 1.0);
+            if (klimaLeftZone) {
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            } else {
+                $("#rightTemperatureZone").css("opacity", 1.0);
+            }
             break;
         case "R":
             menuRightOpen=false;
+            $("#rightTemperatureZone").css("opacity", 1.0);
+            if (klimaRightZone) {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+            } else {
+                $("#leftTemperatureZone").css("opacity", 1.0);
+            }
+            break;
+        default:
+            menuLeftOpen=false;
+            menuRightOpen=false;
+    }
+}
+
+function openMenu (side) {
+    menuActivePoint = 0;
+    switch(side) {
+        case "L":
+            menuLeftOpen=true;
+            closeMenu("R");
+            $("#leftTemperatureZone").css("opacity", 0.0);
+            $("#rightTemperatureZone").css("opacity", 0.5);
+            break;
+        case "R":
+            menuRightOpen=true;
+            closeMenu("L");
+            $("#rightTemperatureZone").css("opacity", 0.0);
+            $("#leftTemperatureZone").css("opacity", 0.5);
             break;
     }
-    $(".temperatureMenu" + side).css("opacity", 0.0);
+}
+
+function adjustTemperature (zone) {
+    if (currentRotationAngle>lastRotationAngle) {
+        window["temperature" + zone + "ZoneOutput"]+=rotationStep;
+    } else if (currentRotationAngle<lastRotationAngle) {
+        window["temperature" + zone + "ZoneOutput"]-=rotationStep;
+    }
+    window["temperature" + zone + "ZoneVariable"] = (Math.round(window["temperature" + zone + "ZoneOutput"] * 2) / 2).toFixed(1);
 }
 
 function fadeMenuPoints (side, active) {
     for (var i = -1; i < 2; i++) {
         if (i == active) {
             $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 1.0);
+        } else if (i == active+2 || i == active-2) {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.0);
         } else {
             $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.5);
         }
@@ -156,15 +175,12 @@ function fadeMenuPoints (side, active) {
 
 function tangibleMenuHandler (angle, side, center, step) {
     if (angle == (menuStep * menuActivePoint)) {
-        //rotationMultiplier++;
         menuActivePoint++;
-    } else if (angle == (-menuStep + menuStep* (menuActivePoint-1))) {
-        //rotationMultiplier--;
+    } else if (angle == (-menuStep + menuStep * (menuActivePoint-1))) {
         menuActivePoint--;
     }
     menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
     fadeMenuPoints(side, menuActivePoint);
-    console.log(menuActivePoint);
     switch(menuActivePoint) {
         case -1:
             $(".temperatureMenu" + side).css("left", (center-step) + "px");
@@ -177,10 +193,6 @@ function tangibleMenuHandler (angle, side, center, step) {
             break;
     }
 }
-
-// ---------------------------------------------------------------------------
-// SIDE MUST BE IN CAPS!!!
-// ---------------------------------------------------------------------------
 
 // initialize area for jquery.touch
 $("#test-area").touchInit();
@@ -211,15 +223,11 @@ var handler = function (e) {
     var xDist = [];
     var yDist = [];
 
-    $("#last-event-detail").html(syntaxHighlight(JSON.stringify(showData, undefined, 2)));
-
     // write from gathered touchpoints to tracking points
     for (var i = showData.touches.length - 1; i >= 0; i--) {
         x[i] = showData.touches[i].screenX;
         y[i] = showData.touches[i].screenY;
     };
-
-    
 
     if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
@@ -268,38 +276,32 @@ var handler = function (e) {
 
             if (initPos) {
                 posStart = [centerX, centerY];
-                //console.log(posStart);
                 initPos = false;
             }
-
  
             // calculate & round resulting rotation angle
             currentRotationAngle = Math.round(angleDeg - angleStart);
 
             if (klimaArea) {
                 if (klimaLeftZone) {
+                    if (menuRightOpen) {
+                        closeMenu("R");
+                    }
                     if (menuLeftOpen!=true) {
-                        if (currentRotationAngle>lastRotationAngle) {
-                            temperatureLeftZoneOutput+=rotationStep;
-                        } else if (currentRotationAngle<lastRotationAngle) {
-                            temperatureLeftZoneOutput-=rotationStep;
-                        }
-                        temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                        adjustTemperature("Left");
                     } else if (menuLeftOpen) {
                         $(".temperatureMenuL").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "L", -128, 192);
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
                             closeMenu("L");
                         }
-                    } 
+                    }
                 } else if (klimaRightZone) {
+                    if (menuLeftOpen) {
+                        closeMenu("L");
+                    }
                     if (menuRightOpen!=true) {
-                       if (currentRotationAngle>lastRotationAngle) {
-                            temperatureRightZoneOutput+=rotationStep;
-                        } else if (currentRotationAngle<lastRotationAngle) {
-                            temperatureRightZoneOutput-=rotationStep;
-                        }
-                        temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
+                        adjustTemperature("Right");
                     } else if (menuRightOpen) {
                         $(".temperatureMenuR").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "R", 320, 192);
@@ -324,6 +326,7 @@ var handler = function (e) {
             if (centerX<256) {
                 klimaLeftZone=true;
                 klimaRightZone=false;
+
                 $("#leftTempIndicator").addClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").removeClass("temperatureIndicatorActive");
@@ -336,12 +339,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
-
-                $("#rightTemperatureZone").css("opacity", 0.5);
-
             } else if (centerX>512) {
                 klimaLeftZone=false;
                 klimaRightZone=true;
+
                 $("#leftTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").addClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").removeClass("temperatureIndicatorActive");
@@ -354,11 +355,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
-
-                $("#leftTemperatureZone").css("opacity", 0.5);
             } else {
                 klimaLeftZone=false;
                 klimaRightZone=false;
+
                 $("#leftTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").addClass("temperatureIndicatorActive");
@@ -372,29 +372,20 @@ var handler = function (e) {
                 $(".downConnectingLine").addClass("downConnectingLineActive");
                 $(".upConnectingLine").addClass("upConnectingLineActive");
 
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 0.5);
+                closeMenu("L");
+                closeMenu("R");
             }
 
             // trigger areas based on y coordinates of tangible item
             if (centerY>700) {
-                $(".body-area").addClass("area1");
-                $(".body-area").removeClass("area2");
-                $(".body-area").removeClass("area3");
                 klimaArea=false;
                 multimediaArea=true;
                 navigationArea=false;
             } else if (centerY<700 && centerY>300) {
-                $(".body-area").addClass("area2");
-                $(".body-area").removeClass("area1");
-                $(".body-area").removeClass("area3");
                 klimaArea=true;
                 multimediaArea=false;
                 navigationArea=false;
             } else if (centerY<300) {
-                $(".body-area").addClass("area3");
-                $(".body-area").removeClass("area1");
-                $(".body-area").removeClass("area2");
                 klimaArea=false;
                 multimediaArea=false;
                 navigationArea=true;
@@ -446,24 +437,13 @@ var handler = function (e) {
             rightBorder[2] = (255 - rightHotMeter * 500).toFixed(0);
             $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
         }
-        if (menuLeftOpen!=true && menuRightOpen!=true) {
-            if (klimaLeftZone) {
-                $("#leftTemperatureZone").css("opacity", 1.0);
-                $("#rightTemperatureZone").css("opacity", 0.5);
-            } else if (klimaRightZone) {
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 1.0);
-            } else {
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 0.5);
-            }
-        }
-        
+
         $(".temperatureView").addClass("visible");
         $(".albumOverview").removeClass("albumOverviewActive");
         $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
         $("#albumScroll").css("opacity", 0.0);
         $("#albumFade").css("opacity", 0.0);
+
     } else if (multimediaArea) {
         $("#currentAreaTitle").html("<h1></h1>")
         $(".showTemperature").removeClass("showTemperatureVisible");
@@ -516,23 +496,9 @@ var handler = function (e) {
 
     if (showData.touches.length==5) {
         if (klimaLeftZone) {
-            if (menuLeftOpen != true) {
-                console.log("open menu left!");
-                menuLeftOpen = true;
-                menuRightOpen = false;
-                menuActivePoint = 0;
-                $(".temperatureMenuLeft").css("opacity", 1.0);
-                $("#leftTemperatureZone").css("opacity", 0.0);
-            }
+            openMenu("L");
         } else if (klimaRightZone) {
-            if (menuRightOpen != true) {
-                console.log("open menu right!");
-                menuLeftOpen = false;
-                menuRightOpen = true;
-                menuActivePoint = 0;
-                $(".temperatureMenuRight").css("opacity", 1.0);
-                $("#rightTemperatureZone").css("opacity", 0.0);
-            }
+            openMenu("R");
         }
     }
 };
