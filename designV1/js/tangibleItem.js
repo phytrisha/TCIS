@@ -13,7 +13,7 @@ var gestureSuccess = false;
 
 var posStart = [2];
 var menuActivePoint;
-var menuStep = 25;
+var menuStep = 20;
 var rotationMultiplier;
 
 var leftColdMeter;
@@ -286,9 +286,6 @@ var handler = function (e) {
                             rotationMultiplier-=1;
                             menuActivePoint-=1;
                         }
-                        //console.log(menuActivePoint);
-                        //console.log(-menuStep + menuStep * (rotationMultiplier-1));
-                        //console.log("climate change not available due to open menu");
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
                             menuLeftOpen = false;
                             $(".temperatureMenuLeft").css("opacity", 0.0);
