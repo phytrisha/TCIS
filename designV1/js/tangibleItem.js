@@ -32,8 +32,6 @@ var navigationArea=false;
 var klimaLeftZone = false;
 var klimaRightZone = false;
 
-var putItDown = true;
-
 var tempMax = 28;
 var tempMin = 15;
 var standardTemp=(tempMin+tempMax)/2;
@@ -47,9 +45,6 @@ var temperatureRightZoneVariable = standardTemp;
 var multimediaScrollYPos;
 var multimediaScrollYReferencePos;
 
-// to do!!
-var multmediaScrollYSpeed;
-
 var updateScroll=false;
 
 var currentScrollYPos;
@@ -59,8 +54,6 @@ var captureStartScroll=true;
 
 var lastScrollYPos;
 var lastScrollYSpeed;
-
-var addToSpeed;
 
 var scrollingEvent = false;
 var touchEvent = false;
@@ -496,7 +489,6 @@ var handler = function (e) {
 $("#touch-area").on("touch_start", function(event) {
     handler(event);
     gestureSuccess = false;
-    rotationMultiplier = 1;
 });
 
 $("#touch-area").on("touch_move", function(event){
