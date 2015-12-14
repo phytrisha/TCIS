@@ -225,23 +225,6 @@ function applyTemperature (zone) {
     }
 }
 
-$("#leftTemperatureZone").html("<h1>"+leftTemperatureZoneVariable+"</h1>");
-if (leftTemperatureZoneOutput<standardTemp) {
-    leftColdMeter=Math.sqrt(Math.pow((leftTemperatureZoneOutput-standardTemp)/10,2));
-    $("#leftTemperatureCold").css("opacity", leftColdMeter);
-    leftBorder[0] = (255 - leftColdMeter * 400).toFixed(0);
-    leftBorder[1] = (255 - leftColdMeter * 150).toFixed(0);
-    leftBorder[2] = 255;
-    $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")".toString());
-} else if (leftTemperatureZoneOutput>standardTemp) {
-    leftHotMeter=Math.sqrt(Math.pow((leftTemperatureZoneOutput-standardTemp)/10,2));
-    $("#leftTemperatureHot").css("opacity", leftHotMeter);
-    leftBorder[0] = 255;
-    leftBorder[1] = (255 - leftHotMeter * 350).toFixed(0);
-    leftBorder[2] = (255 - leftHotMeter * 500).toFixed(0);
-    $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")");
-}
-
 function fadeMenuPoints (side, active) {
     for (var i = -1; i < 2; i++) {
         if (i == active) {
