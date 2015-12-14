@@ -1,5 +1,5 @@
-var minLim = 0;
-var maxLim = 300;
+var minLim = 95;
+var maxLim = 105;
 
 var tangible = false;
 
@@ -75,31 +75,6 @@ var readyForTouch = false;
 var menuLeftOpen = false;
 var menuRightOpen = false;
 
-
-
-// crazy json shit, don't touch this
-function syntaxHighlight(json) {
-    if (typeof json != 'string') {
-        json = JSON.stringify(json, undefined, 2);
-    }
-    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-        var cls = 'number';
-        if (/^"/.test(match)) {
-            if (/:$/.test(match)) {
-                cls = 'key';
-            } else {
-                cls = 'string';
-            }
-        } else if (/true|false/.test(match)) {
-            cls = 'boolean';
-        } else if (/null/.test(match)) {
-            cls = 'null';
-        }
-        return '<span class="' + cls + '">' + match + '</span>';
-    });
-}
-
 function scrollHandler () {
    if (updateScroll!=true) {
         lastScrollYSpeed*=0.95;
@@ -133,21 +108,65 @@ function tangibleGestureHandler (currentY, startY, distance) {
 }
 
 function closeMenu (side) {
+    $(".temperatureMenu" + side).css("opacity", 0.0);
     switch(side) {
         case "L":
             menuLeftOpen=false;
+            $("#leftTemperatureZone").css("opacity", 1.0);
+            if (klimaLeftZone) {
+                $("#rightTemperatureZone").css("opacity", 0.5);
+            } else {
+                $("#rightTemperatureZone").css("opacity", 1.0);
+            }
             break;
         case "R":
             menuRightOpen=false;
+            $("#rightTemperatureZone").css("opacity", 1.0);
+            if (klimaRightZone) {
+                $("#leftTemperatureZone").css("opacity", 0.5);
+            } else {
+                $("#leftTemperatureZone").css("opacity", 1.0);
+            }
+            break;
+        default:
+            menuLeftOpen=false;
+            menuRightOpen=false;
+    }
+}
+
+function openMenu (side) {
+    menuActivePoint = 0;
+    switch(side) {
+        case "L":
+            menuLeftOpen=true;
+            closeMenu("R");
+            $("#leftTemperatureZone").css("opacity", 0.0);
+            $("#rightTemperatureZone").css("opacity", 0.5);
+            break;
+        case "R":
+            menuRightOpen=true;
+            closeMenu("L");
+            $("#rightTemperatureZone").css("opacity", 0.0);
+            $("#leftTemperatureZone").css("opacity", 0.5);
             break;
     }
-    $(".temperatureMenu" + side).css("opacity", 0.0);
+}
+
+function adjustTemperature (zone) {
+    if (currentRotationAngle>lastRotationAngle) {
+        window["temperature" + zone + "ZoneOutput"]+=rotationStep;
+    } else if (currentRotationAngle<lastRotationAngle) {
+        window["temperature" + zone + "ZoneOutput"]-=rotationStep;
+    }
+    window["temperature" + zone + "ZoneVariable"] = (Math.round(window["temperature" + zone + "ZoneOutput"] * 2) / 2).toFixed(1);
 }
 
 function fadeMenuPoints (side, active) {
     for (var i = -1; i < 2; i++) {
         if (i == active) {
             $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 1.0);
+        } else if (i == active+2 || i == active-2) {
+            $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.0);
         } else {
             $("#" + side + "Point" + ((i*-1)+2)).css("opacity", 0.5);
         }
@@ -156,15 +175,12 @@ function fadeMenuPoints (side, active) {
 
 function tangibleMenuHandler (angle, side, center, step) {
     if (angle == (menuStep * menuActivePoint)) {
-        //rotationMultiplier++;
         menuActivePoint++;
-    } else if (angle == (-menuStep + menuStep* (menuActivePoint-1))) {
-        //rotationMultiplier--;
+    } else if (angle == (-menuStep + menuStep * (menuActivePoint-1))) {
         menuActivePoint--;
     }
     menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
     fadeMenuPoints(side, menuActivePoint);
-    console.log(menuActivePoint);
     switch(menuActivePoint) {
         case -1:
             $(".temperatureMenu" + side).css("left", (center-step) + "px");
@@ -178,40 +194,24 @@ function tangibleMenuHandler (angle, side, center, step) {
     }
 }
 
-// ---------------------------------------------------------------------------
-// SIDE MUST BE IN CAPS!!!
-// ---------------------------------------------------------------------------
-
 // initialize area for jquery.touch
-$("#test-area").touchInit();
-
-var timeout_id = null;
-var last_original_event = null;
+$("#touch-area").touchInit();
 
 // touch handler function
 var handler = function (e) {
 
 	// collect data of touch points
-    $("#last-event-name").text(e.type);
     var showData =
-            {
-                clientX: e.clientX,
-                clientY: e.clientY,
-                pageX: e.pageX,
-                pageY: e.pageY,
-                screenX: e.screenX,
-                screenY: e.screenY,
-                touches: e.touches
-            };
+        {
+            touches: e.touches
+        };
 
     // define tracking points
     var x = [];
     var y = [];
+    
     // define distanes of tracking points
-    var xDist = [];
-    var yDist = [];
-
-    $("#last-event-detail").html(syntaxHighlight(JSON.stringify(showData, undefined, 2)));
+    var dist = [];
 
     // write from gathered touchpoints to tracking points
     for (var i = showData.touches.length - 1; i >= 0; i--) {
@@ -219,52 +219,27 @@ var handler = function (e) {
         y[i] = showData.touches[i].screenY;
     };
 
-    
-
-    /*
-    
-    --- this part is only relevant, if tangible item and scrolling
-    --- interaction should be available at the same time
-    --- this will be the case, when the tangible item is working better
-
-    else if (showData.touches.length==5) {
-        if (captureStartScroll) {
-            referenceScrollYPos="";
-            multimediaScrollYReferencePos="";
-            multimediaScrollYReferencePos=$(".albumOverview").css('top');
-            multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
-            referenceScrollYPos=showData.touches[4].screenY;
-            captureStartScroll=false;
-        }
-        if (scrollingEvent) {
-            currentScrollYPos=showData.touches[4].screenY;
-            resultingScroll=currentScrollYPos-referenceScrollYPos;
-            multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
-            updateScroll=true;
-            console.log("scrolling!");
-        }
-    }else */ if (showData.touches.length==0) {
+    if (showData.touches.length==0) {
         // cancel extreme speeds and limit fast speeds
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
-        /*if (lastScrollYSpeed<-50) {
-            lastScrollYSpeed=-50;
-        } else if (lastScrollYSpeed>50) {
-            lastScrollYSpeed=50;
-        }*/
         lastScrollYSpeed = Math.min(Math.max(parseInt(lastScrollYSpeed), -50), 50);
         updateScroll=false;
-    } else if (showData.touches.length > 3) {
 
-    	// calculate distances of points, referencing first point
+    } else if (showData.touches.length == 4) {
+
+        centerX = (x[0]+x[1]+x[2]+x[3])/showData.touches.length;
+        centerY = (y[0]+y[1]+y[2]+y[3])/showData.touches.length;
+
         for (var i = 0; i < showData.touches.length; i++) {
-            xDist[i] = Math.sqrt(Math.pow(x[0]-x[i],2));
-            yDist[i] = Math.sqrt(Math.pow(y[0]-y[i],2));
-        };
-
-        // compare distances to limits and enable tangible item if distances are low enough
-        if (xDist[1]<maxLim && xDist[2]<maxLim && xDist[3]<maxLim && yDist[1]<maxLim && yDist[2]<maxLim && yDist[3]<maxLim && xDist[1]>minLim && xDist[2]>minLim && xDist[3]>minLim && yDist[1]>minLim && yDist[2]>minLim && yDist[3]>minLim) {
-            tangible=true;
-        } 
+            if (i < showData.touches.length) {
+                dist[i] = Math.sqrt(Math.pow(x[i]-centerX,2)+Math.pow(y[i]-centerY,2));
+                if (dist[i] < maxLim && dist[i] > minLim) {
+                    tangible = true;
+                } else {
+                    tangible = false;
+                }
+            }
+        }
 
         if (tangible) {
 
@@ -289,44 +264,34 @@ var handler = function (e) {
                 initAngle = false;
             }
 
-            // determine center x and y position of tangible item
-            centerX = (x[0]+x[1]+x[2]+x[3])/4;
-            centerY = (y[0]+y[1]+y[2]+y[3])/4;
-
             if (initPos) {
                 posStart = [centerX, centerY];
-                //console.log(posStart);
                 initPos = false;
             }
-
  
             // calculate & round resulting rotation angle
             currentRotationAngle = Math.round(angleDeg - angleStart);
 
             if (klimaArea) {
                 if (klimaLeftZone) {
+                    if (menuRightOpen) {
+                        closeMenu("R");
+                    }
                     if (menuLeftOpen!=true) {
-                        if (currentRotationAngle>lastRotationAngle) {
-                            temperatureLeftZoneOutput+=rotationStep;
-                        } else if (currentRotationAngle<lastRotationAngle) {
-                            temperatureLeftZoneOutput-=rotationStep;
-                        }
-                        temperatureLeftZoneVariable = (Math.round(temperatureLeftZoneOutput * 2) / 2).toFixed(1);
+                        adjustTemperature("Left");
                     } else if (menuLeftOpen) {
                         $(".temperatureMenuL").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "L", -128, 192);
                         if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
                             closeMenu("L");
                         }
-                    } 
+                    }
                 } else if (klimaRightZone) {
+                    if (menuLeftOpen) {
+                        closeMenu("L");
+                    }
                     if (menuRightOpen!=true) {
-                       if (currentRotationAngle>lastRotationAngle) {
-                            temperatureRightZoneOutput+=rotationStep;
-                        } else if (currentRotationAngle<lastRotationAngle) {
-                            temperatureRightZoneOutput-=rotationStep;
-                        }
-                        temperatureRightZoneVariable = (Math.round(temperatureRightZoneOutput*2) / 2).toFixed(1); 
+                        adjustTemperature("Right");
                     } else if (menuRightOpen) {
                         $(".temperatureMenuR").css("opacity", 1.0);
                         tangibleMenuHandler(currentRotationAngle, "R", 320, 192);
@@ -347,13 +312,11 @@ var handler = function (e) {
                 }
             }
 
-
-            //tangibleGestureHandler(centerY, posStart[1], 50);
-
             // trigger panels based on x coordinates of tangible item
             if (centerX<256) {
                 klimaLeftZone=true;
                 klimaRightZone=false;
+
                 $("#leftTempIndicator").addClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").removeClass("temperatureIndicatorActive");
@@ -366,12 +329,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
-
-                $("#rightTemperatureZone").css("opacity", 0.5);
-
             } else if (centerX>512) {
                 klimaLeftZone=false;
                 klimaRightZone=true;
+
                 $("#leftTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").addClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").removeClass("temperatureIndicatorActive");
@@ -384,11 +345,10 @@ var handler = function (e) {
 
                 $(".downConnectingLine").removeClass("downConnectingLineActive");
                 $(".upConnectingLine").removeClass("upConnectingLineActive");
-
-                $("#leftTemperatureZone").css("opacity", 0.5);
             } else {
                 klimaLeftZone=false;
                 klimaRightZone=false;
+
                 $("#leftTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#rightTempIndicator").removeClass("temperatureIndicatorActive");
                 $("#centerTempIndicator").addClass("temperatureIndicatorActive");
@@ -402,29 +362,20 @@ var handler = function (e) {
                 $(".downConnectingLine").addClass("downConnectingLineActive");
                 $(".upConnectingLine").addClass("upConnectingLineActive");
 
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 0.5);
+                closeMenu("L");
+                closeMenu("R");
             }
 
             // trigger areas based on y coordinates of tangible item
             if (centerY>700) {
-                $(".body-area").addClass("area1");
-                $(".body-area").removeClass("area2");
-                $(".body-area").removeClass("area3");
                 klimaArea=false;
                 multimediaArea=true;
                 navigationArea=false;
             } else if (centerY<700 && centerY>300) {
-                $(".body-area").addClass("area2");
-                $(".body-area").removeClass("area1");
-                $(".body-area").removeClass("area3");
                 klimaArea=true;
                 multimediaArea=false;
                 navigationArea=false;
             } else if (centerY<300) {
-                $(".body-area").addClass("area3");
-                $(".body-area").removeClass("area1");
-                $(".body-area").removeClass("area2");
                 klimaArea=false;
                 multimediaArea=false;
                 navigationArea=true;
@@ -444,61 +395,45 @@ var handler = function (e) {
     $("#currentAreaTitle").css("opacity", 1.0);
     if (klimaArea) {
         $("#currentAreaTitle").html("");
-        //if (klimaLeftZone) {
-            //$("#leftTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='leftTemperatureZone'><h1>"+temperatureLeftZoneVariable+"</h1></div>");
-            $("#leftTemperatureZone").html("<h1>"+temperatureLeftZoneVariable+"</h1>");
-            if (temperatureLeftZoneOutput<standardTemp) {
-                leftColdMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/10,2));
-                $("#leftTemperatureCold").css("opacity", leftColdMeter);
-                leftBorder[0] = (255 - leftColdMeter * 400).toFixed(0);
-                leftBorder[1] = (255 - leftColdMeter * 150).toFixed(0);
-                leftBorder[2] = 255;
-                $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")".toString());
-            } else if (temperatureLeftZoneOutput>standardTemp) {
-                leftHotMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/10,2));
-                $("#leftTemperatureHot").css("opacity", leftHotMeter);
-                leftBorder[0] = 255;
-                leftBorder[1] = (255 - leftHotMeter * 350).toFixed(0);
-                leftBorder[2] = (255 - leftHotMeter * 500).toFixed(0);
-                $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")");
-            }
-        //} else if (klimaRightZone) {
-            //$("#rightTemperatureZone").replaceWith("<div class='showTemperature showTemperatureVisible' id='rightTemperatureZone'><h1>"+temperatureRightZoneVariable+"</h1></div>");
-            $("#rightTemperatureZone").html("<h1>"+temperatureRightZoneVariable+"</h1>");
-            if (temperatureRightZoneOutput<standardTemp) {
-                rightColdMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/10,2));
-                $("#rightTemperatureCold").css("opacity", rightColdMeter);
-                rightBorder[0] = (255 - rightColdMeter * 400).toFixed(0);
-                rightBorder[1] = (255 - rightColdMeter * 150).toFixed(0);
-                rightBorder[2] = 255;
-                $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
-            } else if (temperatureRightZoneOutput>standardTemp) {
-                rightHotMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/10,2));
-                $("#rightTemperatureHot").css("opacity", rightHotMeter);
-                rightBorder[0] = 255;
-                rightBorder[1] = (255 - rightHotMeter * 350).toFixed(0);
-                rightBorder[2] = (255 - rightHotMeter * 500).toFixed(0);
-                $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
-            }
-        //}
-        if (menuLeftOpen!=true && menuRightOpen!=true) {
-            if (klimaLeftZone) {
-                $("#leftTemperatureZone").css("opacity", 1.0);
-                $("#rightTemperatureZone").css("opacity", 0.5);
-            } else if (klimaRightZone) {
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 1.0);
-            } else {
-                $("#leftTemperatureZone").css("opacity", 0.5);
-                $("#rightTemperatureZone").css("opacity", 0.5);
-            }
+        $("#leftTemperatureZone").html("<h1>"+temperatureLeftZoneVariable+"</h1>");
+        if (temperatureLeftZoneOutput<standardTemp) {
+            leftColdMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/10,2));
+            $("#leftTemperatureCold").css("opacity", leftColdMeter);
+            leftBorder[0] = (255 - leftColdMeter * 400).toFixed(0);
+            leftBorder[1] = (255 - leftColdMeter * 150).toFixed(0);
+            leftBorder[2] = 255;
+            $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")".toString());
+        } else if (temperatureLeftZoneOutput>standardTemp) {
+            leftHotMeter=Math.sqrt(Math.pow((temperatureLeftZoneOutput-standardTemp)/10,2));
+            $("#leftTemperatureHot").css("opacity", leftHotMeter);
+            leftBorder[0] = 255;
+            leftBorder[1] = (255 - leftHotMeter * 350).toFixed(0);
+            leftBorder[2] = (255 - leftHotMeter * 500).toFixed(0);
+            $("#leftTempIndicator").css("border-color", "rgb(" + leftBorder[0] + "," + leftBorder[1] + "," + leftBorder[2] + ")");
         }
-        
+        $("#rightTemperatureZone").html("<h1>"+temperatureRightZoneVariable+"</h1>");
+        if (temperatureRightZoneOutput<standardTemp) {
+            rightColdMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/10,2));
+            $("#rightTemperatureCold").css("opacity", rightColdMeter);
+            rightBorder[0] = (255 - rightColdMeter * 400).toFixed(0);
+            rightBorder[1] = (255 - rightColdMeter * 150).toFixed(0);
+            rightBorder[2] = 255;
+            $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
+        } else if (temperatureRightZoneOutput>standardTemp) {
+            rightHotMeter=Math.sqrt(Math.pow((temperatureRightZoneOutput-standardTemp)/10,2));
+            $("#rightTemperatureHot").css("opacity", rightHotMeter);
+            rightBorder[0] = 255;
+            rightBorder[1] = (255 - rightHotMeter * 350).toFixed(0);
+            rightBorder[2] = (255 - rightHotMeter * 500).toFixed(0);
+            $("#rightTempIndicator").css("border-color", "rgb(" + rightBorder[0] + "," + rightBorder[1] + "," + rightBorder[2] + ")".toString());
+        }
+
         $(".temperatureView").addClass("visible");
         $(".albumOverview").removeClass("albumOverviewActive");
         $(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
         $("#albumScroll").css("opacity", 0.0);
         $("#albumFade").css("opacity", 0.0);
+
     } else if (multimediaArea) {
         $("#currentAreaTitle").html("<h1></h1>")
         $(".showTemperature").removeClass("showTemperatureVisible");
@@ -544,73 +479,33 @@ var handler = function (e) {
         }
         if (touchEvent) {
             var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-            console.log(clickedAlbum);
-            /*if (klimaLeftZone) {
-                if (menuLeftOpen != true) {
-                    console.log("open menu left!");
-                    menuLeftOpen = true;
-                    menuActivePoint = 0;
-                    $(".temperatureMenu").css("opacity", 1.0);
-                }
-            } else if (klimaRightZone) {
-                if (menuRightOpen != true) {
-                    console.log("open menu right!");
-                    menuRightOpen = true;
-                }
-            }*/
         }
 
     } 
 
     if (showData.touches.length==5) {
         if (klimaLeftZone) {
-            if (menuLeftOpen != true) {
-                console.log("open menu left!");
-                menuLeftOpen = true;
-                menuRightOpen = false;
-                menuActivePoint = 0;
-                $(".temperatureMenuLeft").css("opacity", 1.0);
-                $("#leftTemperatureZone").css("opacity", 0.0);
-            }
+            openMenu("L");
         } else if (klimaRightZone) {
-            if (menuRightOpen != true) {
-                console.log("open menu right!");
-                menuLeftOpen = false;
-                menuRightOpen = true;
-                menuActivePoint = 0;
-                $(".temperatureMenuRight").css("opacity", 1.0);
-                $("#rightTemperatureZone").css("opacity", 0.0);
-            }
+            openMenu("R");
         }
     }
-
-    // event reseting, don't touch this
-    /*if (last_original_event != e.originalType) {
-        last_original_event = e.originalType;
-        $("#original-event").html(e.originalType + "<br/>" + $("#original-event").html());
-        if (timeout_id !== null) window.clearTimeout(timeout_id);
-        timeout_id = window.setTimeout(
-            function () {
-                $("#original-event").html("");
-            },
-        5000);
-    }*/
 };
 
 // execute functions
-$("#test-area").on("touch_start", function(event) {
+$("#touch-area").on("touch_start", function(event) {
     handler(event);
     gestureSuccess = false;
     rotationMultiplier = 1;
 });
 
-$("#test-area").on("touch_move", function(event){
+$("#touch-area").on("touch_move", function(event){
     scrollingEvent=true;
     touchEvent=false;
     handler(event);
 });
 
-$("#test-area").on("touch_end", function(event) {
+$("#touch-area").on("touch_end", function(event) {
     captureStartScroll=true;
     if (scrollingEvent) {
         scrollingEvent=false;
@@ -627,15 +522,7 @@ setInterval(function(){
 
 setInterval(function() {
     if (klimaArea==false && multimediaArea==false && navigationArea==false) {
-        if (putItDown) {
-            $(".currentAreaIndicator").addClass("standardFaded");
-            $(".currentAreaIndicator").removeClass("standardVisible");
-            putItDown=false;
-        } else {
-            $(".currentAreaIndicator").addClass("standardVisible");
-            $(".currentAreaIndicator").removeClass("standardFaded");
-            putItDown=true;
-        }
+        $(".currentAreaIndicator").toggleClass("standardFaded");
     }
 },1500);
 
@@ -648,16 +535,3 @@ setInterval(function() {
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
 },25);
-
-
-
-
-
-
-
-
-
-
-
-
-
