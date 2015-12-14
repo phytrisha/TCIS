@@ -1,5 +1,5 @@
-var minLim = 0;
-var maxLim = 300;
+var minLim = 95;
+var maxLim = 105;
 
 var tangible = false;
 
@@ -209,9 +209,9 @@ var handler = function (e) {
     // define tracking points
     var x = [];
     var y = [];
+    
     // define distanes of tracking points
-    var xDist = [];
-    var yDist = [];
+    var dist = [];
 
     // write from gathered touchpoints to tracking points
     for (var i = showData.touches.length - 1; i >= 0; i--) {
@@ -224,18 +224,22 @@ var handler = function (e) {
         lastScrollYSpeed=currentScrollYPos-lastScrollYPos;
         lastScrollYSpeed = Math.min(Math.max(parseInt(lastScrollYSpeed), -50), 50);
         updateScroll=false;
-    } else if (showData.touches.length > 3) {
 
-    	// calculate distances of points, referencing first point
+    } else if (showData.touches.length == 4) {
+
+        centerX = (x[0]+x[1]+x[2]+x[3])/showData.touches.length;
+        centerY = (y[0]+y[1]+y[2]+y[3])/showData.touches.length;
+
         for (var i = 0; i < showData.touches.length; i++) {
-            xDist[i] = Math.sqrt(Math.pow(x[0]-x[i],2));
-            yDist[i] = Math.sqrt(Math.pow(y[0]-y[i],2));
-        };
-
-        // compare distances to limits and enable tangible item if distances are low enough
-        if (xDist[1]<maxLim && xDist[2]<maxLim && xDist[3]<maxLim && yDist[1]<maxLim && yDist[2]<maxLim && yDist[3]<maxLim && xDist[1]>minLim && xDist[2]>minLim && xDist[3]>minLim && yDist[1]>minLim && yDist[2]>minLim && yDist[3]>minLim) {
-            tangible=true;
-        } 
+            if (i < showData.touches.length) {
+                dist[i] = Math.sqrt(Math.pow(x[i]-centerX,2)+Math.pow(y[i]-centerY,2));
+                if (dist[i] < maxLim && dist[i] > minLim) {
+                    tangible = true;
+                } else {
+                    tangible = false;
+                }
+            }
+        }
 
         if (tangible) {
 
@@ -259,10 +263,6 @@ var handler = function (e) {
                 angleStart = angleDeg;
                 initAngle = false;
             }
-
-            // determine center x and y position of tangible item
-            centerX = (x[0]+x[1]+x[2]+x[3])/4;
-            centerY = (y[0]+y[1]+y[2]+y[3])/4;
 
             if (initPos) {
                 posStart = [centerX, centerY];
@@ -479,7 +479,6 @@ var handler = function (e) {
         }
         if (touchEvent) {
             var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-            console.log(clickedAlbum);
         }
 
     } 
@@ -536,16 +535,3 @@ setInterval(function() {
 setInterval(function() {
     lastScrollYPos=currentScrollYPos;
 },25);
-
-
-
-
-
-
-
-
-
-
-
-
-
