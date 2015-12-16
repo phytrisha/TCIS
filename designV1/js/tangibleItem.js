@@ -1,5 +1,5 @@
-var minLim = 80;
-var maxLim = 120;
+var minLim = 60;
+var maxLim = 180;
 
 var tangible = false;
 
