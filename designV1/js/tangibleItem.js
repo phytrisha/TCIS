@@ -27,7 +27,6 @@ var lastRotationAngle;
 
 var klimaArea=false;
 var multimediaArea=false;
-var navigationArea=false;
 
 var leftKlimaZone = false;
 var rightKlimaZone = false;
@@ -67,6 +66,8 @@ var readyForTouch = false;
 
 var menuLeftOpen = false;
 var menuRightOpen = false;
+
+var menuPlaybackOpen = false;
 
 function scrollHandler () {
    if (updateScroll!=true) {
@@ -125,8 +126,8 @@ function activateZone (zone) {
 			$(".rightConnectingLine").addClass("rightCCenterNodeActive");
 			$(".downConnectingLine").addClass("downConnectingLineActive");
 			$(".upConnectingLine").addClass("upConnectingLineActive");
-			closeMenu("L");
-			closeMenu("R");
+			closeMenu("temperature", "L");
+			closeMenu("temperature", "R");
 			break;
 	}
 }
@@ -140,8 +141,11 @@ function tangibleGestureHandler (currentY, startY, distance) {
 	}
 }
 
-function closeMenu (side) {
-	$(".temperatureMenu" + side).css("opacity", 0.0);
+function closeMenu (type, side) {
+	$("." + type + "Menu" + side).css("opacity", 0.0);
+	if (type == "multimedia") {
+		menuPlaybackOpen=false;
+	}
 	switch(side) {
 		case "L":
 			menuLeftOpen=false;
@@ -172,15 +176,18 @@ function openMenu (side) {
 	switch(side) {
 		case "L":
 			menuLeftOpen=true;
-			closeMenu("R");
+			closeMenu("temperature", "R");
 			$("#leftTemperatureZone").css("opacity", 0.0);
 			$("#rightTemperatureZone").css("opacity", 0.5);
 			break;
 		case "R":
 			menuRightOpen=true;
-			closeMenu("L");
+			closeMenu("temperature", "L");
 			$("#rightTemperatureZone").css("opacity", 0.0);
 			$("#leftTemperatureZone").css("opacity", 0.5);
+			break;
+		case "Playback":
+			menuPlaybackOpen=true;
 			break;
 	}
 }
@@ -235,7 +242,7 @@ function fadeMenuPoints (side, active) {
 	}
 }
 
-function tangibleMenuHandler (angle, side, center, step) {
+function tangibleMenuHandler (type, angle, side, center, step) {
 	if (angle == (menuStep * menuActivePoint)) {
 		menuActivePoint++;
 	} else if (angle == (-menuStep + menuStep * (menuActivePoint-1))) {
@@ -245,13 +252,23 @@ function tangibleMenuHandler (angle, side, center, step) {
 	fadeMenuPoints(side, menuActivePoint);
 	switch(menuActivePoint) {
 		case -1:
-			$(".temperatureMenu" + side).css("left", (center-step) + "px");
+			$("." + type + "Menu" + side).css("left", (center-step) + "px");
 			break;
 		case 0:
-			$(".temperatureMenu" + side).css("left", center + "px");
+			$("." + type + "Menu" + side).css("left", center + "px");
 			break;
 		case 1:
-			$(".temperatureMenu" + side).css("left", (center+step) + "px");
+			$("." + type + "Menu" + side).css("left", (center+step) + "px");
+			break;
+	}
+}
+
+function openMenuElement (elem) {
+	console.log(elem)
+	switch(elem) {
+		case 1:
+			$(".albumOverview").addClass("active");
+			$(".albumPlaybackView").removeClass("active");
 			break;
 	}
 }
@@ -334,31 +351,44 @@ var handler = function (e) {
 			// calculate & round resulting rotation angle
 			currentRotationAngle = Math.round(angleDeg - angleStart);
 
+			if (multimediaArea) {
+				if (menuPlaybackOpen) {
+					$(".multimediaMenu").css("opacity", 1.0);
+					tangibleMenuHandler("multimedia", currentRotationAngle, "", 96, 192);
+					//tangibleMenuInputHandler("multimedia");
+					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+						closeMenu("multimedia", "");
+						$(".currentTitleLabel").removeClass("inactive");
+						menuPlaybackOpen=false;
+					}
+				}
+			}
+
 			if (klimaArea) {
 				if (leftKlimaZone) {
 					if (menuRightOpen) {
-						closeMenu("R");
+						closeMenu("temperature", "R");
 					}
 					if (menuLeftOpen!=true) {
 						adjustTemperature("left");
 					} else if (menuLeftOpen) {
 						$(".temperatureMenuL").css("opacity", 1.0);
-						tangibleMenuHandler(currentRotationAngle, "L", -128, 192);
+						tangibleMenuHandler("temperature", currentRotationAngle, "L", -128, 192);
 						if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
-							closeMenu("L");
+							closeMenu("temperature", "L");
 						}
 					}
 				} else if (rightKlimaZone) {
 					if (menuLeftOpen) {
-						closeMenu("L");
+						closeMenu("temperature", "L");
 					}
 					if (menuRightOpen!=true) {
 						adjustTemperature("right");
 					} else if (menuRightOpen) {
 						$(".temperatureMenuR").css("opacity", 1.0);
-						tangibleMenuHandler(currentRotationAngle, "R", 320, 192);
+						tangibleMenuHandler("temperature", currentRotationAngle, "R", 320, 192);
 						if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
-							closeMenu("R");
+							closeMenu("temperature", "R");
 						}
 					}
 				}
@@ -387,15 +417,9 @@ var handler = function (e) {
 			if (centerY>700) {
 				klimaArea=false;
 				multimediaArea=true;
-				navigationArea=false;
-			} else if (centerY<700 && centerY>300) {
+			} else if (centerY<700) {
 				klimaArea=true;
 				multimediaArea=false;
-				navigationArea=false;
-			} else if (centerY<300) {
-				klimaArea=false;
-				multimediaArea=false;
-				navigationArea=true;
 			}
 		}
 	} else {
@@ -422,29 +446,18 @@ var handler = function (e) {
 		$("#albumFade").css("opacity", 0.0);
 		$(".currentAlbumPlayback").removeClass("active");
 		$(".albumFadeOutOverlay").removeClass("visible");
-
 	} else if (multimediaArea) {
 		$("#currentAreaTitle").html("<h1></h1>")
 		$(".showTemperature").removeClass("showTemperatureVisible");
 		$("#albumScroll").css("opacity", 1.0);
 		$("#albumFade").css("opacity", 1.0);
+		$(".albumPlayback").addClass("active");
 		//$(".albumOverview").addClass("albumOverviewActive");
 		$(".albumViewContainer").addClass("albumOverviewContainerVisible");
 		//$(".albumOverview").css("top", multimediaScrollYPos);
 		$(".temperatureView").removeClass("visible");
 		$(".currentAlbumPlayback").addClass("active");
 		$(".albumFadeOutOverlay").addClass("visible");
-
-	} else if (navigationArea) {
-		$("#currentAreaTitle").html("<h1>Navigation</h1>");
-		$(".showTemperature").removeClass("showTemperatureVisible");
-		$(".albumOverview").removeClass("albumOverviewActive");
-		$("#albumScroll").css("opacity", 0.0);
-		$("#albumFade").css("opacity", 0.0);
-		$(".albumViewContainer").removeClass("albumOverviewContainerVisible");
-		$(".temperatureView").removeClass("visible");
-		$(".currentAlbumPlayback").removeClass("active");
-		$(".albumFadeOutOverlay").removeClass("visible");
 	}
 
 	if (showData.touches.length==1) {
@@ -473,8 +486,18 @@ var handler = function (e) {
 			openMenu("L");
 		} else if (rightKlimaZone) {
 			openMenu("R");
+		} else if (multimediaArea) {
+			if (menuPlaybackOpen != true) {
+				openMenu("Playback");
+				$(".currentTitleLabel").addClass("inactive");
+			} else if (menuPlaybackOpen) {
+				openMenuElement(menuActivePoint);
+				closeMenu("multimedia", "");
+				$(".currentTitleLabel").removeClass("inactive");
+				menuPlaybackOpen=false;
+			}
 		}
-	}
+	}		
 };
 
 // execute functions
@@ -505,7 +528,7 @@ setInterval(function(){
 },250);
 
 setInterval(function() {
-	if (klimaArea==false && multimediaArea==false && navigationArea==false) {
+	if (klimaArea==false && multimediaArea==false) {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
 },1500);
