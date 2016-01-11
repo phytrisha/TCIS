@@ -420,16 +420,20 @@ var handler = function (e) {
 		$(".albumVContainer").removeClass("albumOverviewContainerVisible");
 		$("#albumScroll").css("opacity", 0.0);
 		$("#albumFade").css("opacity", 0.0);
+		$(".currentAlbumPlayback").removeClass("active");
+		$(".albumFadeOutOverlay").removeClass("visible");
 
 	} else if (multimediaArea) {
 		$("#currentAreaTitle").html("<h1></h1>")
 		$(".showTemperature").removeClass("showTemperatureVisible");
 		$("#albumScroll").css("opacity", 1.0);
 		$("#albumFade").css("opacity", 1.0);
-		$(".albumOverview").addClass("albumOverviewActive");
+		//$(".albumOverview").addClass("albumOverviewActive");
 		$(".albumViewContainer").addClass("albumOverviewContainerVisible");
-		$(".albumOverview").css("top", multimediaScrollYPos);
+		//$(".albumOverview").css("top", multimediaScrollYPos);
 		$(".temperatureView").removeClass("visible");
+		$(".currentAlbumPlayback").addClass("active");
+		$(".albumFadeOutOverlay").addClass("visible");
 
 	} else if (navigationArea) {
 		$("#currentAreaTitle").html("<h1>Navigation</h1>");
@@ -439,6 +443,8 @@ var handler = function (e) {
 		$("#albumFade").css("opacity", 0.0);
 		$(".albumViewContainer").removeClass("albumOverviewContainerVisible");
 		$(".temperatureView").removeClass("visible");
+		$(".currentAlbumPlayback").removeClass("active");
+		$(".albumFadeOutOverlay").removeClass("visible");
 	}
 
 	if (showData.touches.length==1) {

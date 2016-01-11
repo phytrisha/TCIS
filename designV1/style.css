@@ -350,7 +350,7 @@ h2 {
     width: 768px;
     position: relative;
     top: 0px;
-    left: 0px;
+    left: 768px;
     z-index: 10;
     opacity: 1.0;
     -webkit-transition: opacity 0.5s;
@@ -426,6 +426,7 @@ h2 {
 
 .albumOverviewActive {
     top: -256px;
+    left: 16px;
 }
 
 .albumPlaybackBackgroundFrame {
@@ -442,7 +443,12 @@ h2 {
     background-size: contain;
     background-repeat: no-repeat;
     background-image: url(img/albums/blurred-album.png);
-    opacity: 0.5;
+    -webkit-transition: opacity 0.5s;
+    opacity: 0.0;
+}
+
+.currentAlbumPlayback.active {
+    opacity: 0.25;
 }
 
 .singleAlbum {
@@ -466,7 +472,7 @@ h2 {
     top: 0px;
     left: 0px;
     z-index: 200;
-    opacity: 1.0;
+    opacity: 0.0;
 }
 
 
