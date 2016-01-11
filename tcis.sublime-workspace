@@ -523,7 +523,7 @@
 			"file": "designV1/js/tangibleItem.js",
 			"settings":
 			{
-				"buffer_size": 17583,
+				"buffer_size": 14740,
 				"line_ending": "Unix"
 			}
 		},
@@ -539,7 +539,7 @@
 			"file": "designV1/touch.html",
 			"settings":
 			{
-				"buffer_size": 5956,
+				"buffer_size": 5933,
 				"line_ending": "Unix"
 			}
 		}
@@ -551,12 +551,20 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 392.0,
-		"last_filter": "",
+		"height": 400.0,
+		"last_filter": "packa",
 		"selected_items":
 		[
+			[
+				"packa",
+				"Package Control: Install Package"
+			],
+			[
+				"Packa",
+				"Package Control: Install Package"
+			]
 		],
-		"width": 467.0
+		"width": 475.0
 	},
 	"console":
 	{
@@ -577,11 +585,14 @@
 	"expanded_folders":
 	[
 		"/Applications/MAMP/htdocs/TCIS",
-		"/Applications/MAMP/htdocs/TCIS/designV1",
-		"/Applications/MAMP/htdocs/TCIS/designV1/js"
+		"/Applications/MAMP/htdocs/TCIS/basicTester",
+		"/Applications/MAMP/htdocs/TCIS/designV1"
 	],
 	"file_history":
 	[
+		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Applications/MAMP/htdocs/TCIS/designV1/js/jquery.touch.js",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/hfg-guidance.sublime-project",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/js/database.js",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/js/database.min.js",
@@ -596,8 +607,6 @@
 		"/Users/markmeyer/Dropbox/IKS 2/06_prototyping/jsonDev/index.html",
 		"/Users/markmeyer/Dropbox/HTML_CSS_JavaScript_Tutorium_WS1516/App Projekt Stand 3/index.html",
 		"/Users/markmeyer/Dropbox/HTML_CSS_JavaScript_Tutorium_WS1516/App Projekt Stand 3/css/style.css",
-		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
-		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
 		"/Users/markmeyer/Dropbox/IKS 2/06_prototyping/jsonDev/json/rooms",
 		"/Users/markmeyer/Desktop/myoTest0001/Assets/Myo Samples/Scripts/distanceOpacityScript.cs",
 		"/Users/markmeyer/Desktop/myoTest0001/Assets/Myo Samples/Scripts/continousRotation.js",
@@ -802,7 +811,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -811,28 +820,28 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 17583,
+						"buffer_size": 14740,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								8211,
+								8211
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 3130.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -859,19 +868,25 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 529.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 1,
 					"type": "text"
-				},
+				}
+			]
+		},
+		{
+			"selected": 0,
+			"sheets":
+			[
 				{
 					"buffer": 2,
 					"file": "designV1/touch.html",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5956,
+						"buffer_size": 5933,
 						"regions":
 						{
 						},
@@ -888,10 +903,10 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 1545.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]
@@ -914,11 +929,18 @@
 				0,
 				1,
 				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
 			]
 		],
 		"cols":
 		[
 			0.0,
+			0.314026343732,
 			1.0
 		],
 		"rows":
@@ -950,12 +972,16 @@
 	},
 	"select_project":
 	{
-		"height": 0.0,
+		"height": 500.0,
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"",
+				"~/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/js/hfg-guidance.sublime-workspace"
+			]
 		],
-		"width": 0.0
+		"width": 380.0
 	},
 	"select_symbol":
 	{
@@ -966,7 +992,7 @@
 		],
 		"width": 0.0
 	},
-	"selected_group": 0,
+	"selected_group": 1,
 	"settings":
 	{
 	},
@@ -974,7 +1000,7 @@
 	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 150.0,
+	"side_bar_width": 214.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

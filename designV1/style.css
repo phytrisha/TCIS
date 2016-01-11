@@ -355,7 +355,7 @@ h2 {
     opacity: 1.0;
     -webkit-transition: opacity 0.5s;
 }
-.albumOverviewContainer {
+.albumViewContainer {
     width: 768px;
     height: 1024px;
     position: absolute;
@@ -428,33 +428,45 @@ h2 {
     top: -256px;
 }
 
+.albumPlaybackBackgroundFrame {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+
+.currentAlbumPlayback {
+    width: 100%;
+    height: 100%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(img/albums/blurred-album.png);
+    opacity: 0.5;
+}
+
 .singleAlbum {
-    width: 183px;
-    height: 183px;
+    width: 224px;
+    height: 224px;
     position:relative;
-    margin-right: 12px;
-    margin-bottom: 12px;
+    margin-right: 32px;
+    margin-bottom: 32px;
     float: left;
     background-size: 100%;
-}
-
-.everyOther {
-    margin-top: -91px;
-}
-
-.lastInRow {
-    margin-right: 0px;
+    -webkit-box-shadow: 0px 2px 10px 0px rgba(0,0,0,0.25);
 }
 
 .albumFadeOutOverlay {
     width: 768px;
-    height: 900px;
+    height: 1024px;
+    background-size: 100%;
+    background-repeat: no-repeat;
     background-image: url(img/albumFade.png);
     position: absolute;
-    top: 124px;
+    top: 0px;
+    left: 0px;
     z-index: 200;
-    opacity: 0.0;
-    -webkit-transition: opacity 0.25s;
+    opacity: 1.0;
 }
 
 

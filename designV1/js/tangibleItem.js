@@ -264,9 +264,9 @@ var handler = function (e) {
 
 	// collect data of touch points
 	var showData =
-		{
-			touches: e.touches
-		};
+	{
+		touches: e.touches
+	};
 
 	// define tracking points
 	var x = [];
@@ -417,7 +417,7 @@ var handler = function (e) {
 
 		$(".temperatureView").addClass("visible");
 		$(".albumOverview").removeClass("albumOverviewActive");
-		$(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
+		$(".albumVContainer").removeClass("albumOverviewContainerVisible");
 		$("#albumScroll").css("opacity", 0.0);
 		$("#albumFade").css("opacity", 0.0);
 
@@ -427,7 +427,7 @@ var handler = function (e) {
 		$("#albumScroll").css("opacity", 1.0);
 		$("#albumFade").css("opacity", 1.0);
 		$(".albumOverview").addClass("albumOverviewActive");
-		$(".albumOverviewContainer").addClass("albumOverviewContainerVisible");
+		$(".albumViewContainer").addClass("albumOverviewContainerVisible");
 		$(".albumOverview").css("top", multimediaScrollYPos);
 		$(".temperatureView").removeClass("visible");
 
@@ -437,7 +437,7 @@ var handler = function (e) {
 		$(".albumOverview").removeClass("albumOverviewActive");
 		$("#albumScroll").css("opacity", 0.0);
 		$("#albumFade").css("opacity", 0.0);
-		$(".albumOverviewContainer").removeClass("albumOverviewContainerVisible");
+		$(".albumViewContainer").removeClass("albumOverviewContainerVisible");
 		$(".temperatureView").removeClass("visible");
 	}
 
