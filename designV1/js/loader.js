@@ -5,6 +5,7 @@ function populateAlbums (source, amount) {
 }
 
 var counter=0;
+
 setInterval(function() {
 	if (counter>100) {
 		counter=0;

@@ -141,6 +141,13 @@ function tangibleGestureHandler (currentY, startY, distance) {
 	}
 }
 
+function displayAlbum (album) {
+	console.log(album);
+	$("#album" + album).css("position", "fixed");
+	$("#album" + album).css("left", "0px");
+	$("#album" + album).css("top", "0px");
+}
+
 function closeMenu (type, side) {
 	$("." + type + "Menu" + side).css("opacity", 0.0);
 	if (type == "multimedia") {
@@ -474,9 +481,15 @@ var handler = function (e) {
 			resultingScroll=currentScrollYPos-referenceScrollYPos;
 			multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
 			updateScroll=true;
-		}
-		if (touchEvent) {
+			console.log("scrolling!");
+		} else if (touchEvent) {
 			var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
+			window.setTimeout(function(){
+				if (touchEvent) {
+					// select the album
+					displayAlbum(clickedAlbum);
+				}
+			}, 50);
 		}
 
 	} 
@@ -502,8 +515,9 @@ var handler = function (e) {
 
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
-	handler(event);
 	gestureSuccess = false;
+	scrollingEvent = false;
+	handler(event);
 });
 
 $("#touch-area").on("touch_move", function(event){
@@ -516,7 +530,6 @@ $("#touch-area").on("touch_end", function(event) {
 	captureStartScroll=true;
 	if (scrollingEvent) {
 		scrollingEvent=false;
-	} else {
 		touchEvent=true;
 	}
 	handler(event);
