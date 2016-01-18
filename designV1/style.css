@@ -454,10 +454,25 @@ h3 {
     height: 100%;
     background-size: contain;
     background-repeat: no-repeat;
-    background-image: url(img/albums/blurred-album.png);
     -webkit-transition: opacity 0.5s;
     opacity: 0.0;
 }
+
+#blur1 {background-image: url(img/albums/blurred-album-01.png);}
+#blur2 {background-image: url(img/albums/blurred-album-02.png);}
+#blur3 {background-image: url(img/albums/blurred-album-03.png);}
+#blur4 {background-image: url(img/albums/blurred-album-04.png);}
+#blur5 {background-image: url(img/albums/blurred-album-05.png);}
+#blur6 {background-image: url(img/albums/blurred-album-06.png);}
+#blur7 {background-image: url(img/albums/blurred-album-07.png);}
+#blur8 {background-image: url(img/albums/blurred-album-08.png);}
+#blur9 {background-image: url(img/albums/blurred-album-09.png);}
+#blur10 {background-image: url(img/albums/blurred-album-10.png);}
+#blur11 {background-image: url(img/albums/blurred-album-11.png);}
+#blur12 {background-image: url(img/albums/blurred-album-12.png);}
+
+#blur39 {background-image: url(img/albums/blurred-album-39.png);}
+
 
 .currentAlbumPlayback.active {
     opacity: 0.25;
@@ -624,3 +639,95 @@ h3 {
 .visible {
     opacity: 1.0;
 }
+
+/* -------- MULTIMEDIA ALBUM DETAIL ------ */
+
+.albumDetail {
+    opacity: 0.0;
+    position: absolute;
+    text-align: left;
+    -webkit-transition: opacity 1.0s;
+}
+
+.albumDetailArtist {
+    left: 260px;
+    top: 160px;
+    width: 500px;
+    position: absolute;
+}
+
+.albumDetailTitle {
+    left: 260px;
+    top: 186px;
+    width: 500px;
+    position: absolute;
+}
+
+.albumDetailArtistTypo {
+    font-weight: 300;
+}
+
+.albumDetailTitleLabels {
+    left: 20px;
+    top: 250px;
+    width: 728px;
+    height: 65px;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color:#fff;
+    opacity: 0.5;
+    position: absolute;
+}
+
+.albumDetailTitleContent {
+    left: 20px;
+    top: 250px;
+    width: 728px;
+    height: 65px;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color:#fff;
+    position: relative;
+}
+
+.albumDetailTitleContent.first {
+    margin-top: 65px;
+}
+
+.albumDetailLabel {
+    position: absolute;
+}
+
+.albumDetailLabel.title {
+    left: 60px;
+}
+
+.albumDetailLabel.length {
+    left: 600px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

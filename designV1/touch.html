@@ -15,7 +15,7 @@
 	
 	 <div class="body-area" id="touch-area">
 		<div class="albumPlaybackBackgroundFrame">
-			<div class="currentAlbumPlayback"></div>
+			<div class="currentAlbumPlayback" id="blur39"></div>
 		</div>
 		<div class="albumViewContainer">
 			<div class="albumPlaybackView active">
@@ -65,6 +65,21 @@
 
 			<div class="albumOverview">
 				
+			</div>
+			<div class="albumDetail">
+				<div class="albumDetailArtist">
+
+				</div>
+				<div class="albumDetailTitle">
+
+				</div>
+				<div class="albumDetailTitles">
+					<div class="albumDetailTitleLabels">
+						<h2 class="albumDetailLabel">#</h2>
+						<h2 class="albumDetailLabel title">Titel</h2>
+						<h2 class="albumDetailLabel length">Länge</h2>
+					</div>
+				</div>
 			</div>
 			<div class="albumFadeOutOverlay"></div>
 		</div>
@@ -139,5 +154,6 @@
 	 <script type="text/javascript">
 	 	populateAlbums(".albumOverview", 48);
 	 </script>
+	 <script type="text/javascript" src="json/albums.js"></script>
 </body>
 </html>

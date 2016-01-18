@@ -64,10 +64,36 @@ var rightBorder = [2];
 
 var readyForTouch = false;
 
+var readyForAlbumDetail = false;
+
+var endTouch;
+
 var menuLeftOpen = false;
 var menuRightOpen = false;
 
 var menuPlaybackOpen = false;
+
+var albumName = [];
+var albumArtist = [];
+var songs = [];
+var songLengths = [];
+
+var currentY;
+var startY;
+var getTouch;
+
+function getAlbums (data) {
+	for (var i = 0; i < data.length; i++) {
+		albumName[i] = data[i].name;
+		albumArtist[i] = data[i].artist;
+		songs[i] = new Array(data[i].song.length);
+		songLengths[i] = new Array(data[i].length.length);
+		for (var j = 0; j < data[i].song.length; j++) {
+			songs[i][j] = data[i].song[j];
+			songLengths[i][j] = data[i].length[j];
+		};
+	};
+}
 
 function scrollHandler () {
    if (updateScroll!=true) {
@@ -142,10 +168,33 @@ function tangibleGestureHandler (currentY, startY, distance) {
 }
 
 function displayAlbum (album) {
-	console.log(album);
+	var elemOffset = $("#album" + album).offset();
+	$(".albumDetailArtist").html("");
+	$(".albumDetailTitle").html("");
+	$(".albumViewContainer").append($("#album" + album));
 	$("#album" + album).css("position", "fixed");
-	$("#album" + album).css("left", "0px");
-	$("#album" + album).css("top", "0px");
+	$("#album" + album).css("left", elemOffset.left);
+	$("#album" + album).css("top", elemOffset.top);
+	$(".albumOverview").removeClass("active");
+	$("#album" + album).animate({
+		left: "20",
+		top: "20"
+	}, 300, "swing");
+	$(".albumDetailArtist").html("<h2 class='albumDetailArtistTypo'>"+albumArtist[album-1]+"</h2>");
+	$(".albumDetailTitle").html("<h1>"+albumName[album-1]+"</h1>");
+	$(".albumDetail").css("opacity", 1.0);
+	for (var i = 0; i < songs[album-1].length; i++) {
+		if (i==0) {
+			$(".albumDetailTitles").append("<div class='albumDetailTitleContent first' id=albumContentTitle"+(i+1)+"></div");
+		} else {
+			$(".albumDetailTitles").append("<div class='albumDetailTitleContent' id=albumContentTitle"+(i+1)+"></div");
+		}
+		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel'>"+ (i+1) + "</h2>");
+		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel title'>"+ songs[album-1][i] + "</h2>");
+		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel length'>"+ songLengths[album-1][i] + "</h2>");
+	};
+	$(".albumPlaybackBackgroundFrame").html("<div class='currentAlbumPlayback' id='blur"+album+"'></div>");
+	$(".albumPlaybackBackgroundFrame").addClass("active");
 }
 
 function closeMenu (type, side) {
@@ -329,7 +378,9 @@ var handler = function (e) {
 
 		if (tangible) {
 
-			readyForTouch = false;
+			touchEvent = false;
+			scrollingEvent = false;
+			readyForTouch=false;
 
 			// determine two points for rotation calculation
 			var p1 = {
@@ -437,7 +488,7 @@ var handler = function (e) {
 		window.setTimeout(
 			function() {
 				readyForTouch = true;
-		}, 250);
+		}, 1000);
 	}
 
 	$("#currentAreaTitle").css("opacity", 1.0);
@@ -468,6 +519,14 @@ var handler = function (e) {
 	}
 
 	if (showData.touches.length==1) {
+		//console.log("Ready for touch input");
+		// capture Start y 
+		if (getTouch) {
+			startY = y[0];
+			getTouch=false;
+		}
+		currentY = y[0];
+		
 		if (captureStartScroll) {
 			referenceScrollYPos="";
 			multimediaScrollYReferencePos="";
@@ -475,23 +534,21 @@ var handler = function (e) {
 			multimediaScrollYReferencePos=parseFloat(multimediaScrollYReferencePos);
 			referenceScrollYPos=showData.touches[0].screenY;
 			captureStartScroll=false;
-		}
+		}	
 		if (scrollingEvent) {
 			currentScrollYPos=showData.touches[0].screenY;
 			resultingScroll=currentScrollYPos-referenceScrollYPos;
 			multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
 			updateScroll=true;
-			console.log("scrolling!");
+			//readyForAlbumDetail=false;
+			//console.log("scrolling!");
 		} else if (touchEvent) {
 			var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-			window.setTimeout(function(){
-				if (touchEvent) {
-					// select the album
-					displayAlbum(clickedAlbum);
-				}
-			}, 50);
+			// select the album
+			console.log("Clicked on album " + clickedAlbum);
+			displayAlbum(clickedAlbum);
 		}
-
+		//console.log("scrolling: " + scrollingEvent + ", touch: " + touchEvent);
 	} 
 
 	if (showData.touches.length==5) {
@@ -512,27 +569,45 @@ var handler = function (e) {
 		}
 	}		
 };
-
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
 	gestureSuccess = false;
-	scrollingEvent = false;
-	handler(event);
+	getTouch=true;
+	//scrollingEvent=false;
+	//touchEvent=false;
+	window.setTimeout(function() {
+		/*if (currentY != startY) {
+			touchEvent = false;
+			scrollingEvent = true;
+			console.log("SCROLL " + scrollingEvent);
+		} else {
+			touchEvent = true;
+			scrollingEvent = false;
+			console.log("TOUCH " + touchEvent);
+		}*/
+		if (currentY == startY) {
+			touchEvent = true;
+			scrollingEvent = false;
+			console.log("TOUCH " + touchEvent);
+		}
+		handler(event);
+	},100);
+	
 });
 
 $("#touch-area").on("touch_move", function(event){
-	scrollingEvent=true;
-	touchEvent=false;
+	touchEvent = false;
+	scrollingEvent = true;
+	console.log("SCROLLING" + scrollingEvent);
 	handler(event);
 });
 
 $("#touch-area").on("touch_end", function(event) {
 	captureStartScroll=true;
-	if (scrollingEvent) {
-		scrollingEvent=false;
-		touchEvent=true;
-	}
+	touchEvent=false;
 	handler(event);
+	touchEvent=true;
+	scrollingEvent=false;
 })
 
 
