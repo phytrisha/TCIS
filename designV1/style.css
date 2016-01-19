@@ -646,6 +646,8 @@ h3 {
     opacity: 0.0;
     position: absolute;
     text-align: left;
+    background-size: contain;
+    background-repeat: no-repeat;
     -webkit-transition: opacity 1.0s;
 }
 
@@ -680,18 +682,12 @@ h3 {
 }
 
 .albumDetailTitleContent {
-    left: 20px;
-    top: 250px;
     width: 728px;
     height: 65px;
     border-bottom-style:solid;
     border-bottom-width:1px;
     border-bottom-color:#fff;
     position: relative;
-}
-
-.albumDetailTitleContent.first {
-    margin-top: 65px;
 }
 
 .albumDetailLabel {
@@ -704,6 +700,21 @@ h3 {
 
 .albumDetailLabel.length {
     left: 600px;
+}
+
+.albumDetailTitleList {
+    position: absolute;
+    top: 0px;
+    width: 728px;
+}
+
+.albumDetailTitleFrame {
+    position: absolute;
+    left: 20px;
+    top: 315px;
+    width: 728px;
+    height: 645px;
+    overflow: hidden;   
 }
 
 

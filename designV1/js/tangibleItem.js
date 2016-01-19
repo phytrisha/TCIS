@@ -27,9 +27,12 @@ var lastRotationAngle;
 
 var klimaArea=false;
 var multimediaArea=false;
+var albumOverview=false;
 
 var leftKlimaZone = false;
 var rightKlimaZone = false;
+
+var albumDetail = false;
 
 var tempMax = 28;
 var tempMin = 15;
@@ -43,6 +46,9 @@ var rightTemperatureZoneVariable = standardTemp;
 
 var multimediaScrollYPos;
 var multimediaScrollYReferencePos;
+
+var albumDetailScrollYPos;
+var albumDetailScrollYReferencePos;
 
 var updateScroll=false;
 
@@ -82,6 +88,9 @@ var currentY;
 var startY;
 var getTouch;
 
+var currentAlbum;
+var scrollHeight;
+
 function getAlbums (data) {
 	for (var i = 0; i < data.length; i++) {
 		albumName[i] = data[i].name;
@@ -95,12 +104,12 @@ function getAlbums (data) {
 	};
 }
 
-function scrollHandler (elem, scrollVar) {
+function scrollHandler (elem, scrollVar, max, min) {
    if (updateScroll!=true) {
 		lastScrollYSpeed*=0.95;
 		scrollVar+=(-lastScrollYSpeed);
 	}
-	scrollVar = Math.min(Math.max(parseInt(scrollVar), -1750), 100);
+	scrollVar = Math.min(Math.max(parseInt(scrollVar), max), min);
 	$(elem).css("top", scrollVar + "px");
 }
 
@@ -168,7 +177,11 @@ function tangibleGestureHandler (currentY, startY, distance) {
 }
 
 function displayAlbum (album) {
+	currentAlbum = album;
 	var elemOffset = $("#album" + album).offset();
+	$(".albumDetail").css("width", "100%");
+	$(".albumDetail").css("height", "100%");
+	$(".albumDetail").attr("id", "blur" + album);
 	$(".albumDetailArtist").html("");
 	$(".albumDetailTitle").html("");
 	$(".albumViewContainer").append($("#album" + album));
@@ -184,11 +197,7 @@ function displayAlbum (album) {
 	$(".albumDetailTitle").html("<h1>"+albumName[album-1]+"</h1>");
 	$(".albumDetail").css("opacity", 1.0);
 	for (var i = 0; i < songs[album-1].length; i++) {
-		if (i==0) {
-			$(".albumDetailTitles").append("<div class='albumDetailTitleContent first' id=albumContentTitle"+(i+1)+"></div");
-		} else {
-			$(".albumDetailTitles").append("<div class='albumDetailTitleContent' id=albumContentTitle"+(i+1)+"></div");
-		}
+		$(".albumDetailTitleList").append("<div class='albumDetailTitleContent' id=albumContentTitle"+(i+1)+"></div");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel'>"+ (i+1) + "</h2>");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel title'>"+ songs[album-1][i] + "</h2>");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel length'>"+ songLengths[album-1][i] + "</h2>");
@@ -320,11 +329,12 @@ function tangibleMenuHandler (type, angle, side, center, step) {
 }
 
 function openMenuElement (elem) {
-	console.log(elem)
+	//console.log(elem)
 	switch(elem) {
 		case 1:
 			$(".albumOverview").addClass("active");
 			$(".albumPlaybackView").removeClass("active");
+			albumOverview=true;
 			break;
 	}
 }
@@ -524,17 +534,31 @@ var handler = function (e) {
 		
 		if (captureStartScroll) {
 			multimediaScrollYReferencePos=parseInt($(".albumOverview").css('top'));
+			albumDetailScrollYReferencePos=parseInt($(".albumDetailTitleList").css('top'));
 			referenceScrollYPos=showData.touches[0].screenY;
 			captureStartScroll=false;
 		}	
 		if (scrollingEvent) {
+
 			currentScrollYPos=showData.touches[0].screenY;
 			resultingScroll=currentScrollYPos-referenceScrollYPos;
-			multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+			if (multimediaArea) {
+				multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+			} else if (albumDetail) {
+				scrollHeight = (songs[currentAlbum].length * 65) * (-1) + 130;
+				console.log("max scroll distance: " + scrollHeight);
+				albumDetailScrollYPos=albumDetailScrollYReferencePos+resultingScroll;
+			}
 			updateScroll=true;
 		} else if (touchEvent) {
-			var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-			displayAlbum(clickedAlbum);
+			if (albumOverview) {
+				var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
+				displayAlbum(clickedAlbum);
+				albumOverview=false;
+				albumDetail=true;
+				multimediaArea=false;
+			}
+			
 		}
 	} 
 
@@ -599,7 +623,9 @@ setInterval(function() {
 
 setInterval(function() {
 	if (multimediaArea) {
-		scrollHandler(".albumOverview", multimediaScrollYPos);
+		scrollHandler(".albumOverview", multimediaScrollYPos, -1750, 100);
+	} else if (albumDetail) {
+		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
 	}
 },10);
 
