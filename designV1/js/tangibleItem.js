@@ -28,6 +28,7 @@ var lastRotationAngle;
 var klimaArea=false;
 var multimediaArea=false;
 var albumOverview=false;
+var artistOverview=false;
 
 var leftKlimaZone = false;
 var rightKlimaZone = false;
@@ -329,12 +330,16 @@ function tangibleMenuHandler (type, angle, side, center, step) {
 }
 
 function openMenuElement (elem) {
-	//console.log(elem)
 	switch(elem) {
 		case 1:
 			$(".albumOverview").addClass("active");
 			$(".albumPlaybackView").removeClass("active");
 			albumOverview=true;
+			break;
+		case 2:
+			$(".artistOverview").addClass("active");
+			$(".albumPlaybackView").removeClass("active");
+			artistOverview=true;
 			break;
 	}
 }
@@ -525,44 +530,64 @@ var handler = function (e) {
 		$(".albumFadeOutOverlay").addClass("visible");
 	}
 
-	if (showData.touches.length==1) {
+	var tangibleClick = false;
+	var touchClick = false;
+
+	if (showData.touches.length == 5) {
+		var distanceOfFifth = Math.sqrt(Math.pow(x[4]-centerX, 2) + Math.pow(y[4]-centerY, 2));
+		if (distanceOfFifth < 250) {
+			tangibleClick = true;
+		} else {
+			touchClick = true;
+		}
+	}
+
+	if (showData.touches.length==1 || touchClick) {
+		var scopeX, scopeY;
+		if (touchClick) {
+			scopeX = x[4];
+			scopeY = y[4]
+		} else {
+			scopeX = x[0];
+			scopeY = y[0];
+		}
+
 		if (getTouch) {
-			startY = y[0];
+			startY = scopeY;
 			getTouch=false;
 		}
-		currentY = y[0];
-		
-		if (captureStartScroll) {
-			multimediaScrollYReferencePos=parseInt($(".albumOverview").css('top'));
-			albumDetailScrollYReferencePos=parseInt($(".albumDetailTitleList").css('top'));
-			referenceScrollYPos=showData.touches[0].screenY;
-			captureStartScroll=false;
-		}	
-		if (scrollingEvent) {
 
-			currentScrollYPos=showData.touches[0].screenY;
-			resultingScroll=currentScrollYPos-referenceScrollYPos;
-			if (multimediaArea) {
-				multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
-			} else if (albumDetail) {
-				scrollHeight = (songs[currentAlbum].length * 65) * (-1) + 130;
-				console.log("max scroll distance: " + scrollHeight);
-				albumDetailScrollYPos=albumDetailScrollYReferencePos+resultingScroll;
+		currentY = scopeY;
+
+		if (klimaArea != true) {
+			if (captureStartScroll) {
+				multimediaScrollYReferencePos=parseInt($(".albumOverview").css('top'));
+				albumDetailScrollYReferencePos=parseInt($(".albumDetailTitleList").css('top'));
+				referenceScrollYPos=scopeY;
+				captureStartScroll=false;
+			}	
+			if (scrollingEvent) {
+				currentScrollYPos=scopeY;
+				resultingScroll=currentScrollYPos-referenceScrollYPos;
+				if (albumOverview) {
+					multimediaScrollYPos=multimediaScrollYReferencePos+resultingScroll;
+				} else if (albumDetail) {
+					scrollHeight = (songs[currentAlbum].length * 65) * (-1) + 130;
+					albumDetailScrollYPos=albumDetailScrollYReferencePos+resultingScroll;
+				}
+				updateScroll=true;
+			} else if (touchEvent) {
+				if (albumOverview) {
+					var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, scopeX, scopeY);
+					displayAlbum(clickedAlbum);
+					albumOverview=false;
+					albumDetail=true;
+				}
 			}
-			updateScroll=true;
-		} else if (touchEvent) {
-			if (albumOverview) {
-				var clickedAlbum = checkElementForTouch("#album", ".albumOverview", 48, x[0], y[0]);
-				displayAlbum(clickedAlbum);
-				albumOverview=false;
-				albumDetail=true;
-				multimediaArea=false;
-			}
-			
 		}
 	} 
 
-	if (showData.touches.length==5) {
+	if (tangibleClick) {
 		if (leftKlimaZone) {
 			openMenu("L");
 		} else if (rightKlimaZone) {
@@ -588,7 +613,6 @@ $("#touch-area").on("touch_start", function(event) {
 		if (currentY == startY) {
 			touchEvent = true;
 			scrollingEvent = false;
-			console.log("TOUCH " + touchEvent);
 		}
 		handler(event);
 	},100);
@@ -598,7 +622,6 @@ $("#touch-area").on("touch_start", function(event) {
 $("#touch-area").on("touch_move", function(event){
 	touchEvent = false;
 	scrollingEvent = true;
-	console.log("SCROLLING" + scrollingEvent);
 	handler(event);
 });
 
@@ -622,7 +645,7 @@ setInterval(function() {
 },1500);
 
 setInterval(function() {
-	if (multimediaArea) {
+	if (albumOverview) {
 		scrollHandler(".albumOverview", multimediaScrollYPos, -1750, 100);
 	} else if (albumDetail) {
 		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
