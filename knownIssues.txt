@@ -1,0 +1,4 @@
+known bugs:
+
+- when switching from album view to climate view, album view still remains active
+- 
