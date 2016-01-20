@@ -648,7 +648,7 @@ h3 {
     text-align: left;
     background-size: contain;
     background-repeat: no-repeat;
-    -webkit-transition: opacity 1.0s;
+    -webkit-transition: opacity 0.3s;
 }
 
 .albumDetailArtist {

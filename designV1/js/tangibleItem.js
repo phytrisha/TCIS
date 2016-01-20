@@ -177,6 +177,8 @@ function tangibleGestureHandler (currentY, startY, distance) {
 	}
 }
 
+var currentAlbumOffset;
+
 function displayAlbum (album) {
 	currentAlbum = album;
 	var elemOffset = $("#album" + album).offset();
@@ -196,6 +198,7 @@ function displayAlbum (album) {
 	}, 300, "swing");
 	$(".albumDetailArtist").html("<h2 class='albumDetailArtistTypo'>"+albumArtist[album-1]+"</h2>");
 	$(".albumDetailTitle").html("<h1>"+albumName[album-1]+"</h1>");
+	$(".albumDetailTitleList").html("");
 	$(".albumDetail").css("opacity", 1.0);
 	for (var i = 0; i < songs[album-1].length; i++) {
 		$(".albumDetailTitleList").append("<div class='albumDetailTitleContent' id=albumContentTitle"+(i+1)+"></div");
@@ -205,6 +208,27 @@ function displayAlbum (album) {
 	};
 	$(".albumPlaybackBackgroundFrame").html("<div class='currentAlbumPlayback' id='blur"+album+"'></div>");
 	$(".albumPlaybackBackgroundFrame").addClass("active");
+	currentAlbumOffset = elemOffset;
+}
+
+function hideAlbum (album) {
+	currentAlbum = album;
+	$(".albumDetail").css("width", "0%");
+	$(".albumDetail").css("height", "0%");
+	$("#album" + album).animate({
+		left: currentAlbumOffset.left,
+		top: currentAlbumOffset.top
+	}, 300, "swing");
+	$(".albumDetail").css("opacity", 0.0);
+	window.setTimeout(function() {
+		$("#album" + album).remove();
+		$(".noAlbumFilled").attr("id", "album" + album);
+		$(".noAlbumFilled").removeClass("noAlbumFilled");
+	}, 300);
+	$("#album" + (album-1)).after("<div class='singleAlbum noAlbumFilled'></div>");
+	$(".albumOverview").addClass("active");
+	$(".albumPlaybackBackgroundFrame").removeClass("active");
+	$(".albumDetail").removeAttr("id", "blur" + album);
 }
 
 function closeMenu (type, side) {
@@ -433,6 +457,13 @@ var handler = function (e) {
 						$(".currentTitleLabel").removeClass("inactive");
 						menuPlaybackOpen=false;
 					}
+				} else if (albumDetail) {
+					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+						console.log("close album detail");
+						hideAlbum(currentAlbum);
+						albumDetail = false;
+						albumOverview = true;
+					}
 				}
 			}
 
@@ -582,6 +613,12 @@ var handler = function (e) {
 					displayAlbum(clickedAlbum);
 					albumOverview=false;
 					albumDetail=true;
+				} else if (albumDetail) {
+					// not working correctly, due to offset of albumDetailTitleList is relative to Container
+					// possible solution to explore: implement y-offset to checkElementForTouch
+					// possible solution to explore: adjust css properties, so that album list is independant
+					var clickedSong = checkElementForTouch("#albumContentTitle", ".albumDetailTitleList", songs[currentAlbum].length, scopeX, scopeY);
+					console.log(clickedSong);
 				}
 			}
 		}
