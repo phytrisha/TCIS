@@ -184,7 +184,6 @@ function displayAlbum (album) {
 	var elemOffset = $("#album" + album).offset();
 	$(".albumDetail").css("width", "100%");
 	$(".albumDetail").css("height", "100%");
-	$(".albumDetail").attr("id", "blur" + album);
 	$(".albumDetailArtist").html("");
 	$(".albumDetailTitle").html("");
 	$(".albumViewContainer").append($("#album" + album));
@@ -206,8 +205,7 @@ function displayAlbum (album) {
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel title'>"+ songs[album-1][i] + "</h2>");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel length'>"+ songLengths[album-1][i] + "</h2>");
 	};
-	$(".albumPlaybackBackgroundFrame").html("<div class='currentAlbumPlayback' id='blur"+album+"'></div>");
-	$(".albumPlaybackBackgroundFrame").addClass("active");
+	$(".currentAlbumPlayback").attr("id", "blur" + album);
 	currentAlbumOffset = elemOffset;
 }
 
@@ -225,7 +223,11 @@ function hideAlbum (album) {
 		$(".noAlbumFilled").attr("id", "album" + album);
 		$(".noAlbumFilled").removeClass("noAlbumFilled");
 	}, 300);
-	$("#album" + (album-1)).after("<div class='singleAlbum noAlbumFilled'></div>");
+	if (album > 1) {
+		$("#album" + (album-1)).after("<div class='singleAlbum noAlbumFilled'></div>");
+	} else {
+		$("#album2").before("<div class='singleAlbum noAlbumFilled'></div>");
+	}
 	$(".albumOverview").addClass("active");
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
@@ -683,7 +685,7 @@ setInterval(function() {
 
 setInterval(function() {
 	if (albumOverview) {
-		scrollHandler(".albumOverview", multimediaScrollYPos, -1750, 100);
+		scrollHandler(".albumOverview", multimediaScrollYPos, -4000, 100);
 	} else if (albumDetail) {
 		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
 	}

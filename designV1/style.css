@@ -382,59 +382,6 @@ h3 {
     
 }
 
-#album1 {background-image: url(img/albums/01.jpg);}
-#album2 {background-image: url(img/albums/02.jpg);}
-#album3 {background-image: url(img/albums/03.jpg);}
-#album4 {background-image: url(img/albums/04.jpg);}
-#album5 {background-image: url(img/albums/05.jpg);}
-#album6 {background-image: url(img/albums/06.jpg);}
-#album7 {background-image: url(img/albums/07.jpg);}
-#album8 {background-image: url(img/albums/08.jpg);}
-#album9 {background-image: url(img/albums/09.jpg);}
-
-#album10 {background-image: url(img/albums/10.jpg);}
-#album11 {background-image: url(img/albums/11.jpg);}
-#album12 {background-image: url(img/albums/12.jpg);}
-#album13 {background-image: url(img/albums/13.jpg);}
-#album14 {background-image: url(img/albums/14.jpg);}
-#album15 {background-image: url(img/albums/15.jpg);}
-#album16 {background-image: url(img/albums/16.jpg);}
-#album17 {background-image: url(img/albums/17.jpg);}
-#album18 {background-image: url(img/albums/18.jpg);}
-#album19 {background-image: url(img/albums/19.jpg);}
-
-#album20 {background-image: url(img/albums/20.jpg);}
-#album21 {background-image: url(img/albums/21.jpg);}
-#album22 {background-image: url(img/albums/22.jpg);}
-#album23 {background-image: url(img/albums/23.jpg);}
-#album24 {background-image: url(img/albums/24.jpg);}
-#album25 {background-image: url(img/albums/25.jpg);}
-#album26 {background-image: url(img/albums/26.jpg);}
-#album27 {background-image: url(img/albums/27.jpg);}
-#album28 {background-image: url(img/albums/28.jpg);}
-#album29 {background-image: url(img/albums/29.jpg);}
-
-#album30 {background-image: url(img/albums/30.jpg);}
-#album31 {background-image: url(img/albums/31.jpg);}
-#album32 {background-image: url(img/albums/32.jpg);}
-#album33 {background-image: url(img/albums/33.jpg);}
-#album34 {background-image: url(img/albums/34.jpg);}
-#album35 {background-image: url(img/albums/35.jpg);}
-#album36 {background-image: url(img/albums/36.jpg);}
-#album37 {background-image: url(img/albums/37.jpg);}
-#album38 {background-image: url(img/albums/38.jpg);}
-#album39 {background-image: url(img/albums/39.jpg);}
-
-#album40 {background-image: url(img/albums/40.jpg);}
-#album41 {background-image: url(img/albums/41.jpg);}
-#album42 {background-image: url(img/albums/42.jpg);}
-#album43 {background-image: url(img/albums/43.jpg);}
-#album44 {background-image: url(img/albums/44.jpg);}
-#album45 {background-image: url(img/albums/45.jpg);}
-#album46 {background-image: url(img/albums/46.jpg);}
-#album47 {background-image: url(img/albums/47.jpg);}
-#album48 {background-image: url(img/albums/48.jpg);}
-
 .albumOverview.active {
     top: 0px;
     left: 16px;
@@ -457,22 +404,6 @@ h3 {
     -webkit-transition: opacity 0.5s;
     opacity: 0.0;
 }
-
-#blur1 {background-image: url(img/albums/blurred-album-01.png);}
-#blur2 {background-image: url(img/albums/blurred-album-02.png);}
-#blur3 {background-image: url(img/albums/blurred-album-03.png);}
-#blur4 {background-image: url(img/albums/blurred-album-04.png);}
-#blur5 {background-image: url(img/albums/blurred-album-05.png);}
-#blur6 {background-image: url(img/albums/blurred-album-06.png);}
-#blur7 {background-image: url(img/albums/blurred-album-07.png);}
-#blur8 {background-image: url(img/albums/blurred-album-08.png);}
-#blur9 {background-image: url(img/albums/blurred-album-09.png);}
-#blur10 {background-image: url(img/albums/blurred-album-10.png);}
-#blur11 {background-image: url(img/albums/blurred-album-11.png);}
-#blur12 {background-image: url(img/albums/blurred-album-12.png);}
-
-#blur39 {background-image: url(img/albums/blurred-album-39.png);}
-
 
 .currentAlbumPlayback.active {
     opacity: 0.25;
