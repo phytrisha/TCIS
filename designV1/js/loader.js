@@ -14,3 +14,25 @@ setInterval(function() {
 	$(".progressBarCurrent").css("width", counter + "%");
 	$(".progressIndicatorCurrent").css("left", counter + "%");
 },500);
+
+setInterval(function(){
+	lastRotationAngle=currentRotationAngle;
+},250);
+
+setInterval(function() {
+	if (klimaArea==false && multimediaArea==false) {
+		$(".currentAreaIndicator").toggleClass("standardFaded");
+	}
+},1500);
+
+setInterval(function() {
+	if (albumOverview) {
+		scrollHandler(".albumOverview", multimediaScrollYPos, -4000, 100);
+	} else if (albumDetail) {
+		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
+	}
+},10);
+
+setInterval(function() {
+	lastScrollYPos=currentScrollYPos;
+},25);
