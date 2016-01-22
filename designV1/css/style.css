@@ -1,3 +1,4 @@
+/* ---- GENERAL ---- */
 body {
     -ms-content-zoom-boundary-max: 100%;
     -ms-content-zoom-boundary-min: 100%;
@@ -17,6 +18,7 @@ body {
     height: 1024px;
 }
 
+/* ---- TYPOGRAPHY ---- */
 h1 {
     font-family: Helvetica Neue;
     font-size: 34px;
@@ -178,41 +180,41 @@ h3 {
 }
 
 #menuIcon1 {
-    background-image: url(img/icons/ventilation.png);
+    background-image: url(../img/icons/ventilation.png);
 }
 #menuIcon2 {
-    background-image: url(img/icons/seatHeating.png);
+    background-image: url(../img/icons/seatHeating.png);
 }
 #menuIcon3 {
-    background-image: url(img/icons/seatCooling.png);
+    background-image: url(../img/icons/seatCooling.png);
 }
 #menuIcon4 {
-    background-image: url(img/icons/albums.png);
+    background-image: url(../img/icons/albums.png);
 }
 #menuIcon5 {
-    background-image: url(img/icons/artists.png);
+    background-image: url(../img/icons/artists.png);
 }
 #menuIcon6 {
-    background-image: url(img/icons/playlists.png);
+    background-image: url(../img/icons/playlists.png);
 }
 
 #leftTemperatureCold {
-    background-image: url(img/cold-left.png);
+    background-image: url(../img/cold-left.png);
     opacity: 0;
 }
 
 #leftTemperatureHot {
-    background-image: url(img/hot-left.png);
+    background-image: url(../img/hot-left.png);
     opacity: 0;
 }
 
 #rightTemperatureCold {
-    background-image: url(img/cold-right.png);
+    background-image: url(../img/cold-right.png);
     opacity: 0;
 }
 
 #rightTemperatureHot {
-    background-image: url(img/hot-right.png);
+    background-image: url(../img/hot-right.png);
     opacity: 0;
 }
 
@@ -425,7 +427,7 @@ h3 {
     height: 1024px;
     background-size: 100%;
     background-repeat: no-repeat;
-    background-image: url(img/albumFade.png);
+    background-image: url(../img/albumFade.png);
     position: absolute;
     top: 0px;
     left: 0px;
@@ -649,8 +651,26 @@ h3 {
 }
 
 
+/* -------- MULTIMEDIA ARTIST DETAIL ------ */
 
+.artistOverview {
+    opacity: 0.0;
+    position: absolute;
+    text-align: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+    -webkit-transition: opacity 0.3s;
+}
 
+.artistOverview.active {
+    opacity: 1.0;
+}
+
+.artistCell {
+    width: 100%;
+    height: 80px;
+    background-color: green;
+}
 
 
 

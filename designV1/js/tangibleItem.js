@@ -121,6 +121,14 @@ var handler = function (e) {
 						$(".currentTitleLabel").removeClass("inactive");
 						menuPlaybackOpen=false;
 					}
+				} else if (albumOverview) {
+					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+						console.log("close album overview");
+						closeMenu("multimedia", "");
+						albumOverview = false;
+						$(".albumOverview").removeClass("active");
+						$(".albumPlaybackView").addClass("active");
+					}
 				} else if (albumDetail) {
 					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
 						console.log("close album detail");
