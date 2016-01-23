@@ -215,13 +215,13 @@ var handler = function (e) {
 		applyTemperature("right");
 		$(".temperatureView").addClass("visible");
 		$(".albumOverview").removeClass("albumOverviewActive");
-		$(".albumVContainer").removeClass("albumOverviewContainerVisible");
+		$(".albumViewContainer").removeClass("albumOverviewContainerVisible");
 		$("#albumScroll").css("opacity", 0.0);
 		$("#albumFade").css("opacity", 0.0);
 		$(".currentAlbumPlayback").removeClass("active");
 		$(".albumFadeOutOverlay").removeClass("visible");
 	} else if (multimediaArea) {
-		$("#currentAreaTitle").html("<h1></h1>")
+		$("#currentAreaTitle").html("")
 		$(".showTemperature").removeClass("showTemperatureVisible");
 		$("#albumScroll").css("opacity", 1.0);
 		$("#albumFade").css("opacity", 1.0);

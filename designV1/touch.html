@@ -8,6 +8,7 @@
 	 <title>Tangible Car UI</title>
 	 <link rel="stylesheet" href="css/style.css">
 	 <link rel="stylesheet" href="css/albums.css">
+	 <link rel="stylesheet" href="css/artists.css">
 	 <script type="text/javascript" src="js/jquery-2.1.4.js"></script>
 	 <script type="text/javascript" src="js/jquery.touch.js"></script>
 	 <script type="text/javascript" src="js/var.js"></script>
@@ -86,9 +87,7 @@
 			</div>
 
 			<div class="artistOverview">
-				<div class="artistCell">
-					
-				</div>
+				
 			</div>
 
 			<div class="albumFadeOutOverlay"></div>
@@ -166,8 +165,10 @@
 	<script type="text/javascript" src="js/climate.js"></script>
 	<script type="text/javascript" src="js/tangibleItem.js"></script>
 	<script type="text/javascript" src="json/albums.js"></script>
+	<script type="text/javascript" src="json/artists.js"></script>
 	<script type="text/javascript">
-		populateAlbums(".albumOverview", 48);
+		populateAlbums(".albumOverview");
+		populateArtists(".artistOverview");
 	</script>
 </body>
 </html>

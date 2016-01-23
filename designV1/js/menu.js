@@ -80,9 +80,12 @@ function tangibleMenuHandler (type, angle, side, center, step) {
 			$("." + type + "Menu" + side).css("left", (center+step) + "px");
 			break;
 	}
+	console.log(menuActivePoint);
 }
 
 function openMenuElement (elem) {
+	console.log("open " + elem);
+	elem = Math.sqrt(elem);
 	switch(elem) {
 		case 1:
 			$(".albumOverview").addClass("active");
@@ -95,6 +98,7 @@ function openMenuElement (elem) {
 			artistOverview=true;
 			break;
 	}
+	closeMenu();
 }
 
 

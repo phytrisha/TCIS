@@ -1,6 +1,13 @@
-function populateAlbums (source, amount) {
-	for (var i = 1; i <= amount; i++) {
+function populateAlbums (source) {
+	for (var i = 1; i <= albumName.length; i++) {
 		$(source).append("<div class='singleAlbum' id='album" + i + "'></div>");
+	};
+}
+
+function populateArtists (source) {
+	for (var i = 1; i <= artists.length; i++) {
+		$(source).append("<div class='artistCell' id='artist_blur" + i + "'></div>");
+		$("#artist_blur" + i).append("<div class='artistImage' id='artist" + i + "'></div><div class='artistTitle'><h1>" + artists[i-1] + "</h1></div>");
 	};
 }
 
@@ -20,7 +27,7 @@ setInterval(function(){
 },250);
 
 setInterval(function() {
-	if (klimaArea==false && multimediaArea==false) {
+	if (klimaArea == false && multimediaArea == false) {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
 },1500);

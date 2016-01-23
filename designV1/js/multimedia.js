@@ -11,6 +11,12 @@ function getAlbums (data) {
 	};
 }
 
+function getArtists (data) {
+	for (var i = 0; i < data.length; i++) {
+		artists[i] = data[i].artist;
+	};
+}
+
 function displayAlbum (album) {
 	currentAlbum = album;
 	var elemOffset = $("#album" + album).offset();
@@ -64,3 +70,12 @@ function hideAlbum (album) {
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
 }
+
+
+
+
+
+
+
+
+

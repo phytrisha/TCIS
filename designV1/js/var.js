@@ -85,6 +85,8 @@ var albumArtist = [];
 var songs = [];
 var songLengths = [];
 
+var artists = [];
+
 var currentY;
 var startY;
 var getTouch;
