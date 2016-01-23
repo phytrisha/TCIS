@@ -84,15 +84,14 @@ function tangibleMenuHandler (type, angle, side, center, step) {
 }
 
 function openMenuElement (elem) {
-	console.log("open " + elem);
-	elem = Math.sqrt(elem);
 	switch(elem) {
 		case 1:
 			$(".albumOverview").addClass("active");
 			$(".albumPlaybackView").removeClass("active");
 			albumOverview=true;
 			break;
-		case 2:
+		case (-1):
+			console.log("open artist Overview");
 			$(".artistOverview").addClass("active");
 			$(".albumPlaybackView").removeClass("active");
 			artistOverview=true;

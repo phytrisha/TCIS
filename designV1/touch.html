@@ -91,6 +91,9 @@
 			</div>
 
 			<div class="albumFadeOutOverlay"></div>
+			<div class="volumeControl">
+				<canvas width="768" height="768" id="volume"></canvas>
+			</div>
 		</div>
 		
 
@@ -166,9 +169,11 @@
 	<script type="text/javascript" src="js/tangibleItem.js"></script>
 	<script type="text/javascript" src="json/albums.js"></script>
 	<script type="text/javascript" src="json/artists.js"></script>
+	<script type="text/javascript" src="js/volume.js"></script>
 	<script type="text/javascript">
 		populateAlbums(".albumOverview");
 		populateArtists(".artistOverview");
+		drawCurrent(230);
 	</script>
 </body>
 </html>

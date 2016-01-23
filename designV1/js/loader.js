@@ -42,4 +42,5 @@ setInterval(function() {
 
 setInterval(function() {
 	lastScrollYPos=currentScrollYPos;
+	drawCurrent(currentVolume);
 },25);

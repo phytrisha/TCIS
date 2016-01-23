@@ -97,6 +97,7 @@ var handler = function (e) {
 
 			// calculate rotation between two points
 			var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
+			//console.log("current angle: " + angleDeg);
 
 			// initialize reference angle
 			if (initAngle) {
@@ -135,6 +136,10 @@ var handler = function (e) {
 						hideAlbum(currentAlbum);
 						albumDetail = false;
 						albumOverview = true;
+					}
+				} else if (artistOverview) {
+					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+						console.log("close artistOverview");
 					}
 				}
 			}
@@ -316,6 +321,7 @@ var handler = function (e) {
 
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
+	startVolume = currentVolume;
 	gestureSuccess = false;
 	getTouch=true;
 	window.setTimeout(function() {
