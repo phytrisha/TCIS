@@ -239,21 +239,30 @@ var handler = function (e) {
 
 	var tangibleClick = false;
 	var touchClick = false;
+	var touchPoint;
 
-	if (showData.touches.length == 5) {
-		var distanceOfFifth = Math.sqrt(Math.pow(x[4]-centerX, 2) + Math.pow(y[4]-centerY, 2));
-		if (distanceOfFifth < 250) {
-			tangibleClick = true;
-		} else {
-			touchClick = true;
-		}
+	if (showData.touches.length >= 5) {
+		for (var i = 4; i < showData.touches.length; i++) {
+			var distanceOfFifth = Math.sqrt(Math.pow(x[i]-centerX, 2) + Math.pow(y[i]-centerY, 2));
+			/*if (distanceOfFifth < 250) {
+				tangibleClick = true;
+			} else {
+				touchClick = true;
+			}*/
+			if (distanceOfFifth > 250) {
+				touchPoint = i;
+				touchClick = true;
+			} else {
+				tangibleClick = true;
+			}
+		};
 	}
 
 	if (showData.touches.length==1 || touchClick) {
 		var scopeX, scopeY;
 		if (touchClick) {
-			scopeX = x[4];
-			scopeY = y[4]
+			scopeX = x[touchPoint];
+			scopeY = y[touchPoint];
 		} else {
 			scopeX = x[0];
 			scopeY = y[0];
