@@ -92,6 +92,7 @@
 
 			<div class="albumFadeOutOverlay"></div>
 			<div class="volumeControl">
+				<canvas width="768" height="768" id="volumeConst"></canvas>
 				<canvas width="768" height="768" id="volume"></canvas>
 			</div>
 		</div>
@@ -155,8 +156,6 @@
 			</div>
 		</div>
 
-		
-
 		<div class="currentAreaIndicator standardVisible" id="currentAreaTitle">
 			<h1>Please place the tangible item on the screen.</h1>
 		</div>
@@ -173,7 +172,6 @@
 	<script type="text/javascript">
 		populateAlbums(".albumOverview");
 		populateArtists(".artistOverview");
-		drawCurrent(230);
 	</script>
 </body>
 </html>

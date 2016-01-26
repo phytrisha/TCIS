@@ -11,6 +11,7 @@ function populateArtists (source) {
 	};
 }
 
+
 var counter=0;
 
 setInterval(function() {
@@ -42,5 +43,8 @@ setInterval(function() {
 
 setInterval(function() {
 	lastScrollYPos=currentScrollYPos;
-	drawCurrent(currentVolume);
 },25);
+
+setInterval(function() {
+	drawCurrent(currentVolume);
+}, 25);

@@ -1,0 +1,1 @@
+designV1/img/*

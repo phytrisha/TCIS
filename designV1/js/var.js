@@ -94,4 +94,5 @@ var getTouch;
 var currentAlbum;
 var scrollHeight;
 
-var currentVolume = 135;
+var currentVolume = 140;
+var startVolume;

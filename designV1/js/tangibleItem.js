@@ -112,6 +112,11 @@ var handler = function (e) {
  
 			// calculate & round resulting rotation angle
 			currentRotationAngle = Math.round(angleDeg - angleStart);
+			console.log("current angle: " + currentRotationAngle);
+
+			if (currentRotationAngle > -90 && currentRotationAngle < 90) {
+				currentVolume = startVolume + currentRotationAngle;
+			}
 
 			if (multimediaArea) {
 				if (menuPlaybackOpen) {
@@ -243,12 +248,9 @@ var handler = function (e) {
 
 	if (showData.touches.length >= 5) {
 		for (var i = 4; i < showData.touches.length; i++) {
+			
 			var distanceOfFifth = Math.sqrt(Math.pow(x[i]-centerX, 2) + Math.pow(y[i]-centerY, 2));
-			/*if (distanceOfFifth < 250) {
-				tangibleClick = true;
-			} else {
-				touchClick = true;
-			}*/
+
 			if (distanceOfFifth > 250) {
 				touchPoint = i;
 				touchClick = true;
@@ -325,12 +327,13 @@ var handler = function (e) {
 				menuPlaybackOpen=false;
 			}
 		}
-	}		
+	}
 };
 
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
 	startVolume = currentVolume;
+	//console.log(startVolume);
 	gestureSuccess = false;
 	getTouch=true;
 	window.setTimeout(function() {
