@@ -23,7 +23,7 @@ setInterval(function() {
 	$(".progressIndicatorCurrent").css("left", counter + "%");
 
 	// socket.io emission
-	socket.emit('time', { time: counter });
+	//socket.emit('time', { time: counter });
 },500);
 
 setInterval(function(){
@@ -49,5 +49,7 @@ setInterval(function() {
 },25);
 
 setInterval(function() {
-	drawCurrent(currentVolume);
+	if (!menuPlaybackOpen) {
+		drawCurrent(currentVolume);
+	}
 }, 25);
