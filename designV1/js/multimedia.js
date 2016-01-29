@@ -71,11 +71,3 @@ function hideAlbum (album) {
 	$(".albumDetail").removeAttr("id", "blur" + album);
 }
 
-
-
-
-
-
-
-
-

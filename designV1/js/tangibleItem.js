@@ -97,7 +97,6 @@ var handler = function (e) {
 
 			// calculate rotation between two points
 			var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
-			//console.log("current angle: " + angleDeg);
 
 			// initialize reference angle
 			if (initAngle) {
@@ -112,7 +111,6 @@ var handler = function (e) {
  
 			// calculate & round resulting rotation angle
 			currentRotationAngle = Math.round(angleDeg - angleStart);
-			console.log("current angle: " + currentRotationAngle);
 
 			if (currentRotationAngle > -90 && currentRotationAngle < 90) {
 				currentVolume = startVolume + currentRotationAngle;
@@ -332,10 +330,12 @@ var handler = function (e) {
 
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
+
 	startVolume = currentVolume;
-	//console.log(startVolume);
+
 	gestureSuccess = false;
 	getTouch=true;
+
 	window.setTimeout(function() {
 		if (currentY == startY) {
 			touchEvent = true;
