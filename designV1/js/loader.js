@@ -51,5 +51,11 @@ setInterval(function() {
 setInterval(function() {
 	if (!menuPlaybackOpen) {
 		drawCurrent(currentVolume);
+		$('#volume').css('opacity', 1.0);
+		$('#volumeConst').css('opacity', 1.0);
+	}
+	if (menuPlaybackOpen) {
+		$('#volume').css('opacity', 0);
+		$('#volumeConst').css('opacity', 0);
 	}
 }, 25);
