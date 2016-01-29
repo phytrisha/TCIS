@@ -21,6 +21,9 @@ setInterval(function() {
 	counter++;
 	$(".progressBarCurrent").css("width", counter + "%");
 	$(".progressIndicatorCurrent").css("left", counter + "%");
+
+	// socket.io emission
+	socket.emit('time', { time: counter });
 },500);
 
 setInterval(function(){
