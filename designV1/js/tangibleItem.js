@@ -120,13 +120,13 @@ var handler = function (e) {
 				if (menuPlaybackOpen) {
 					$(".multimediaMenu").css("opacity", 1.0);
 					tangibleMenuHandler("multimedia", currentRotationAngle, "", 96, 192);
-					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						closeMenu("multimedia", "");
 						$(".currentTitleLabel").removeClass("inactive");
 						menuPlaybackOpen=false;
 					}
 				} else if (albumOverview) {
-					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						console.log("close album overview");
 						closeMenu("multimedia", "");
 						albumOverview = false;
@@ -134,14 +134,14 @@ var handler = function (e) {
 						$(".albumPlaybackView").addClass("active");
 					}
 				} else if (albumDetail) {
-					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						console.log("close album detail");
 						hideAlbum(currentAlbum);
 						albumDetail = false;
 						albumOverview = true;
 					}
 				} else if (artistOverview) {
-					if (tangibleGestureHandler(centerY, posStart[1], 50) == true) {
+					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						console.log("close artistOverview");
 					}
 				}

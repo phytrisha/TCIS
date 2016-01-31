@@ -21,6 +21,9 @@ setInterval(function() {
 	counter++;
 	$(".progressBarCurrent").css("width", counter + "%");
 	$(".progressIndicatorCurrent").css("left", counter + "%");
+
+	// socket.io emission
+	//socket.emit('time', { time: counter });
 },500);
 
 setInterval(function(){
@@ -46,5 +49,13 @@ setInterval(function() {
 },25);
 
 setInterval(function() {
-	drawCurrent(currentVolume);
+	if (!menuPlaybackOpen) {
+		drawCurrent(currentVolume);
+		$('#volume').css('opacity', 1.0);
+		$('#volumeConst').css('opacity', 1.0);
+	}
+	if (menuPlaybackOpen) {
+		$('#volume').css('opacity', 0);
+		$('#volumeConst').css('opacity', 0);
+	}
 }, 25);

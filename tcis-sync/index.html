@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="node_modules/socket.io-client/socket.io.js"></script>
+	<script>
+		var socket = io.connect('http://fh-mac.local:8080');
+		
+		socket.on('time', function (data) {
+			console.log(data);
+			$('#range').val(data['time']);
+		});
+
+		$(function() {
+			$('#range').on('input', function () {
+    			socket.emit('range', { value: $(this).val() });
+			});
+		});
+	</script>
+</head>
+<body>
+	<input id="range" type="range" />
+</body>
+</html>

@@ -23,7 +23,7 @@ function drawCurrent (current) {
 	ctf.clearRect(0, 0, c.width, c.height);
 	ctf.beginPath();
 	ctf.arc(384,384,370,start,draw);
-	ctf.lineWidth=24;
+	ctf.lineWidth=14;
 	ctf.strokeStyle="rgba(255,255,255,1)";
 	ctf.stroke();
 }
