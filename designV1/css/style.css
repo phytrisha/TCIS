@@ -19,22 +19,72 @@ body {
 }
 
 /* ---- TYPOGRAPHY ---- */
+
+@font-face {
+  font-family: 'SanFrancisco-Regular';
+  src: url('../typo/SanFranciscoDisplay-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Light';
+  src: url('../typo/SanFranciscoDisplay-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Ultralight';
+  src: url('../typo/SanFranciscoDisplay-Ultralight.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Medium';
+  src: url('../typo/SanFranciscoDisplay-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Bold';
+  src: url('../typo/SanFranciscoDisplay-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Black';
+  src: url('../typo/SanFranciscoDisplay-Black.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Semibold';
+  src: url('../typo/SanFranciscoDisplay-Semibold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Thin';
+  src: url('../typo/SanFranciscoDisplay-Thin.otf') format('opentype');
+}
+
+
 h1 {
-    font-family: Helvetica Neue;
+    font-family: 'SanFrancisco-Thin';
     font-size: 34px;
     font-weight: 300;
 }
 
 h2 {
-    font-family: Helvetica Neue;
+    font-family: 'SanFrancisco-Regular';
     font-size: 22px;
     font-weight: 500;
 }
 
 h3 {
-    font-family: Helvetica Neue;
+    font-family: 'SanFrancisco-Thin';
     font-size: 22px;
     font-weight: 300;
+}
+
+h4 {
+    font-family: 'SanFrancisco-Light';
+    font-size: 34px;
+    font-weight: 400;
+    -webkit-margin-before: 0.83em;
+    -webkit-margin-after: 0.83em;
 }
 
 
@@ -180,22 +230,22 @@ h3 {
 }
 
 #menuIcon1 {
-    background-image: url(../img/icons/ventilation.png);
+    background-image: url(../img/icons/ventilation.svg);
 }
 #menuIcon2 {
-    background-image: url(../img/icons/seatHeating.png);
+    background-image: url(../img/icons/seatHeating.svg);
 }
 #menuIcon3 {
-    background-image: url(../img/icons/seatCooling.png);
+    background-image: url(../img/icons/seatCooling.svg);
 }
 #menuIcon4 {
-    background-image: url(../img/icons/albums.png);
+    background-image: url(../img/icons/albums.svg);
 }
 #menuIcon5 {
-    background-image: url(../img/icons/artists.png);
+    background-image: url(../img/icons/artists.svg);
 }
 #menuIcon6 {
-    background-image: url(../img/icons/playlists.png);
+    background-image: url(../img/icons/playlists.svg);
 }
 
 #leftTemperatureCold {
@@ -608,7 +658,7 @@ h3 {
     width: 728px;
     height: 65px;
     border-bottom-style:solid;
-    border-bottom-width:1px;
+    border-bottom-width:0.5px;
     border-bottom-color:#fff;
     opacity: 0.5;
     position: absolute;
@@ -618,7 +668,7 @@ h3 {
     width: 728px;
     height: 65px;
     border-bottom-style:solid;
-    border-bottom-width:1px;
+    border-bottom-width:0.5px;
     border-bottom-color:#fff;
     position: relative;
 }

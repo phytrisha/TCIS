@@ -34,7 +34,7 @@ function displayAlbum (album) {
 		top: "20"
 	}, 300, "swing");
 	$(".albumDetailArtist").html("<h2 class='albumDetailArtistTypo'>"+albumArtist[album-1]+"</h2>");
-	$(".albumDetailTitle").html("<h1>"+albumName[album-1]+"</h1>");
+	$(".albumDetailTitle").html("<h4>"+albumName[album-1]+"</h4>");
 	$(".albumDetailTitleList").html("");
 	$(".albumDetail").css("opacity", 1.0);
 	for (var i = 0; i < songs[album-1].length; i++) {

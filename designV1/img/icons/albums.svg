@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.2.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 300 300" style="enable-background:new 0 0 300 300;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#FFFFFF;stroke-width:6;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:#FFFFFF;stroke-width:6;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st2{fill:none;stroke:#FFFFFF;stroke-width:4;stroke-miterlimit:10;}
+</style>
+<rect x="35" y="35" class="st0" width="230" height="230"/>
+<g>
+	<polyline class="st0" points="120,200 120,100 200,80.5 200,180.5 	"/>
+	<line class="st0" x1="120" y1="120" x2="200" y2="100.5"/>
+	<path class="st0" d="M120,200.6c0,8.3-9,16.6-20,18.5c-11,1.9-20-3.2-20-11.5s9-16.6,20-18.5C111,187.2,120,192.3,120,200.6z"/>
+	<path class="st0" d="M200,180.1c0,8.3-9,16.6-20,18.5s-20-3.2-20-11.5s9-16.6,20-18.5S200,171.8,200,180.1z"/>
+</g>
+<polyline class="st0" points="26,245 10,245 10,55 26,55 "/>
+<polyline class="st0" points="274,245 290,245 290,55 274,55 "/>
+</svg>
