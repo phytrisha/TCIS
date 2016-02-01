@@ -38,8 +38,8 @@ setInterval(function() {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
 	//console.log(menuRotation);
-	console.log("------------------------- NEW");
-	console.log("menuPlaybackOpen " + menuPlaybackOpen);
+	//console.log("------------------------- NEW");
+	//console.log("menuPlaybackOpen " + menuPlaybackOpen);
 
 },1500);
 

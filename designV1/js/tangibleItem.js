@@ -30,7 +30,8 @@ function tangibleGestureHandler (currentY, startY, distance) {
 				captureStartScroll=true;
 				touchEvent=true;
 				scrollingEvent=false;
-			}, 500);
+				gestureSuccess = false;
+			}, 1000);
 			return gestureSuccess;
 		}
 	}
