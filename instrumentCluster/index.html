@@ -1,23 +1,16 @@
-<!doctype html>
 <html>
-<head>
-	<link rel="stylesheet" href="css/style.css">
-	<script type="text/javascript" src="../designV1/js/jquery-2.1.4.js"></script>
-	<script src="node_modules/socket.io-client/socket.io.js"></script>
-	<script>
-		var songInfo;
-		var socket = io.connect('http://mm-mac.local:8080');
-		
-		socket.on('title', function (data) {
-			songInfo = data.title;
-		});
-	</script>
-</head>
-<body>
-	<div class="viewContainer">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=0"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript" src="../designV1/js/jquery-2.1.4.js"></script>
+	</head>
+	<body>
+		<div class="viewContainer">
 			<div class="backgroundCluster">
 			</div>
-			<div class="fader"></div>
 			<div class="gauge left">
 				
 			</div>
@@ -33,16 +26,9 @@
 			<div class="progressBackground">
 			</div>
 			<div class="progressFG"></div>
-			<div class="currentTitleImage" id="album39"></div>
-			<div class="musicIcon"></div>
-			<div class="currentTitle">
-				<h2>Radioactive</h2>
-				<h3>Imagine Dragons</h3>
-			</div>
 		</div>
 
 		<script>
-		var previousInfo;
 		$(".gauge.left").css("-webkit-transform", "rotate(-140deg)");
 		$(".gauge.right").css("-webkit-transform", "rotate(-140deg)");
 		var leftRotation = [-60, -40, -25, 0, 20, 40, 50, 40, 20, -10];
@@ -62,17 +48,15 @@
 		}, 1000);
 		
 		window.setInterval(function() {
-			if (previousInfo != songInfo) {
-				$(".currentTitleImage").attr('id', 'album' + songInfo[0]);
-				$(".currentTitle").html("<h2>" + songInfo[1] + "</h2><h3>" + songInfo[2] + "</h3>");
+			$(".progressFG").css("width", (5.3 * i) + "px");
+			if (i < 40) {
+				i++;	
+			} else {
+				i = 0;
 			}
-			previousInfo = songInfo;
-			console.log(songInfo);
-			$(".progressFG").css("width", (2.12 * songInfo[3]) + "px");
-			//console.log(parseInt(progress));
 		}, 500)
 
 
 		</script>
-</body>
+	</body>
 </html>

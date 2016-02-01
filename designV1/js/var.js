@@ -1,6 +1,10 @@
 var minLim = 60;
 var maxLim = 180;
 
+var currentlyPlayingAlbum = 39;
+var songCounter;
+var sendToMacbook = [39, "Radioactive", "Imagine Dragons", 0];
+
 var tangible = false;
 
 var centerX;
@@ -29,6 +33,7 @@ var klimaArea=false;
 var multimediaArea=false;
 var albumOverview=false;
 var artistOverview=false;
+var artistDetail=false;
 
 var leftKlimaZone = false;
 var rightKlimaZone = false;
@@ -50,6 +55,9 @@ var multimediaScrollYReferencePos;
 
 var albumDetailScrollYPos;
 var albumDetailScrollYReferencePos;
+
+var artistOverviewScrollYPos;
+var artistOverviewScrollYReferencePos;
 
 var updateScroll=false;
 
@@ -86,6 +94,7 @@ var songs = [];
 var songLengths = [];
 
 var artists = [];
+var artistAlbums = [];
 
 var currentY;
 var startY;
@@ -94,5 +103,19 @@ var getTouch;
 var currentAlbum;
 var scrollHeight;
 
+var currentArtist;
+
 var currentVolume = 140;
 var startVolume;
+
+var initMenuRotation = true;
+var menuRotation;
+
+
+
+
+
+
+
+
+

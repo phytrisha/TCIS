@@ -1,0 +1,231 @@
+body {
+	margin: 0;
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Thin';
+  src: url('../../designV1/typo/SanFranciscoDisplay-Thin.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'SanFrancisco-Light';
+  src: url('../../designV1/typo/SanFranciscoDisplay-Light.otf') format('opentype');
+}
+
+h1 {
+    font-family: 'SanFrancisco-Thin';
+    font-size: 60px;
+    font-weight: 300;
+    color: #fff;
+}
+
+h2 {
+    font-family: 'SanFrancisco-Light';
+    font-size: 16px;
+    font-weight: 300;
+    color: #fff;
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
+}
+
+h3 {
+    font-family: 'SanFrancisco-Light';
+    font-size: 12px;
+    font-weight: 300;
+    color: #fff;
+    -webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
+}
+
+.viewContainer {
+	width: 1280px;
+	height: 800px;
+	background-color: #000;
+	overflow: hidden;
+}
+
+.backgroundCluster {
+	top: 374px;
+    position: absolute;
+	width: 100%;
+	height: 426px;
+	background-size: 100%;
+	background-image: url(../img/background.png);
+	z-index: 200;
+}
+
+.gauge {
+	top: 374px;
+    position: fixed;
+	width: 426px;
+	height: 426px;
+	background-size: 100%;
+	background-image: url(../img/gauge.png);
+	-webkit-transform-origin: 50% 50%;
+	-webkit-transition: all 1s;
+	transition-timing-function: linear;
+	z-index: 250;
+}
+
+.gauge.left {
+	left: 134px;
+}
+
+.gauge.right {
+	left: 719px;
+}
+
+.speed {
+	position: fixed;
+	width: 96px;
+	left: 298px;
+    top: 502px;
+    z-index: 250;
+}
+
+.speedNumber {
+	text-align: center;
+}
+
+.gear {
+	position: fixed;
+	width: 96px;
+	left: 885px;
+    top: 502px;
+    z-index: 250;
+}
+
+.gearNumber {
+	text-align: center;
+}
+
+.progressBackground {
+    position: fixed;
+    width: 212px;
+    height: 6px;
+    background-color: rgba(255,255,255,0.25);
+    top: 584px;
+    left: 50%;
+    margin-left: -106px;
+    z-index: 50;
+}
+
+.progressFG {
+    position: fixed;
+    width: 0px;
+    height: 6px;
+    background-color: rgba(255,255,255,1);
+    top: 584px;
+    left: 50%;
+    margin-left: -106px;
+    -webkit-transition: width 0.5s linear;
+    z-index: 100;
+}
+
+.currentTitle {
+	position: absolute;
+	top: 544px;
+	left: 574px;
+	z-index: 100;
+}
+
+.currentTitleImage {
+	width: 300px;
+	height: 300px;
+	background-color: black;
+	position: fixed;
+	top: 426px;
+	left: 640px;
+	margin-left: -150px;
+	-webkit-filter: blur(15px);
+	opacity: 0.5;
+	z-index: 0;
+	background-size: 100%;
+}
+
+.fader {
+	width: 100%;
+	height: 500px;
+	position: fixed;
+	top: 340px;
+	background-image: url(../img/fade.png);
+	z-index: 90;
+}
+
+.musicIcon {
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	background-size: 100%;
+	background-image: url(../img/music.svg);
+	top: 546px;
+	left: 540px;
+	z-index: 300;
+}
+
+#album1 {background-image: url(../../designV1/img/albums/01.jpg);}
+#album2 {background-image: url(../../designV1/img/albums/02.jpg);}
+#album3 {background-image: url(../../designV1/img/albums/03.jpg);}
+#album4 {background-image: url(../../designV1/img/albums/04.jpg);}
+#album5 {background-image: url(../../designV1/img/albums/05.jpg);}
+#album6 {background-image: url(../../designV1/img/albums/06.jpg);}
+#album7 {background-image: url(../../designV1/img/albums/07.jpg);}
+#album8 {background-image: url(../../designV1/img/albums/08.jpg);}
+#album9 {background-image: url(../../designV1/img/albums/09.jpg);}
+#album10 {background-image: url(../../designV1/img/albums/10.jpg);}
+#album11 {background-image: url(../../designV1/img/albums/11.jpg);}
+#album12 {background-image: url(../../designV1/img/albums/12.jpg);}
+#album13 {background-image: url(../../designV1/img/albums/13.jpg);}
+#album14 {background-image: url(../../designV1/img/albums/14.jpg);}
+#album15 {background-image: url(../../designV1/img/albums/15.jpg);}
+#album16 {background-image: url(../../designV1/img/albums/16.jpg);}
+#album17 {background-image: url(../../designV1/img/albums/17.jpg);}
+#album18 {background-image: url(../../designV1/img/albums/18.jpg);}
+#album19 {background-image: url(../../designV1/img/albums/19.jpg);}
+#album20 {background-image: url(../../designV1/img/albums/20.jpg);}
+#album21 {background-image: url(../../designV1/img/albums/21.jpg);}
+#album22 {background-image: url(../../designV1/img/albums/22.jpg);}
+#album23 {background-image: url(../../designV1/img/albums/23.jpg);}
+#album24 {background-image: url(../../designV1/img/albums/24.jpg);}
+#album25 {background-image: url(../../designV1/img/albums/25.jpg);}
+#album26 {background-image: url(../../designV1/img/albums/26.jpg);}
+#album27 {background-image: url(../../designV1/img/albums/27.jpg);}
+#album28 {background-image: url(../../designV1/img/albums/28.jpg);}
+#album29 {background-image: url(../../designV1/img/albums/29.jpg);}
+#album30 {background-image: url(../../designV1/img/albums/30.jpg);}
+#album31 {background-image: url(../../designV1/img/albums/31.jpg);}
+#album32 {background-image: url(../../designV1/img/albums/32.jpg);}
+#album33 {background-image: url(../../designV1/img/albums/33.jpg);}
+#album34 {background-image: url(../../designV1/img/albums/34.jpg);}
+#album35 {background-image: url(../../designV1/img/albums/35.jpg);}
+#album36 {background-image: url(../../designV1/img/albums/36.jpg);}
+#album37 {background-image: url(../../designV1/img/albums/37.jpg);}
+#album38 {background-image: url(../../designV1/img/albums/38.jpg);}
+#album39 {background-image: url(../../designV1/img/albums/39.jpg);}
+#album40 {background-image: url(../../designV1/img/albums/40.jpg);}
+#album41 {background-image: url(../../designV1/img/albums/41.jpg);}
+#album42 {background-image: url(../../designV1/img/albums/42.jpg);}
+#album43 {background-image: url(../../designV1/img/albums/43.jpg);}
+#album44 {background-image: url(../../designV1/img/albums/44.jpg);}
+#album45 {background-image: url(../../designV1/img/albums/45.jpg);}
+#album46 {background-image: url(../../designV1/img/albums/46.jpg);}
+#album47 {background-image: url(../../designV1/img/albums/47.jpg);}
+#album48 {background-image: url(../../designV1/img/albums/48.jpg);}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

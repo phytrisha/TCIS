@@ -14,6 +14,7 @@ function getAlbums (data) {
 function getArtists (data) {
 	for (var i = 0; i < data.length; i++) {
 		artists[i] = data[i].artist;
+		artistAlbums[i] = data[i].albums;
 	};
 }
 
@@ -43,7 +44,7 @@ function displayAlbum (album) {
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel title'>"+ songs[album-1][i] + "</h2>");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel length'>"+ songLengths[album-1][i] + "</h2>");
 	};
-	$(".currentAlbumPlayback").attr("id", "blur" + album);
+	$(".currentAlbumPlayback.active").attr("id", "blur" + album);
 	currentAlbumOffset = elemOffset;
 }
 
@@ -69,4 +70,91 @@ function hideAlbum (album) {
 	$(".albumOverview").addClass("active");
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
+	$(".currentAlbumPlayback").attr("id", "blur" + currentlyPlayingAlbum);
+}
+
+function removeAlbum (album) {
+	currentAlbum = album;
+	$(".albumDetail").css("width", "0%");
+	$(".albumDetail").css("height", "0%");
+	$(".albumDetail").css("opacity", 0.0);
+	
+	window.setTimeout(function() {
+		$("#album" + album).remove();
+		$(".noAlbumFilled").attr("id", "album" + album);
+		$(".noAlbumFilled").removeClass("noAlbumFilled");
+	},25)
+	
+	if (album > 1) {
+		$("#album" + (album-1)).after("<div class='singleAlbum noAlbumFilled'></div>");
+	} else {
+		$("#album2").before("<div class='singleAlbum noAlbumFilled'></div>");
+	}
+	$(".currentAlbumPlayback").attr("id", "blur" + currentlyPlayingAlbum);
+}
+
+
+function displayArtist (artist) {
+	currentArtist = artist;
+	console.log("Artist: " + artists[artist-1]);
+	console.log("Albums: " + artistAlbums[artist-1].length);
+	var elemOffset = $("#artist_blur" + artist).offset();
+	console.log(elemOffset);
+	for (var i = 1; i <= 6; i++) {
+		var difference = artist - i;
+		if (i < artist) {
+			$("#artist_blur" + i).animate({
+				top: -128 * difference
+			}, 300, "swing")
+		} else if (i > artist) {
+			$("#artist_blur" + i).animate({
+				top: elemOffset.top + 128 * (-difference)
+			}, 300, "swing")
+		}
+	};
+	$(".artistOverview").removeClass("active");
+	$(".artistDetail").addClass("active");
+	$(".artistDetail").html("");
+	$(".artistDetail").append("<div class='artistCell' id='artist_blur" + artist + "'></div>");
+	$(".artistDetail > #artist_blur" + artist).append("<div class='artistTitle'><h1>" + artists[artist-1] + "</h1></div>");
+	$(".artistDetail > #artist_blur" + artist).css("left", "0px");
+	$(".artistDetail > #artist_blur" + artist).css("top", elemOffset.top);
+	$(".artistDetail > #artist_blur" + artist).animate({
+		top: 0
+	}, 300, "swing");
+	window.setTimeout(function() {
+		$(".artistDetail").append("<div class='artistDetailViewContainer'></div>")
+		for (var i = 1; i <= artistAlbums[artist-1].length; i++) {
+			$(".artistDetailViewContainer").append("<div class='singleAlbum' id='artistAlbum" + artist + "_" + i + "'></div>");
+		};
+		
+	},300);
+}
+
+function hideArtist (artist) {
+	for (var i = 1; i <= 6; i++) {
+		$(".artistOverview > #artist_blur" + i).animate({
+			top: 0
+		}, 300, "swing")
+	};
+}
+
+
+function setPlayingAlbum (album) {
+	songCounter = 0;
+	sendToMacbook[0] = currentAlbum;
+	sendToMacbook[1] = songs[album-1][songCounter];
+	sendToMacbook[2] = albumArtist[album-1];
+	removeAlbum(currentAlbum);
+	albumDetail = false;
+	albumOverview = false;
+	$(".albumOverview").removeClass("active");
+	$(".albumPlaybackView").addClass("active");
+	counter = 0;
+	closeMenu("multimedia", "");
+
+	$(".currentTitle").attr("id", "queue" + album);
+	$(".currentAlbumPlayback").attr("id", "blur" + album);
+	$(".currentTitleLabel.song").html(songs[album-1][songCounter]);
+	$(".currentTitleLabel.artist").html(albumArtist[album-1]);
 }
