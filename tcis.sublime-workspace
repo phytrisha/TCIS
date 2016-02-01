@@ -4,6 +4,110 @@
 		"selected_items":
 		[
 			[
+				"read",
+				"readyForTangibleClick"
+			],
+			[
+				"arti",
+				"artistDetail"
+			],
+			[
+				"albu",
+				"albumDetail"
+			],
+			[
+				"art",
+				"artistOverview"
+			],
+			[
+				"alb",
+				"albumDetail"
+			],
+			[
+				"album",
+				"albumOverview"
+			],
+			[
+				"menu",
+				"menuPlaybackOpen"
+			],
+			[
+				"back",
+				"background-size"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"current",
+				"currentTitle"
+			],
+			[
+				"currentTit",
+				"currentTitleImage"
+			],
+			[
+				"currentAlb",
+				"currentAlbumPlayback"
+			],
+			[
+				"albumDe",
+				"albumDetail"
+			],
+			[
+				"pro",
+				"progress"
+			],
+			[
+				"left",
+				"leftRotation"
+			],
+			[
+				"marg",
+				"margin-left"
+			],
+			[
+				"tex",
+				"text-align"
+			],
+			[
+				"lef",
+				"leftRotation"
+			],
+			[
+				"ri",
+				"rightRotation"
+			],
+			[
+				"men",
+				"menuRotation"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"artist",
+				"artistOverviewScrollYReferencePos"
+			],
+			[
+				"scroll",
+				"scrollHandler"
+			],
+			[
+				"click",
+				"clickedArtist"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"San",
+				"SanFrancisco-Light"
+			],
+			[
 				"angl",
 				"angleStart"
 			],
@@ -12,16 +116,8 @@
 				"z-index"
 			],
 			[
-				"mar",
-				"margin"
-			],
-			[
 				"backgr",
 				"background-size"
-			],
-			[
-				"marg",
-				"margin"
 			],
 			[
 				"wid",
@@ -104,10 +200,6 @@
 				"readyForAlbumDetail"
 			],
 			[
-				"read",
-				"readyForAlbumDetail"
-			],
-			[
 				"song",
 				"songLengths"
 			],
@@ -132,16 +224,8 @@
 				"margin-top"
 			],
 			[
-				"back",
-				"background-color"
-			],
-			[
 				"open",
 				"openMenuElement"
-			],
-			[
-				"menu",
-				"menuPlaybackOpen"
 			],
 			[
 				"mult",
@@ -232,24 +316,12 @@
 				"adjustTemperature"
 			],
 			[
-				"left",
-				"klimaLeftZone"
-			],
-			[
 				"tnagi",
 				"tangibleMenuHandler"
 			],
 			[
 				"side",
 				"side"
-			],
-			[
-				"font",
-				"font-weight"
-			],
-			[
-				"men",
-				"menuLeftOpen"
 			],
 			[
 				"cur",
@@ -304,14 +376,6 @@
 				"klimaRightZone"
 			],
 			[
-				"album",
-				"albumScroll"
-			],
-			[
-				"lef",
-				"leftTemperatureHot"
-			],
-			[
 				"replac",
 				"replaceWith"
 			],
@@ -340,10 +404,6 @@
 				"mapKarteContentFloor1"
 			],
 			[
-				"pro",
-				"programBackButton"
-			],
-			[
 				"clic",
 				"clickableSideBarPart"
 			],
@@ -358,10 +418,6 @@
 			[
 				"sear",
 				"searchClickable"
-			],
-			[
-				"scroll",
-				"scrollingEvent"
 			],
 			[
 				"check",
@@ -402,14 +458,6 @@
 			[
 				"albumPosX",
 				"albumPosXMin"
-			],
-			[
-				"alb",
-				"albumPosYMin"
-			],
-			[
-				"albu",
-				"albumPos"
 			],
 			[
 				"scree",
@@ -466,64 +514,96 @@
 			[
 				"max",
 				"max-height"
-			],
-			[
-				"tri",
-				"triggerMenu"
-			],
-			[
-				"sid",
-				"sideBarVisible"
-			],
-			[
-				"tr",
-				"triggerMenu"
-			],
-			[
-				"mu",
-				"multimediaArea"
-			],
-			[
-				"lastScrol",
-				"lastScrollYSpeed"
-			],
-			[
-				"res",
-				"resultingScroll"
-			],
-			[
-				"current",
-				"currentScrollYPos"
-			],
-			[
-				"refe",
-				"referenceScrollYPos"
-			],
-			[
-				"upda",
-				"updateScroll"
-			],
-			[
-				"up",
-				"updateScroll"
-			],
-			[
-				"al",
-				"albumOverviewActive"
-			],
-			[
-				"log",
-				"logTopPos"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
+			"file": "tcis-sync/index.html",
+			"settings":
+			{
+				"buffer_size": 2172,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/json/albums.js",
+			"settings":
+			{
+				"buffer_size": 22537,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/touch.html",
+			"settings":
+			{
+				"buffer_size": 6230,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/js/loader.js",
+			"settings":
+			{
+				"buffer_size": 1900,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/js/volume.js",
+			"settings":
+			{
+				"buffer_size": 703,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/js/tangibleItem.js",
+			"settings":
+			{
+				"buffer_size": 11937,
+				"line_ending": "Unix"
+			}
+		},
+		{
 			"file": "designV1/js/multimedia.js",
 			"settings":
 			{
-				"buffer_size": 2679,
+				"buffer_size": 5465,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/js/menu.js",
+			"settings":
+			{
+				"buffer_size": 2478,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/js/var.js",
+			"settings":
+			{
+				"buffer_size": 1941,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "tcis-sync/css/style.css",
+			"settings":
+			{
+				"buffer_size": 5904,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "designV1/css/style.css",
+			"settings":
+			{
+				"buffer_size": 13405,
 				"line_ending": "Unix"
 			}
 		}
@@ -571,25 +651,31 @@
 		"/Applications/MAMP/htdocs/TCIS",
 		"/Applications/MAMP/htdocs/TCIS/designV1",
 		"/Applications/MAMP/htdocs/TCIS/designV1/css",
+		"/Applications/MAMP/htdocs/TCIS/designV1/img",
 		"/Applications/MAMP/htdocs/TCIS/designV1/js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/json"
+		"/Applications/MAMP/htdocs/TCIS/designV1/json",
+		"/Applications/MAMP/htdocs/TCIS/tcis-sync",
+		"/Applications/MAMP/htdocs/TCIS/tcis-sync/css"
 	],
 	"file_history":
 	[
-		"/Applications/MAMP/htdocs/TCIS/designV1/css/style.css",
-		"/Applications/MAMP/htdocs/TCIS/designV1/js/volume.js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/touch.html",
 		"/Applications/MAMP/htdocs/TCIS/designV1/js/var.js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/js/loader.js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/js/tangibleItem.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/css/style.css",
+		"/Applications/MAMP/htdocs/TCIS/designV1/css/albums.css",
 		"/Applications/MAMP/htdocs/TCIS/designV1/js/multimedia.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/js/tangibleItem.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/touch.html",
+		"/Applications/MAMP/htdocs/TCIS/instrumentCluster/css/style.css",
+		"/Applications/MAMP/htdocs/TCIS/instrumentCluster/index.html",
 		"/Applications/MAMP/htdocs/TCIS/designV1/js/menu.js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/json/albums.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/js/loader.js",
 		"/Applications/MAMP/htdocs/TCIS/designV1/css/artists.css",
 		"/Applications/MAMP/htdocs/TCIS/designV1/json/artists.js",
-		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Applications/MAMP/htdocs/TCIS/designV1/js/climate.js",
-		"/Applications/MAMP/htdocs/TCIS/designV1/css/albums.css",
+		"/Applications/MAMP/htdocs/TCIS/designV1/js/volume.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/json/albums.js",
+		"/Applications/MAMP/htdocs/TCIS/designV1/js/jquery.touch.js",
+		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
 		"/Applications/MAMP/htdocs/TCIS/designV1/style.css",
 		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/Colorsublime-Themes/Xcode-ish.tmTheme",
 		"/Applications/MAMP/htdocs/TCIS/designV1/albums.css",
@@ -597,7 +683,6 @@
 		"/Volumes/INTENSO/PE2anfang/HausaufgabeJahr.html",
 		"/Users/markmeyer/Desktop/Apple-Watch.framer/app.js",
 		"/Users/markmeyer/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
-		"/Applications/MAMP/htdocs/TCIS/designV1/js/jquery.touch.js",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/hfg-guidance.sublime-project",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/js/database.js",
 		"/Users/markmeyer/Documents/HfG Gmünd IG4/iks2/hfg-guidance-system/js/database.min.js",
@@ -701,9 +786,7 @@
 		"/Users/markmeyer/Documents/portfolio/dev/website/projects/terra.html",
 		"/Users/markmeyer/Documents/portfolio/dev/website/index.html",
 		"/Users/markmeyer/Creative Cloud Files/portfolio/dev/website/projects/terra.html",
-		"/Users/markmeyer/Desktop/albenAnsicht.framer/app.js",
-		"/Users/markmeyer/Documents/HfG Gmünd IG4/Tutorien/PhotoshopFramerJs/Project1/Screen.framer/app.js",
-		"/Users/markmeyer/Documents/HfG Gmünd IG4/Tutorien/PhotoshopFramerJs/LoadingAnimation/Project/app.js"
+		"/Users/markmeyer/Desktop/albenAnsicht.framer/app.js"
 	],
 	"find":
 	{
@@ -722,6 +805,29 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"draw",
+			"initPos",
+			"posStart",
+			"artistOverview",
+			"menuPlaybackOpen",
+			"console.",
+			"currentAlbumPlayback",
+			"menuActivePoint",
+			"initAngle",
+			"tangible",
+			"readyForTouch",
+			"initAngle",
+			"initPos",
+			"posStart",
+			"getArtists",
+			"current",
+			"tangibleGesture",
+			"artistDetail",
+			"tangibleGesture",
+			"scroll",
+			"checkElement",
+			"artistOverview",
+			"Helvetica",
 			";\n",
 			"console.log",
 			"volume",
@@ -826,30 +932,7 @@
 			"space",
 			"margin",
 			"full",
-			"minLim",
-			"timeout_id",
-			"test-area",
-			"console.log",
-			"jägermeister",
-			"console.log",
-			"menuActivePoint",
-			"klimaLeftZone",
-			"#rightTemperatureZone",
-			"#leftTemperatureZone",
-			"rightTemperatureZone",
-			"temperatureMenuRight",
-			"#point1",
-			"temperatureMenu",
-			"leftTemperatureZone",
-			"menuActivePoint",
-			"currentRotationAngle",
-			"menuLeft",
-			"initAngle",
-			"timeout",
-			"open",
-			"visible",
-			"console.log",
-			"center"
+			"minLim"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -870,24 +953,111 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "designV1/js/multimedia.js",
-					"semi_transient": true,
+					"file": "tcis-sync/index.html",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2679,
+						"buffer_size": 2172,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								552,
-								552
+								1883,
+								1883
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 346.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "designV1/json/albums.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 22537,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								583,
+								583
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3413.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "designV1/touch.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6230,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								835,
+								835
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "designV1/js/loader.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1900,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								864,
+								877
 							]
 						],
 						"settings":
@@ -899,7 +1069,209 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "designV1/js/volume.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 703,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								703,
+								703
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "designV1/js/tangibleItem.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11937,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11442,
+								11442
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5781.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "designV1/js/multimedia.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5465,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3824,
+								3824
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "designV1/js/menu.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2478,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								754,
+								754
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 823.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "designV1/js/var.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1941,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								182,
+								182
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "tcis-sync/css/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5904,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2064,
+								2064
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 1910.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "designV1/css/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13405,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								344,
+								344
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
 					"type": "text"
 				}
 			]

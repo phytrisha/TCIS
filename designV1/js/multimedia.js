@@ -96,10 +96,9 @@ function removeAlbum (album) {
 
 function displayArtist (artist) {
 	currentArtist = artist;
-	console.log("Artist: " + artists[artist-1]);
-	console.log("Albums: " + artistAlbums[artist-1].length);
+
 	var elemOffset = $("#artist_blur" + artist).offset();
-	console.log(elemOffset);
+
 	for (var i = 1; i <= 6; i++) {
 		var difference = artist - i;
 		if (i < artist) {
@@ -112,6 +111,7 @@ function displayArtist (artist) {
 			}, 300, "swing")
 		}
 	};
+	
 	$(".artistOverview").removeClass("active");
 	$(".artistDetail").addClass("active");
 	$(".artistDetail").html("");

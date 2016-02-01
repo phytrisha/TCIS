@@ -25,6 +25,7 @@ setInterval(function() {
 	$(".progressBarCurrent").css("width", counter + "%");
 	$(".progressIndicatorCurrent").css("left", counter + "%");
 	sendToMacbook[3] = counter;
+	
 	// socket.io emission
 	socket.emit('title', { title: sendToMacbook});
 },500);
@@ -37,10 +38,6 @@ setInterval(function() {
 	if (klimaArea == false && multimediaArea == false) {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
-	//console.log(menuRotation);
-	//console.log("------------------------- NEW");
-	//console.log("menuPlaybackOpen " + menuPlaybackOpen);
-
 },1500);
 
 setInterval(function() {

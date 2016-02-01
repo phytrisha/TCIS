@@ -121,9 +121,9 @@ var handler = function (e) {
 			menuRotation = currentRotationAngle;
 			menuActivePoint = Math.min(Math.max(parseInt(Math.round(currentRotationAngle / 20)), -1), 1);
 
-			//if (currentRotationAngle > -90 && currentRotationAngle < 90) {
+			if (!albumOverview && !albumDetail && !artistOverview && !artistDetail && !menuPlaybackOpen) {
 				currentVolume = startVolume + currentRotationAngle;
-			//}
+			}
 
 			if (multimediaArea) {
 				if (menuPlaybackOpen) {
@@ -349,22 +349,31 @@ var handler = function (e) {
 		} else if (albumDetail) {
 			setPlayingAlbum(currentAlbum);
 		} else if (multimediaArea == true && albumDetail == false && albumOverview == false && artistOverview == false && artistDetail == false) {
-			if (menuPlaybackOpen != true) {
-				openMenu("Playback");
-				$(".currentTitleLabel").addClass("inactive");
-			} else if (menuPlaybackOpen) {
-				openMenuElement(menuActivePoint);
-				closeMenu("multimedia", "");
-				$(".currentTitleLabel").removeClass("inactive");
-				menuPlaybackOpen=false;
-			} 
+			if (readyForTangibleClick) {
+				if (menuPlaybackOpen != true) {
+					console.log("opening menu!");
+					openMenu("Playback");
+					$(".currentTitleLabel").addClass("inactive");
+				} else if (menuPlaybackOpen) {
+					console.log("closing menu!");
+					openMenuElement(menuActivePoint);
+					closeMenu("multimedia", "");
+					$(".currentTitleLabel").removeClass("inactive");
+					menuPlaybackOpen=false;
+				}
+				readyForTangibleClick = false;
+			}
+			 
 		}
+		window.setTimeout(function() {
+			readyForTangibleClick = true;
+		}, 500);
 	}
 };
 
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
-
+	readyForTangibleClick = true;
 	startVolume = currentVolume;
 
 	gestureSuccess = false;

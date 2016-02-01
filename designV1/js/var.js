@@ -4,6 +4,7 @@ var maxLim = 180;
 var currentlyPlayingAlbum = 39;
 var songCounter;
 var sendToMacbook = [39, "Radioactive", "Imagine Dragons", 0];
+var readyForTangibleClick = false;
 
 var tangible = false;
 
