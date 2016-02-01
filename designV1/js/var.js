@@ -1,6 +1,10 @@
 var minLim = 60;
 var maxLim = 180;
 
+var currentlyPlayingAlbum = 39;
+var songCounter;
+var sendToMacbook = [39, "Radioactive", "Imagine Dragons", 0];
+
 var tangible = false;
 
 var centerX;

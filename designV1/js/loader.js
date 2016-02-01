@@ -17,13 +17,16 @@ var counter=0;
 setInterval(function() {
 	if (counter>99) {
 		counter=0;
+		songCounter++;
+		$(".currentTitleLabel.song").html(songs[currentAlbum-1][songCounter]);
+		sendToMacbook[1] = songs[currentAlbum-1][songCounter];
 	}
 	counter++;
 	$(".progressBarCurrent").css("width", counter + "%");
 	$(".progressIndicatorCurrent").css("left", counter + "%");
-
+	sendToMacbook[3] = counter;
 	// socket.io emission
-	socket.emit('time', { time: counter });
+	socket.emit('title', { title: sendToMacbook});
 },500);
 
 setInterval(function(){
@@ -35,11 +38,14 @@ setInterval(function() {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
 	//console.log(menuRotation);
+	console.log("------------------------- NEW");
+	console.log("menuPlaybackOpen " + menuPlaybackOpen);
+
 },1500);
 
 setInterval(function() {
 	if (albumOverview) {
-		scrollHandler(".albumOverview", multimediaScrollYPos, -4000, 100);
+		scrollHandler(".albumOverview", multimediaScrollYPos, -4000, 25);
 	} else if (albumDetail) {
 		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
 	} else if (artistOverview) {
@@ -52,6 +58,11 @@ setInterval(function() {
 },25);
 
 setInterval(function() {
+	if (currentVolume < 135) {
+		currentVolume = 135;
+	} else if (currentVolume > 405) {
+		currentVolume = 405;
+	}
 	if (!menuPlaybackOpen) {
 		drawCurrent(currentVolume);
 		$('#volume').css('opacity', 1.0);

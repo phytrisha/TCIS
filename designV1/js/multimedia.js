@@ -44,7 +44,7 @@ function displayAlbum (album) {
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel title'>"+ songs[album-1][i] + "</h2>");
 		$("#albumContentTitle" + (i+1)).append("<h2 class='albumDetailLabel length'>"+ songLengths[album-1][i] + "</h2>");
 	};
-	$(".currentAlbumPlayback").attr("id", "blur" + album);
+	$(".currentAlbumPlayback.active").attr("id", "blur" + album);
 	currentAlbumOffset = elemOffset;
 }
 
@@ -70,7 +70,29 @@ function hideAlbum (album) {
 	$(".albumOverview").addClass("active");
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
+	$(".currentAlbumPlayback").attr("id", "blur" + currentlyPlayingAlbum);
 }
+
+function removeAlbum (album) {
+	currentAlbum = album;
+	$(".albumDetail").css("width", "0%");
+	$(".albumDetail").css("height", "0%");
+	$(".albumDetail").css("opacity", 0.0);
+	
+	window.setTimeout(function() {
+		$("#album" + album).remove();
+		$(".noAlbumFilled").attr("id", "album" + album);
+		$(".noAlbumFilled").removeClass("noAlbumFilled");
+	},25)
+	
+	if (album > 1) {
+		$("#album" + (album-1)).after("<div class='singleAlbum noAlbumFilled'></div>");
+	} else {
+		$("#album2").before("<div class='singleAlbum noAlbumFilled'></div>");
+	}
+	$(".currentAlbumPlayback").attr("id", "blur" + currentlyPlayingAlbum);
+}
+
 
 function displayArtist (artist) {
 	currentArtist = artist;
@@ -117,6 +139,25 @@ function hideArtist (artist) {
 	};
 }
 
+
+function setPlayingAlbum (album) {
+	songCounter = 0;
+	sendToMacbook[0] = currentAlbum;
+	sendToMacbook[1] = songs[album-1][songCounter];
+	sendToMacbook[2] = albumArtist[album-1];
+	removeAlbum(currentAlbum);
+	albumDetail = false;
+	albumOverview = false;
+	$(".albumOverview").removeClass("active");
+	$(".albumPlaybackView").addClass("active");
+	counter = 0;
+	closeMenu("multimedia", "");
+
+	$(".currentTitle").attr("id", "queue" + album);
+	$(".currentAlbumPlayback").attr("id", "blur" + album);
+	$(".currentTitleLabel.song").html(songs[album-1][songCounter]);
+	$(".currentTitleLabel.artist").html(albumArtist[album-1]);
+}
 
 
 

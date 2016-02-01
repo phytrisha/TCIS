@@ -33,8 +33,7 @@ function tangibleGestureHandler (currentY, startY, distance) {
 			}, 500);
 			return gestureSuccess;
 		}
-	}	
-	
+	}
 }
 
 var currentAlbumOffset;
@@ -120,7 +119,6 @@ var handler = function (e) {
 			currentRotationAngle = Math.round(angleDeg - angleStart);
 			menuRotation = currentRotationAngle;
 			menuActivePoint = Math.min(Math.max(parseInt(Math.round(currentRotationAngle / 20)), -1), 1);
-			console.log("menu active " + menuActivePoint);
 
 			//if (currentRotationAngle > -90 && currentRotationAngle < 90) {
 				currentVolume = startVolume + currentRotationAngle;
@@ -133,6 +131,7 @@ var handler = function (e) {
 					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						closeMenu("multimedia", "");
 						$(".currentTitleLabel").removeClass("inactive");
+						console.log("closing menu playback!!!!");
 						menuPlaybackOpen=false;
 					}
 				} else if (albumOverview) {
@@ -151,7 +150,9 @@ var handler = function (e) {
 						albumOverview = true;
 					}
 				} else if (artistOverview) {
+					$(".albumPlaybackBackgroundFrame").css("opacity", 0.0);
 					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
+						$(".albumPlaybackBackgroundFrame").css("opacity", 1.0);
 						console.log("close artistOverview");
 						$(".artistOverview").removeClass("active");
 						$(".albumPlaybackView").addClass("active");
@@ -344,7 +345,9 @@ var handler = function (e) {
 			openMenu("L");
 		} else if (rightKlimaZone) {
 			openMenu("R");
-		} else if (multimediaArea) {
+		} else if (albumDetail) {
+			setPlayingAlbum(currentAlbum);
+		} else if (multimediaArea == true && albumDetail == false && albumOverview == false && artistOverview == false && artistDetail == false) {
 			if (menuPlaybackOpen != true) {
 				openMenu("Playback");
 				$(".currentTitleLabel").addClass("inactive");
@@ -353,7 +356,7 @@ var handler = function (e) {
 				closeMenu("multimedia", "");
 				$(".currentTitleLabel").removeClass("inactive");
 				menuPlaybackOpen=false;
-			}
+			} 
 		}
 	}
 };
@@ -372,7 +375,7 @@ $("#touch-area").on("touch_start", function(event) {
 			scrollingEvent = false;
 		}
 		handler(event);
-	},100);
+	},50);
 	
 });
 

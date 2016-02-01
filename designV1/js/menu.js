@@ -30,7 +30,7 @@ function closeMenu (type, side) {
 
 function openMenu (side) {
 	initAngle = true;
-	console.log("init angle is now " + initAngle);
+	//console.log("init angle is now " + initAngle);
 	menuActivePoint = 0;
 	switch(side) {
 		case "L":
