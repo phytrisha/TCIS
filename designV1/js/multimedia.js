@@ -70,4 +70,3 @@ function hideAlbum (album) {
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
 }
-
