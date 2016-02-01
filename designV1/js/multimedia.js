@@ -158,17 +158,3 @@ function setPlayingAlbum (album) {
 	$(".currentTitleLabel.song").html(songs[album-1][songCounter]);
 	$(".currentTitleLabel.artist").html(albumArtist[album-1]);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

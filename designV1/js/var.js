@@ -110,12 +110,3 @@ var startVolume;
 
 var initMenuRotation = true;
 var menuRotation;
-
-
-
-
-
-
-
-
-
