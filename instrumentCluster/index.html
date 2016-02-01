@@ -1,21 +1,14 @@
-<!doctype html>
 <html>
-<head>
-	<link rel="stylesheet" href="css/style.css">
-	<script type="text/javascript" src="../designV1/js/jquery-2.1.4.js"></script>
-	<script src="node_modules/socket.io-client/socket.io.js"></script>
-	<script>
-		var progress;
-		var socket = io.connect('http://mm-mac.local:8080');
-		
-		socket.on('time', function (data) {
-			console.log(data.time);
-			progress = data.time;
-		});
-	</script>
-</head>
-<body>
-	<div class="viewContainer">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=0"/>
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/style.css">
+		<script type="text/javascript" src="../designV1/js/jquery-2.1.4.js"></script>
+	</head>
+	<body>
+		<div class="viewContainer">
 			<div class="backgroundCluster">
 			</div>
 			<div class="gauge left">
@@ -55,11 +48,15 @@
 		}, 1000);
 		
 		window.setInterval(function() {
-			$(".progressFG").css("width", (2.12 * progress) + "px");
-			//console.log(parseInt(progress));
+			$(".progressFG").css("width", (5.3 * i) + "px");
+			if (i < 40) {
+				i++;	
+			} else {
+				i = 0;
+			}
 		}, 500)
 
 
 		</script>
-</body>
+	</body>
 </html>

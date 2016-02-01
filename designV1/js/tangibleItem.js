@@ -25,9 +25,16 @@ function tangibleGestureHandler (currentY, startY, distance) {
 	if (gestureSuccess != true) {
 		if (currentY > startY + distance) {
 			gestureSuccess = true;
+			window.setTimeout(function() {
+				initPos=true;
+				captureStartScroll=true;
+				touchEvent=true;
+				scrollingEvent=false;
+			}, 500);
 			return gestureSuccess;
 		}
-	}
+	}	
+	
 }
 
 var currentAlbumOffset;
@@ -111,15 +118,18 @@ var handler = function (e) {
  
 			// calculate & round resulting rotation angle
 			currentRotationAngle = Math.round(angleDeg - angleStart);
+			menuRotation = currentRotationAngle;
+			menuActivePoint = Math.min(Math.max(parseInt(Math.round(currentRotationAngle / 20)), -1), 1);
+			console.log("menu active " + menuActivePoint);
 
-			if (currentRotationAngle > -90 && currentRotationAngle < 90) {
+			//if (currentRotationAngle > -90 && currentRotationAngle < 90) {
 				currentVolume = startVolume + currentRotationAngle;
-			}
+			//}
 
 			if (multimediaArea) {
 				if (menuPlaybackOpen) {
 					$(".multimediaMenu").css("opacity", 1.0);
-					tangibleMenuHandler("multimedia", currentRotationAngle, "", 96, 192);
+					tangibleMenuHandler("multimedia", menuRotation, "", 96, 192);
 					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						closeMenu("multimedia", "");
 						$(".currentTitleLabel").removeClass("inactive");
@@ -143,6 +153,18 @@ var handler = function (e) {
 				} else if (artistOverview) {
 					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
 						console.log("close artistOverview");
+						$(".artistOverview").removeClass("active");
+						$(".albumPlaybackView").addClass("active");
+						artistOverview = false;
+					}
+				} else if (artistDetail) {
+					if (tangibleGestureHandler(centerY, posStart[1], 30) == true) {
+						console.log("close artistDetail");
+						$(".artistOverview").addClass("active");
+						$(".artistDetail").removeClass("active");
+						hideArtist(currentArtist);
+						artistDetail = false;
+						artistOverview = true;
 					}
 				}
 			}
@@ -210,9 +232,8 @@ var handler = function (e) {
 		tangible=false;
 		initAngle = true;
 		initPos = true;
-		window.setTimeout(
-			function() {
-				readyForTouch = true;
+		window.setTimeout(function() {
+			readyForTouch = true;
 		}, 1000);
 	}
 
@@ -279,6 +300,7 @@ var handler = function (e) {
 			if (captureStartScroll) {
 				multimediaScrollYReferencePos=parseInt($(".albumOverview").css('top'));
 				albumDetailScrollYReferencePos=parseInt($(".albumDetailTitleList").css('top'));
+				artistOverviewScrollYReferencePos=parseInt($(".artistOverview").css('top'));
 				referenceScrollYPos=scopeY;
 				captureStartScroll=false;
 			}	
@@ -290,6 +312,8 @@ var handler = function (e) {
 				} else if (albumDetail) {
 					scrollHeight = (songs[currentAlbum].length * 65) * (-1) + 130;
 					albumDetailScrollYPos=albumDetailScrollYReferencePos+resultingScroll;
+				} else if (artistOverview) {
+					artistOverviewScrollYPos = artistOverviewScrollYReferencePos+resultingScroll;
 				}
 				updateScroll=true;
 			} else if (touchEvent) {
@@ -304,6 +328,12 @@ var handler = function (e) {
 					// possible solution to explore: adjust css properties, so that album list is independant
 					var clickedSong = checkElementForTouch("#albumContentTitle", ".albumDetailTitleList", songs[currentAlbum].length, scopeX, scopeY);
 					console.log(clickedSong);
+				} else if (artistOverview) {
+					artistOverview=false;
+					artistDetail=true;
+					var clickedArtist = checkElementForTouch("#artist_blur", ".artistOverview", 6, scopeX, scopeY);
+					displayArtist(clickedArtist);
+					console.log("clicked on artist: " + clickedArtist);
 				}
 			}
 		}

@@ -29,6 +29,8 @@ function closeMenu (type, side) {
 }
 
 function openMenu (side) {
+	initAngle = true;
+	console.log("init angle is now " + initAngle);
 	menuActivePoint = 0;
 	switch(side) {
 		case "L":
@@ -62,12 +64,7 @@ function fadeMenuPoints (side, active) {
 }
 
 function tangibleMenuHandler (type, angle, side, center, step) {
-	if (angle == (menuStep * menuActivePoint)) {
-		menuActivePoint++;
-	} else if (angle == (-menuStep + menuStep * (menuActivePoint-1))) {
-		menuActivePoint--;
-	}
-	menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
+	//menuActivePoint = Math.min(Math.max(parseInt(menuActivePoint), -1), 1);
 	fadeMenuPoints(side, menuActivePoint);
 	switch(menuActivePoint) {
 		case -1:
@@ -80,7 +77,6 @@ function tangibleMenuHandler (type, angle, side, center, step) {
 			$("." + type + "Menu" + side).css("left", (center+step) + "px");
 			break;
 	}
-	console.log(menuActivePoint);
 }
 
 function openMenuElement (elem) {

@@ -7,7 +7,7 @@ function populateAlbums (source) {
 function populateArtists (source) {
 	for (var i = 1; i <= artists.length; i++) {
 		$(source).append("<div class='artistCell' id='artist_blur" + i + "'></div>");
-		$("#artist_blur" + i).append("<div class='artistImage' id='artist" + i + "'></div><div class='artistTitle'><h1>" + artists[i-1] + "</h1></div>");
+		$("#artist_blur" + i).append("<div class='artistTitle'><h1>" + artists[i-1] + "</h1></div>");
 	};
 }
 
@@ -15,7 +15,7 @@ function populateArtists (source) {
 var counter=0;
 
 setInterval(function() {
-	if (counter>100) {
+	if (counter>99) {
 		counter=0;
 	}
 	counter++;
@@ -23,7 +23,7 @@ setInterval(function() {
 	$(".progressIndicatorCurrent").css("left", counter + "%");
 
 	// socket.io emission
-	//socket.emit('time', { time: counter });
+	socket.emit('time', { time: counter });
 },500);
 
 setInterval(function(){
@@ -34,6 +34,7 @@ setInterval(function() {
 	if (klimaArea == false && multimediaArea == false) {
 		$(".currentAreaIndicator").toggleClass("standardFaded");
 	}
+	//console.log(menuRotation);
 },1500);
 
 setInterval(function() {
@@ -41,6 +42,8 @@ setInterval(function() {
 		scrollHandler(".albumOverview", multimediaScrollYPos, -4000, 100);
 	} else if (albumDetail) {
 		scrollHandler(".albumDetailTitleList", albumDetailScrollYPos, scrollHeight, 0);
+	} else if (artistOverview) {
+		scrollHandler(".artistOverview", artistOverviewScrollYPos, -400, 0);
 	}
 },10);
 

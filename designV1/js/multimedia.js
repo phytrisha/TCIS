@@ -14,6 +14,7 @@ function getAlbums (data) {
 function getArtists (data) {
 	for (var i = 0; i < data.length; i++) {
 		artists[i] = data[i].artist;
+		artistAlbums[i] = data[i].albums;
 	};
 }
 
@@ -70,4 +71,63 @@ function hideAlbum (album) {
 	$(".albumPlaybackBackgroundFrame").removeClass("active");
 	$(".albumDetail").removeAttr("id", "blur" + album);
 }
+
+function displayArtist (artist) {
+	currentArtist = artist;
+	console.log("Artist: " + artists[artist-1]);
+	console.log("Albums: " + artistAlbums[artist-1].length);
+	var elemOffset = $("#artist_blur" + artist).offset();
+	console.log(elemOffset);
+	for (var i = 1; i <= 6; i++) {
+		var difference = artist - i;
+		if (i < artist) {
+			$("#artist_blur" + i).animate({
+				top: -128 * difference
+			}, 300, "swing")
+		} else if (i > artist) {
+			$("#artist_blur" + i).animate({
+				top: elemOffset.top + 128 * (-difference)
+			}, 300, "swing")
+		}
+	};
+	$(".artistOverview").removeClass("active");
+	$(".artistDetail").addClass("active");
+	$(".artistDetail").html("");
+	$(".artistDetail").append("<div class='artistCell' id='artist_blur" + artist + "'></div>");
+	$(".artistDetail > #artist_blur" + artist).append("<div class='artistTitle'><h1>" + artists[artist-1] + "</h1></div>");
+	$(".artistDetail > #artist_blur" + artist).css("left", "0px");
+	$(".artistDetail > #artist_blur" + artist).css("top", elemOffset.top);
+	$(".artistDetail > #artist_blur" + artist).animate({
+		top: 0
+	}, 300, "swing");
+	window.setTimeout(function() {
+		$(".artistDetail").append("<div class='artistDetailViewContainer'></div>")
+		for (var i = 1; i <= artistAlbums[artist-1].length; i++) {
+			$(".artistDetailViewContainer").append("<div class='singleAlbum' id='artistAlbum" + artist + "_" + i + "'></div>");
+		};
+		
+	},300);
+}
+
+function hideArtist (artist) {
+	for (var i = 1; i <= 6; i++) {
+		$(".artistOverview > #artist_blur" + i).animate({
+			top: 0
+		}, 300, "swing")
+	};
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
