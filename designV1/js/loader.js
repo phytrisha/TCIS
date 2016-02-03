@@ -15,20 +15,34 @@ function populateArtists (source) {
 var counter=0;
 
 setInterval(function() {
-	if (counter>99) {
+	var sendLength;
+	var seconds = parseInt(songLengths[currentAlbum-1][songCounter].charAt(2) + songLengths[currentAlbum-1][songCounter].charAt(3));
+	sendLength = songLengths[currentAlbum-1][songCounter].charAt(0)*60 + seconds;
+
+	if (counter>sendLength) {
 		counter=0;
 		songCounter++;
 		$(".currentTitleLabel.song").html(songs[currentAlbum-1][songCounter]);
 		sendToMacbook[1] = songs[currentAlbum-1][songCounter];
 	}
-	counter++;
-	$(".progressBarCurrent").css("width", counter + "%");
-	$(".progressIndicatorCurrent").css("left", counter + "%");
-	sendToMacbook[3] = counter;
+
+	
+	//sendToMacbook[5] = sendLength;
+	sendToMacbook[3] = counter / sendLength;
+
+	$(".progressBarCurrent").css("width", 100 * sendToMacbook[3] + "%");
+	//$(".progressIndicatorCurrent").css("left", sendToMacbook[3] + "%");
+	console.log(sendToMacbook[3]);
+	var sendVolume = (currentVolume - 135) / 270;
+	sendToMacbook[4] = sendVolume;
 	
 	// socket.io emission
 	socket.emit('title', { title: sendToMacbook});
-},500);
+},100);
+
+setInterval(function() {
+	counter++;
+}, 1000);
 
 setInterval(function(){
 	lastRotationAngle=currentRotationAngle;

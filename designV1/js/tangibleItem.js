@@ -37,6 +37,28 @@ function tangibleGestureHandler (currentY, startY, distance) {
 	}
 }
 
+function tangibleGestureXHandler (currentY, startY, distance, direction) {
+	if (gestureSuccess != true) {
+		if (direction == "left") {
+			if (currentY < startY - distance) {
+				gestureSuccess = true;
+				window.setTimeout(function() {
+					gestureSuccess = false;
+				}, 1000);
+				return gestureSuccess;
+			}
+		} else if (direction == "right") {
+			if (currentY > startY + distance) {
+				gestureSuccess = true;
+				window.setTimeout(function() {
+					gestureSuccess = false;
+				}, 1000);
+				return gestureSuccess;
+			}
+		}
+	}
+}
+
 var currentAlbumOffset;
 
 // initialize area for jquery.touch
@@ -104,7 +126,6 @@ var handler = function (e) {
 
 			// calculate rotation between two points
 			var angleDeg = Math.atan2(p2.y - p1.y, p2.x - p1.x) * 180 / Math.PI;
-
 			// initialize reference angle
 			if (initAngle) {
 				angleStart = angleDeg;
@@ -121,8 +142,9 @@ var handler = function (e) {
 			menuRotation = currentRotationAngle;
 			menuActivePoint = Math.min(Math.max(parseInt(Math.round(currentRotationAngle / 20)), -1), 1);
 
-			if (!albumOverview && !albumDetail && !artistOverview && !artistDetail && !menuPlaybackOpen) {
+			if (multimediaArea && !albumOverview && !albumDetail && !artistOverview && !artistDetail && !menuPlaybackOpen) {
 				currentVolume = startVolume + currentRotationAngle;
+				//console.log("currentvolume: " + currentVolume + " --- startVolume: " + startVolume + " --- currentRotationAngle: " + currentRotationAngle);
 			}
 
 			if (multimediaArea) {
@@ -167,6 +189,20 @@ var handler = function (e) {
 						hideArtist(currentArtist);
 						artistDetail = false;
 						artistOverview = true;
+					}
+				} else if (menuPlaybackOpen != true) {
+					if (tangibleGestureXHandler(centerX, posStart[0], 40, "right") == true) {
+						console.log("next song!");
+						counter=0;
+						songCounter++;
+						$(".currentTitleLabel.song").html(songs[currentAlbum-1][songCounter]);
+						sendToMacbook[1] = songs[currentAlbum-1][songCounter];
+					} else if (tangibleGestureXHandler(centerX, posStart[0], 40, "left") == true) {
+						console.log("previous song!");
+						counter=0;
+						songCounter--;
+						$(".currentTitleLabel.song").html(songs[currentAlbum-1][songCounter]);
+						sendToMacbook[1] = songs[currentAlbum-1][songCounter];
 					}
 				}
 			}
@@ -272,7 +308,7 @@ var handler = function (e) {
 			
 			var distanceOfFifth = Math.sqrt(Math.pow(x[i]-centerX, 2) + Math.pow(y[i]-centerY, 2));
 
-			if (distanceOfFifth > 250) {
+			if (distanceOfFifth > 300) {
 				touchPoint = i;
 				touchClick = true;
 			} else {
@@ -374,6 +410,7 @@ var handler = function (e) {
 // execute functions
 $("#touch-area").on("touch_start", function(event) {
 	readyForTangibleClick = true;
+
 	startVolume = currentVolume;
 
 	gestureSuccess = false;
@@ -385,7 +422,7 @@ $("#touch-area").on("touch_start", function(event) {
 			scrollingEvent = false;
 		}
 		handler(event);
-	},50);
+	},75);
 	
 });
 

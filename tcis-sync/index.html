@@ -1,6 +1,7 @@
 <!doctype html>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript" src="../designV1/js/jquery-2.1.4.js"></script>
 	<script src="node_modules/socket.io-client/socket.io.js"></script>
@@ -30,19 +31,27 @@
 			<div class="gear">
 				<div class="gearNumber"><h1>D</h1></div>
 			</div>
-			<div class="progressBackground">
-			</div>
-			<div class="progressFG"></div>
 			<div class="currentTitleImage" id="album39"></div>
-			<div class="musicIcon"></div>
-			<div class="currentTitle">
-				<h2>Radioactive</h2>
-				<h3>Imagine Dragons</h3>
+			<div class="multimedia">
+				<div class="progressBackground">
+				</div>
+				<div class="progressFG"></div>
+				<div class="musicIcon"></div>
+				<div class="currentTitle">
+					<h2>Radioactive</h2>
+					<h3>Imagine Dragons</h3>
+				</div>
+			</div>
+			
+			<div class="warning">
+				<h1 class="warningTypo">80</h1>
+				<h2 class="warningTypo up">Limit</h2>
 			</div>
 		</div>
 
 		<script>
-		var previousInfo;
+
+		var previousInfo = [];
 		$(".gauge.left").css("-webkit-transform", "rotate(-140deg)");
 		$(".gauge.right").css("-webkit-transform", "rotate(-140deg)");
 		var leftRotation = [-60, -40, -25, 0, 20, 40, 50, 40, 20, -10];
@@ -60,18 +69,38 @@
 			counter++;
 
 		}, 1000);
-		
+		var music = new Audio();
+
 		window.setInterval(function() {
-			if (previousInfo != songInfo) {
+			if (previousInfo[1] != songInfo[1]) {
+				console.log("something new!!");
 				$(".currentTitleImage").attr('id', 'album' + songInfo[0]);
 				$(".currentTitle").html("<h2>" + songInfo[1] + "</h2><h3>" + songInfo[2] + "</h3>");
+				music.setAttribute('src', "audio/" + songInfo[0] +"/" + songInfo[1] + ".mp3");
+
+				music.setAttribute('currentTime', 0);
+				music.play();
+				previousInfo = songInfo;
 			}
-			previousInfo = songInfo;
+			music.volume = songInfo[4];
 			console.log(songInfo);
-			$(".progressFG").css("width", (2.12 * songInfo[3]) + "px");
+			console.log(previousInfo);
+			$(".progressFG").css("width", (212 * songInfo[3]) + "px");
 			//console.log(parseInt(progress));
 		}, 500)
 
+		window.setInterval(function() {
+			// show warning
+			$(".multimedia").addClass("inactive");
+			$(".warning").addClass("active");
+			$(".warningTypo").addClass("active");
+			window.setTimeout(function() {
+				// hide warning
+				$(".multimedia").removeClass("inactive");
+				$(".warning").removeClass("active");
+				$(".warningTypo").removeClass("active");
+			}, 4000)
+		}, 20000)
 
 		</script>
 </body>

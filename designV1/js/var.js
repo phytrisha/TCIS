@@ -107,7 +107,7 @@ var scrollHeight;
 var currentArtist;
 
 var currentVolume = 140;
-var startVolume;
+var startVolume = 140;
 
 var initMenuRotation = true;
 var menuRotation;

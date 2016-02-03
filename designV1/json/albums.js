@@ -2,7 +2,7 @@ getAlbums([
 	{
 		"name":"To Pimp a Butterfly",
 		"artist":"Kendrick Lamar",
-		"song":["Wesley's Theory", "For Free?", "King Kunta", "Institutionalized", "These Walls", "u", "Alright", "For Sale?", "Momma", "Hood Politics", "How Much A Dollar Cost", "Complexion (A Zulu Love)", "The Blacker the Berry", "You Ain't Gotta Lie (Momma Said)", "i", "Mortal Man"],
+		"song":["Wesley's Theory", "For Free", "King Kunta", "Institutionalized", "These Walls", "u", "Alright", "For Sale", "Momma", "Hood Politics", "How Much A Dollar Cost", "Complexion (A Zulu Love)", "The Blacker the Berry", "You Ain't Gotta Lie (Momma Said)", "i", "Mortal Man"],
 		"length":["4:47", "2:10", "3:55", "4:31", "5:00", "4:28", "3:39", "4:51", "4:43", "4:52", "4:21", "4:23", "5:28", "4:01", "5:36", "12:07"]
 	},
 	{
@@ -32,7 +32,7 @@ getAlbums([
 	{
 		"name":"Hello Fascination",
 		"artist":"Breathe Carolina",
-		"song":["Hello Fascination", "I'm the Type of Person to Take It Personal", "Take Me to Infinity", "Dressed Up to Undress", "I.D.G.A.F", "Welcome to Savannah", "I Have to Go Returns Some Video Tapes", "The Dressing Room", "Tripped and Fell in Portland", "Can I Take You Home?", "My Obsession", "Velvet", "Rescue"],
+		"song":["Hello Fascination", "I'm the Type of Person to Take It Personal", "Take Me to Infinity", "Dressed Up to Undress", "I.D.G.A.F", "Welcome to Savannah", "I Have to Go Returns Some Video Tapes", "The Dressing Room", "Tripped and Fell in Portland", "Can I Take You Home", "My Obsession", "Velvet", "Rescue"],
 		"length":["3:21", "4:14", "3:35", "3:38", "3:14", "3:36", "3:43", "3:28", "3:54", "3:53", "4:22", "3:15", "4:55"]
 	},
 	{
@@ -104,8 +104,8 @@ getAlbums([
 	{
 		"name":"One Day (Vandaag)",
 		"artist":"Bakermat",
-		"song":["One Day (Vandaag) [Radio Edit]", "One Day (Vandaag)", "One Day (Vandaag) [FlicFlac Remix]", "One Day (Vandaag) [Anime Edge & DANCE Remix]", "One Day (Vandaag) [Plastik Funk Remix]", "One Day (Vandaag) [Instrumental]"],
-		"length":["3:39", "5:23", "6:13", "6:16", "6:01", "5:23"]
+		"song":["One Day (Vandaag)"],
+		"length":["5:23"]
 	},
 	{
 		"name":"Billy Talent II",
@@ -188,7 +188,7 @@ getAlbums([
 	{
 		"name":"Flume",
 		"artist":"Flume",
-		"song":["Sintra","Holdin On", "Left Alone (feat. Chet Faker", "Sleepless (feat. Jezzabell Doran)", "On Top (feat. T-Shirt)", "Stay Close", "Insane (feat. Moon Holiday)", "Change", "Ezra", "More Than You Thought", "Space Cadet", "Bring You Down (feat. George Maple)", "Warm Thoughts", "What You Need", "Star Eyes"],
+		"song":["Sintra","Holdin On", "Left Alone (feat. Chet Faker)", "Sleepless (feat. Jezzabell Doran)", "On Top (feat. T-Shirt)", "Stay Close", "Insane (feat. Moon Holiday)", "Change", "Ezra", "More Than You Thought", "Space Cadet", "Bring You Down (feat. George Maple)", "Warm Thoughts", "What You Need", "Star Eyes"],
 		"length":["2:35", "2:34", "3:29", "3:29", "3:51", "2:56", "3:33", "2:30", "3:37", "4:05", "2:12", "4:38", "3:48", "4:10", "2:26"]
 	},
 	{
